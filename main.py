@@ -51,8 +51,8 @@ def settings(message):
     bot.send_message(message.chat.id, f'Привіт! 👋 \n\n🤖 Цей бот створений задля сповіщення користувачів "Львівобленерго" про планові відключення у вашому населеному пункті. \n✏️ Бот буде відсилати повідомлення з попередженням за 30 хвилин до відключення світла. \n❗️ Бот не є офіційним! \n\n📋 Для початку роботи, дізнайтесь вашу групу на сайті: https://poweroff.loe.lviv.ua \nПісля цього, виберіть групу нижче:', reply_markup=markup)
 
 #Розсилка по команді
-@bot.message_handler(commands=['сheck_db'])
-def check_db(message):
+@bot.message_handler(commands=['sendforall'])
+def sendforall(message):
     if message.from_user.id == 880691612:
         connect = sqlite3.connect('users.db')
         cursor = connect.cursor()
@@ -75,7 +75,7 @@ def check_db(message):
     else:
         bot.send_message(message.from_user.id, "Для виконання цієї команди ви повинні бути адміном бота.")
 
-#Функції з записом в БД
+#Функції кнопок меню
 @bot.message_handler(content_types='text')
 def message_reply(message: types.Message):
     person_id = message.chat.id
