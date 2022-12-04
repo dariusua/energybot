@@ -146,7 +146,7 @@ def message_reply(message: types.Message):
     connect.commit()
 
 #Функція розсилки для 1 групи
-async def sending_g1():
+def sending_g1():
     connect = sqlite3.connect('users.db')
     cursor = connect.cursor()
     cursor.execute("SELECT id FROM group1")
@@ -157,7 +157,7 @@ async def sending_g1():
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     for result in results:
         try:
-            await bot.send_message(result[0], f"‼ За графіком групи №1️⃣ планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
+            bot.send_message(result[0], f"‼ За графіком групи №1️⃣ планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
             if int(result[0]) != 1:
                 cursor.execute("INSERT INTO group1 (active) VALUES(?);", "1")
         except:
