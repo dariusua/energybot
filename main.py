@@ -123,14 +123,19 @@ def message_reply(message: types.Message):
         bot.send_photo(message.from_user.id, photo)
 
     elif message.text == "⚙ Налаштування":
-
+    #    markup.settings = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    #    item1 = types.KeyboardButton("🌙 Включити нічні сповіщення")
+    #    item2 = types.KeyboardButton("🔕 Відключити сповіщення")
+    #    item3 = types.KeyboardButton("📖 Повний графік(фото)")
+    #    item4 = types.KeyboardButton("⚙ Налаштування")
+    #    markup.add(item1, item2, item3, item4)
         bot.send_message(message.from_user.id, "Нажаль, ця команда тимчасово недоступна.")
 
     elif message.text == "/start":
         pass
 
     else:
-        bot.send_message(message.from_user.id, "Даної команди не існує.")
+        bot.send_message(message.from_user.id, "Данної команди не існує.")
 
     connect.commit()
 
