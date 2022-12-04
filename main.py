@@ -7,18 +7,18 @@ from telebot import types
 from threading import Thread
 from config import TOKEN
 
-
 bot = telebot.TeleBot(TOKEN)
+
+markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+item1 = types.KeyboardButton("✅ Підключити сповіщення")
+item2 = types.KeyboardButton("🔕 Відключити сповіщення")
+item3 = types.KeyboardButton("📖 Повний графік(фото)")
+item4 = types.KeyboardButton("⚙ Налаштування")
+markup.add(item1, item2, item3, item4)
 
 #Початок роботи
 @bot.message_handler(commands=['start'])
 def start(message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton("✅ Підключити сповіщення")
-    item2 = types.KeyboardButton("🔕 Відключити сповіщення")
-    item3 = types.KeyboardButton("📖 Повний графік(фото)")
-    item4 = types.KeyboardButton("⚙ Налаштування")
-    markup.add(item1, item2, item3, item4)
     bot.send_message(message.chat.id, f'Привіт 👋 \n\n🤖 Цей бот створений задля сповіщення користувачів "Львівобленерго" про планові відключення у вашому населеному пункті. \n✏️ Бот буде відсилати повідомлення з попередженням за 30 хвилин до відключення світла. \n❗️ Бот не є офіційним! \n\n📋 Для підключення сповіщень, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
 
 #Розсилка по команді
@@ -63,12 +63,12 @@ def message_reply(message: types.Message):
             active INTEGER
         )""")
         connect.commit()
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        markup_group = types.ReplyKeyboardMarkup(resize_keyboard=True)
         item1 = types.KeyboardButton("Група 1")
         item2 = types.KeyboardButton("Група 2")
         item3 = types.KeyboardButton("Група 3")
-        markup.add(item1, item2, item3)
-        bot.send_message(message.chat.id, f'✅ Для підключення сповіщень про відключення світла Вам необхідно натиснути на кнопку з номером вашої групи. \n❓ Щоб дізнатись номер вашої групи, перейдіть за посиланням та внизу сторінки, ввівши свої дані, ви зможете дізнатись свою групу: https://poweroff.loe.lviv.ua', reply_markup=markup)
+        markup_group.add(item1, item2, item3)
+        bot.send_message(message.chat.id, f'✅ Для підключення сповіщень про відключення світла Вам необхідно натиснути на кнопку з номером вашої групи. \n❓ Щоб дізнатись номер вашої групи, перейдіть за посиланням та внизу сторінки, ввівши свої дані, ви зможете дізнатись свою групу: https://poweroff.loe.lviv.ua', reply_markup=markup_group)
 
     elif message.text == "🔕 Відключити сповіщення":
         cursor.execute(f"DELETE FROM group1 WHERE id = {people_id}")
