@@ -151,10 +151,18 @@ def sending_g1():
     cursor = connect.cursor()
     cursor.execute("SELECT id FROM group1")
     results = cursor.fetchall()
+    cursor.execute("SELECT active FROM group1")
+    active = cursor.fetchall()
     howmuchtime1 = datetime.now() + timedelta(minutes=30)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     for result in results:
-        bot.send_message(result[0], f"‼ За графіком групи №1️⃣ планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
+        try:
+            await bot.send_message(result[0], f"‼ За графіком групи №1️⃣ планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
+            if int(result[0]) != 1:
+                cursor.execute("INSERT INTO group1 (active) VALUES(?);", "1")
+        except:
+            cursor.execute("INSERT INTO group1 (active) VALUES(?);", "0")
+
     connect.commit()
 
 #Функція розсилки для 2 групи
@@ -190,7 +198,7 @@ schedule.every().thursday.at("10:30").do(sending_g1)
 schedule.every().friday.at("06:30").do(sending_g1)
 schedule.every().friday.at("18:30").do(sending_g1)
 schedule.every().saturday.at("14:30").do(sending_g1)
-schedule.every().sunday.at("10:30").do(sending_g1)
+schedule.every().sunday.at("21:56").do(sending_g1)
 
 #Розсилка для 2 групи
 schedule.every().monday.at("06:30").do(sending_g2)
