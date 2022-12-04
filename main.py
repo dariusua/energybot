@@ -59,18 +59,15 @@ def sendforall(message):
         cursor.execute("SELECT id FROM group1")
         results = cursor.fetchall()
         for result in results:
-            text = result[0]
-            bot.send_message(result[0], f"@{text}")
+            bot.send_message(result[0], message.text)
         cursor.execute("SELECT id FROM group2")
         results = cursor.fetchall()
         for result in results:
-            text = result[0]
-            bot.send_message(result[0], f"@{text}")
+            bot.send_message(result[0], message.text)
         cursor.execute("SELECT id FROM group3")
         results = cursor.fetchall()
         for result in results:
-            text = result[0]
-            bot.send_message(result[0], f"@{text}")
+            bot.send_message(result[0], message.text)
         connect.commit()
     else:
         bot.send_message(message.from_user.id, "Для виконання цієї команди ви повинні бути адміном бота.")
