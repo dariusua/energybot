@@ -80,13 +80,16 @@ def message_reply(message: types.Message):
     cursor = connect.cursor()
     if message.text == "✅ Підключити сповіщення":
         cursor.execute("""CREATE TABLE IF NOT EXISTS group1(
-            id INTEGER
+            id INTEGER,
+            active INTEGER
         )""")
         cursor.execute("""CREATE TABLE IF NOT EXISTS group2(
-            id INTEGER
+            id INTEGER,
+            active INTEGER
         )""")
         cursor.execute("""CREATE TABLE IF NOT EXISTS group3(
-            id INTEGER
+            id INTEGER,
+            active INTEGER
         )""")
         connect.commit()
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -101,7 +104,8 @@ def message_reply(message: types.Message):
         data = cursor.fetchone()
         if data is None:
             user_id = [message.chat.id]
-            cursor.execute("INSERT INTO group1 VALUES(?);", user_id)
+            cursor.execute("INSERT INTO group1 (id) VALUES(?);", user_id)
+            cursor.execute("INSERT INTO group1 (active) VALUES(?);", 1)
         cursor.execute(f"DELETE FROM group2 WHERE id = {person_id}")
         cursor.execute(f"DELETE FROM group3 WHERE id = {person_id}")
         a = telebot.types.ReplyKeyboardRemove()
@@ -114,7 +118,8 @@ def message_reply(message: types.Message):
         data = cursor.fetchone()
         if data is None:
             user_id = [message.chat.id]
-            cursor.execute("INSERT INTO group2 VALUES(?);", user_id)
+            cursor.execute("INSERT INTO group1 (id) VALUES(?);", user_id)
+            cursor.execute("INSERT INTO group1 (active) VALUES(?);", 1)
         cursor.execute(f"DELETE FROM group1 WHERE id = {person_id}")
         cursor.execute(f"DELETE FROM group3 WHERE id = {person_id}")
         a = telebot.types.ReplyKeyboardRemove()
@@ -127,7 +132,8 @@ def message_reply(message: types.Message):
         data = cursor.fetchone()
         if data is None:
             user_id = [message.chat.id]
-            cursor.execute("INSERT INTO group3 VALUES(?);", user_id)
+            cursor.execute("INSERT INTO group1 (id) VALUES(?);", user_id)
+            cursor.execute("INSERT INTO group1 (active) VALUES(?);", 1)
         cursor.execute(f"DELETE FROM group1 WHERE id = {person_id}")
         cursor.execute(f"DELETE FROM group2 WHERE id = {person_id}")
         a = telebot.types.ReplyKeyboardRemove()
