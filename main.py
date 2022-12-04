@@ -84,7 +84,7 @@ def message_reply(message: types.Message):
         cursor.execute(f"DELETE FROM group3 WHERE id = {person_id}")
         a = telebot.types.ReplyKeyboardRemove()
         bot.send_message(message.from_user.id, f"✅ Ви успішно підключилися до сповіщень 1 групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n/start - змінити групу.", reply_markup=a)
-        print(f"{message.from_user.username} підключився до  1 групи")
+        print(f"{message.from_user.username} підключився до 1 групи")
 
     elif message.text == "Група 2":
         person_id = message.chat.id
@@ -97,7 +97,7 @@ def message_reply(message: types.Message):
         cursor.execute(f"DELETE FROM group3 WHERE id = {person_id}")
         a = telebot.types.ReplyKeyboardRemove()
         bot.send_message(message.from_user.id, f"✅ Ви успішно підключилися до сповіщень 2 групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n/start - змінити групу.", reply_markup=a)
-        print(f"{message.from_user.username} підключився до  2 групи")
+        print(f"{message.from_user.username} підключився до 2 групи")
 
     elif message.text == "Група 3":
         person_id = message.chat.id
@@ -110,7 +110,7 @@ def message_reply(message: types.Message):
         cursor.execute(f"DELETE FROM group2 WHERE id = {person_id}")
         a = telebot.types.ReplyKeyboardRemove()
         bot.send_message(message.from_user.id, f"✅ Ви успішно підключилися до сповіщень 3 групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n/start - змінити групу.", reply_markup=a)
-        print(f"{message.from_user.username} підключився до  3 групи")
+        print(f"{message.from_user.username} підключився до 3 групи")
 
     connect.commit()
 
@@ -182,7 +182,7 @@ schedule.every().thursday.at("14:30").do(sending_g3)
 schedule.every().friday.at("10:30").do(sending_g3)
 schedule.every().saturday.at("06:30").do(sending_g3)
 schedule.every().saturday.at("18:30").do(sending_g3)
-schedule.every().sunday.at("17:43").do(sending_g3)
+schedule.every().sunday.at("14:30").do(sending_g3)
 
 #Робота розсилки(інший потік)
 def threaded_function():
