@@ -166,7 +166,7 @@ def sending_g2():
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     for result in results:
         try:
-        bot.send_message(result[0], f"‼ За графіком 2️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
+            bot.send_message(result[0], f"‼ За графіком 2️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
             if int(result[0]) != 1:
                 cursor.execute("INSERT INTO group2 (active) VALUES(?);", "1")
         except:
@@ -186,9 +186,9 @@ def sending_g3():
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     for result in results:
         try:
-        bot.send_message(result[0], f"‼ За графіком 3️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
-        if int(result[0]) != 1:
-            cursor.execute("INSERT INTO group2 (active) VALUES(?);", "1")
+            bot.send_message(result[0], f"‼ За графіком 3️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
+            if int(result[0]) != 1:
+                cursor.execute("INSERT INTO group2 (active) VALUES(?);", "1")
     except:
     cursor.execute("INSERT INTO group2 (active) VALUES(?);", "0")
 
