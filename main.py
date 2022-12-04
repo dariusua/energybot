@@ -60,22 +60,20 @@ def sendforall(message):
         connect = sqlite3.connect('users.db')
         cursor = connect.cursor()
         cursor.execute("SELECT id FROM group1")
+        results = cursor.fetchall()
+        text = message.text[12:]
+        for result in results:
+            bot.send_message(result[0], {text})
         cursor.execute("SELECT id FROM group2")
+        results = cursor.fetchall()
+        text = message.text[12:]
+        for result in results:
+            bot.send_message(result[0], {text})
         cursor.execute("SELECT id FROM group3")
         results = cursor.fetchall()
         text = message.text[12:]
         for result in results:
             bot.send_message(result[0], {text})
-        # cursor.execute("SELECT id FROM group2")
-        # results = cursor.fetchall()
-        # text = message.text[12:]
-        # for result in results:
-        #     bot.send_message(result[0], {text})
-        # cursor.execute("SELECT id FROM group3")
-        # results = cursor.fetchall()
-        # text = message.text[12:]
-        # for result in results:
-        #     bot.send_message(result[0], {text})
         connect.commit()
     else:
         bot.send_message(message.from_user.id, "Для виконання цієї команди ви повинні бути адміном бота.")
@@ -95,8 +93,8 @@ def message_reply(message: types.Message):
         cursor.execute(f"DELETE FROM group2 WHERE id = {person_id}")
         cursor.execute(f"DELETE FROM group3 WHERE id = {person_id}")
         a = telebot.types.ReplyKeyboardRemove()
-        bot.send_message(message.from_user.id, f"✅ Ви успішно підключилися до сповіщень 1 групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n/start - змінити групу.", reply_markup=a)
-        print(f"{message.from_user.username} підключився до 1 групи")
+        bot.send_message(message.from_user.id, f"✅ Ви успішно підключилися до сповіщень 1️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n/start - змінити групу.", reply_markup=a)
+        bot.send_messge(880691612, f"{message.from_user.username} підключився до 1 групи")
 
     elif message.text == "Група 2":
         person_id = message.chat.id
@@ -108,8 +106,8 @@ def message_reply(message: types.Message):
         cursor.execute(f"DELETE FROM group1 WHERE id = {person_id}")
         cursor.execute(f"DELETE FROM group3 WHERE id = {person_id}")
         a = telebot.types.ReplyKeyboardRemove()
-        bot.send_message(message.from_user.id, f"✅ Ви успішно підключилися до сповіщень 2 групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n/start - змінити групу.", reply_markup=a)
-        print(f"{message.from_user.username} підключився до 2 групи")
+        bot.send_message(message.from_user.id, f"✅ Ви успішно підключилися до сповіщень 2️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n/start - змінити групу.", reply_markup=a)
+        bot.send_messge(880691612, f"{message.from_user.username} підключився до 2 групи")
 
     elif message.text == "Група 3":
         person_id = message.chat.id
@@ -121,8 +119,8 @@ def message_reply(message: types.Message):
         cursor.execute(f"DELETE FROM group1 WHERE id = {person_id}")
         cursor.execute(f"DELETE FROM group2 WHERE id = {person_id}")
         a = telebot.types.ReplyKeyboardRemove()
-        bot.send_message(message.from_user.id, f"✅ Ви успішно підключилися до сповіщень 3 групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n/start - змінити групу.", reply_markup=a)
-        print(f"{message.from_user.username} підключився до 3 групи")
+        bot.send_message(message.from_user.id, f"✅ Ви успішно підключилися до сповіщень 3️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n/start - змінити групу.", reply_markup=a)
+        bot.send_messge(880691612, f"{message.from_user.username} підключився до 3 групи")
 
     connect.commit()
 
@@ -135,7 +133,7 @@ def sending_g1():
     howmuchtime1 = datetime.now() + timedelta(minutes=30)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     for result in results:
-        bot.send_message(result[0], f"‼ За графіком групи №1 планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
+        bot.send_message(result[0], f"‼ За графіком групи №1️⃣ планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
     connect.commit()
 
 #Функція розсилки для 2 групи
@@ -147,7 +145,7 @@ def sending_g2():
     howmuchtime1 = datetime.now() + timedelta(minutes=30)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     for result in results:
-        bot.send_message(result[0], f"‼ За графіком групи №2 планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
+        bot.send_message(result[0], f"‼ За графіком групи №2️⃣ планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
     connect.commit()
 
 #Функція розсилки для 3 групи
@@ -159,7 +157,7 @@ def sending_g3():
     howmuchtime1 = datetime.now() + timedelta(minutes=150)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     for result in results:
-        bot.send_message(result[0], f"‼ За графіком групи №3 планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
+        bot.send_message(result[0], f"‼ За графіком групи №3️⃣ планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
     connect.commit()
 
 #Розсилка для 1 групи
