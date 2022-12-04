@@ -10,28 +10,36 @@ from config import TOKEN
 
 bot = telebot.TeleBot(TOKEN)
 
-#Початок роботи, запис користувача в БД
-@bot.message_handler(commands=['start', 'help'])
+#Початок роботи
+@bot.message_handler(commands=['start'])
 def start(message):
-    connect = sqlite3.connect('users.db')
-    cursor = connect.cursor()
-    cursor.execute("""CREATE TABLE IF NOT EXISTS group1(
-        id INTEGER
-    )""")
-    cursor.execute("""CREATE TABLE IF NOT EXISTS group2(
-        id INTEGER
-    )""")
-    cursor.execute("""CREATE TABLE IF NOT EXISTS group3(
-        id INTEGER
-    )""")
-    connect.commit()
-
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton("Група 1")
-    item2 = types.KeyboardButton("Група 2")
-    item3 = types.KeyboardButton("Група 3")
-    markup.add(item1, item2, item3)
+    item1 = types.KeyboardButton("✅ Підключити сповіщення")
+    item2 = types.KeyboardButton("🔕 Відключити сповіщення")
+    item3 = types.KeyboardButton("📖 Повний графік(фото)")
+    item4 = types.KeyboardButton("⚙ Налаштування")
+    markup.add(item1, item2, item3, item4)
     bot.send_message(message.chat.id, f'Привіт 👋 \n\n🤖 Цей бот створений задля сповіщення користувачів "Львівобленерго" про планові відключення у вашому населеному пункті. \n✏️ Бот буде відсилати повідомлення з попередженням за 30 хвилин до відключення світла. \n❗️ Бот не є офіційним! \n\n📋 Для початку роботи, дізнайтесь вашу групу на сайті: https://poweroff.loe.lviv.ua \nПісля цього, виберіть групу нижче:', reply_markup=markup)
+
+    # connect = sqlite3.connect('users.db')
+    # cursor = connect.cursor()
+    # cursor.execute("""CREATE TABLE IF NOT EXISTS group1(
+    #     id INTEGER
+    # )""")
+    # cursor.execute("""CREATE TABLE IF NOT EXISTS group2(
+    #     id INTEGER
+    # )""")
+    # cursor.execute("""CREATE TABLE IF NOT EXISTS group3(
+    #     id INTEGER
+    # )""")
+    # connect.commit()
+    #
+    # markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    # item1 = types.KeyboardButton("Група 1")
+    # item2 = types.KeyboardButton("Група 2")
+    # item3 = types.KeyboardButton("Група 3")
+    # markup.add(item1, item2, item3)
+    # bot.send_message(message.chat.id, f'Привіт 👋 \n\n🤖 Цей бот створений задля сповіщення користувачів "Львівобленерго" про планові відключення у вашому населеному пункті. \n✏️ Бот буде відсилати повідомлення з попередженням за 30 хвилин до відключення світла. \n❗️ Бот не є офіційним! \n\n📋 Для початку роботи, дізнайтесь вашу групу на сайті: https://poweroff.loe.lviv.ua \nПісля цього, виберіть групу нижче:', reply_markup=markup)
 
 #Видалення з бази даних
 @bot.message_handler(commands=['delete'])
@@ -52,38 +60,14 @@ def grafik(message):
     bot.send_photo(message.from_user.id, photo)
 
 #Налаштування
-@bot.message_handler(commands=['delete'])
-def delete(message):
+@bot.message_handler(commands=['settings'])
+def settings(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     item1 = types.KeyboardButton("Група 1")
     item2 = types.KeyboardButton("Група 2")
     item3 = types.KeyboardButton("Група 3")
     markup.add(item1, item2, item3)
     bot.send_message(message.chat.id, f'Привіт! 👋 \n\n🤖 Цей бот створений задля сповіщення користувачів "Львівобленерго" про планові відключення у вашому населеному пункті. \n✏️ Бот буде відсилати повідомлення з попередженням за 30 хвилин до відключення світла. \n❗️ Бот не є офіційним! \n\n📋 Для початку роботи, дізнайтесь вашу групу на сайті: https://poweroff.loe.lviv.ua \nПісля цього, виберіть групу нижче:', reply_markup=markup)
-
-
-#Розсилка по команді
-@bot.message_handler(commands=['sendforall'])
-def sendforall(message):
-    if message.from_user.id == 880691612:
-        connect = sqlite3.connect('users.db')
-        cursor = connect.cursor()
-        cursor.execute("SELECT id FROM group1")
-        results = cursor.fetchall()
-        text = message.text[12:]
-        for result in results:
-            bot.send_message(result[0], {text})
-        cursor.execute("SELECT id FROM group2")
-        results = cursor.fetchall()
-        for result in results:
-            bot.send_message(result[0], {text})
-        cursor.execute("SELECT id FROM group3")
-        results = cursor.fetchall()
-        for result in results:
-            bot.send_message(result[0], {text})
-        connect.commit()
-    else:
-        bot.send_message(message.from_user.id, "Для виконання цієї команди ви повинні бути адміном бота.")
 
 #Розсилка по команді
 @bot.message_handler(commands=['сheck_db'])
