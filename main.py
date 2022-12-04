@@ -94,7 +94,7 @@ def message_reply(message: types.Message):
         cursor.execute(f"DELETE FROM group3 WHERE id = {person_id}")
         a = telebot.types.ReplyKeyboardRemove()
         bot.send_message(message.from_user.id, f"✅ Ви успішно підключилися до сповіщень 1️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n/start - змінити групу.", reply_markup=a)
-        bot.send_messge(880691612, f"{message.from_user.username} підключився до 1 групи")
+        bot.send_message(880691612, f"{message.from_user.username} підключився до 1 групи")
 
     elif message.text == "Група 2":
         person_id = message.chat.id
@@ -107,7 +107,7 @@ def message_reply(message: types.Message):
         cursor.execute(f"DELETE FROM group3 WHERE id = {person_id}")
         a = telebot.types.ReplyKeyboardRemove()
         bot.send_message(message.from_user.id, f"✅ Ви успішно підключилися до сповіщень 2️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n/start - змінити групу.", reply_markup=a)
-        bot.send_messge(880691612, f"{message.from_user.username} підключився до 2 групи")
+        bot.send_message(880691612, f"{message.from_user.username} підключився до 2 групи")
 
     elif message.text == "Група 3":
         person_id = message.chat.id
@@ -120,7 +120,7 @@ def message_reply(message: types.Message):
         cursor.execute(f"DELETE FROM group2 WHERE id = {person_id}")
         a = telebot.types.ReplyKeyboardRemove()
         bot.send_message(message.from_user.id, f"✅ Ви успішно підключилися до сповіщень 3️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n/start - змінити групу.", reply_markup=a)
-        bot.send_messge(880691612, f"{message.from_user.username} підключився до 3 групи")
+        bot.send_message(880691612, f"{message.from_user.username} підключився до 3 групи")
 
     connect.commit()
 
