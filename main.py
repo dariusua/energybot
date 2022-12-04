@@ -104,7 +104,7 @@ def message_reply(message: types.Message):
         data = cursor.fetchone()
         if data is None:
             user_id = [message.chat.id]
-            active_yes = 1
+            active_yes = "1"
             cursor.execute("INSERT INTO group1 (id) VALUES(?);", user_id)
             cursor.execute("INSERT INTO group1 (active) VALUES(?);", active_yes)
         cursor.execute(f"DELETE FROM group2 WHERE id = {person_id}")
@@ -119,7 +119,7 @@ def message_reply(message: types.Message):
         data = cursor.fetchone()
         if data is None:
             user_id = [message.chat.id]
-            active_yes = 1
+            active_yes = "1"
             cursor.execute("INSERT INTO group1 (id) VALUES(?);", user_id)
             cursor.execute("INSERT INTO group1 (active) VALUES(?);", active_yes)
         cursor.execute(f"DELETE FROM group1 WHERE id = {person_id}")
@@ -134,7 +134,7 @@ def message_reply(message: types.Message):
         data = cursor.fetchone()
         if data is None:
             user_id = [message.chat.id]
-            active_yes = 1
+            active_yes = "1"
             cursor.execute("INSERT INTO group1 (id) VALUES(?);", user_id)
             cursor.execute("INSERT INTO group1 (active) VALUES(?);", active_yes)
         cursor.execute(f"DELETE FROM group1 WHERE id = {person_id}")
