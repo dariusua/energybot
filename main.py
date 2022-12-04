@@ -182,7 +182,7 @@ schedule.every().thursday.at("14:30").do(sending_g3)
 schedule.every().friday.at("10:30").do(sending_g3)
 schedule.every().saturday.at("06:30").do(sending_g3)
 schedule.every().saturday.at("18:30").do(sending_g3)
-schedule.every().sunday.at("17:27").do(sending_g3)
+schedule.every().sunday.at("17:32").do(sending_g3)
 
 #Робота розсилки(інший потік)
 def threaded_function():
