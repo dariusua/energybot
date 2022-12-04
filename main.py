@@ -189,8 +189,8 @@ def sending_g3():
             bot.send_message(result[0], f"‼ За графіком 3️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
             if int(result[0]) != 1:
                 cursor.execute("INSERT INTO group2 (active) VALUES(?);", "1")
-    except:
-    cursor.execute("INSERT INTO group2 (active) VALUES(?);", "0")
+        except:
+            cursor.execute("INSERT INTO group2 (active) VALUES(?);", "0")
 
     connect.commit()
 
