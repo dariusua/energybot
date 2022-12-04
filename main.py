@@ -60,20 +60,22 @@ def sendforall(message):
         connect = sqlite3.connect('users.db')
         cursor = connect.cursor()
         cursor.execute("SELECT id FROM group1")
-        results = cursor.fetchall()
-        text = message.text[12:]
-        for result in results:
-            bot.send_message(result[0], {text})
         cursor.execute("SELECT id FROM group2")
-        results = cursor.fetchall()
-        text = message.text[12:]
-        for result in results:
-            bot.send_message(result[0], {text})
         cursor.execute("SELECT id FROM group3")
         results = cursor.fetchall()
         text = message.text[12:]
         for result in results:
             bot.send_message(result[0], {text})
+        # cursor.execute("SELECT id FROM group2")
+        # results = cursor.fetchall()
+        # text = message.text[12:]
+        # for result in results:
+        #     bot.send_message(result[0], {text})
+        # cursor.execute("SELECT id FROM group3")
+        # results = cursor.fetchall()
+        # text = message.text[12:]
+        # for result in results:
+        #     bot.send_message(result[0], {text})
         connect.commit()
     else:
         bot.send_message(message.from_user.id, "Для виконання цієї команди ви повинні бути адміном бота.")
