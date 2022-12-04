@@ -95,15 +95,15 @@ def check_db(message):
         results = cursor.fetchall()
         text = message.text[10:]
         for result in results:
-            bot.send_message(result[0], f"@{result[0]}")
+            bot.send_message(result[0], result[0])
         cursor.execute("SELECT id FROM group2")
         results = cursor.fetchall()
         for result in results:
-            bot.send_message(result[0], f"@{result[0]}")
+            bot.send_message(result[0], result[0])
         cursor.execute("SELECT id FROM group3")
         results = cursor.fetchall()
         for result in results:
-            bot.send_message(result[0], f"@{result[0]}")
+            bot.send_message(result[0], result[0])
         connect.commit()
     else:
         bot.send_message(message.from_user.id, "Для виконання цієї команди ви повинні бути адміном бота.")
