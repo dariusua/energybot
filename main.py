@@ -5,9 +5,10 @@ import schedule
 from datetime import datetime, timedelta
 from telebot import types
 from threading import Thread
+from config import TOKEN
 
 
-bot = telebot.TeleBot("5755996803:AAHyBm0OKf4cRCokI_eyzPkwbZ_m1Zvgzbg")
+bot = telebot.TeleBot(TOKEN)
 
 #Початок роботи, запис користувача в БД
 @bot.message_handler(commands=['start', 'help'])
