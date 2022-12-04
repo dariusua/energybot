@@ -53,6 +53,21 @@ def grafik(message):
     photo = open('image.png', 'rb')
     bot.send_photo(message.from_user.id, photo)
 
+#Розсилка по команді
+@bot.message_handler(commands=['sendforall'])
+def sendforall(message):
+    if message.from_user.id == 880691612:
+        connect = sqlite3.connect('users.db')
+        cursor = connect.cursor()
+        cursor.execute("SELECT id FROM group1")
+        results = cursor.fetchall()
+        text = message.text[12:]
+        for result in results:
+            bot.send_message(result[0], {text})
+        connect.commit()
+    else:
+        bot.send_message(message.from_user.id, "Для виконання цієї команди ви повинні бути адміном бота.")
+
 #Функції з записом в БД
 @bot.message_handler(content_types='text')
 def message_reply(message: types.Message):
@@ -69,6 +84,7 @@ def message_reply(message: types.Message):
         cursor.execute(f"DELETE FROM group3 WHERE id = {person_id}")
         a = telebot.types.ReplyKeyboardRemove()
         bot.send_message(message.from_user.id, f"✅ Ви успішно підключилися до сповіщень 1 групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n/start - змінити групу.", reply_markup=a)
+        print(f"{message.from_user.username} підключився до  1 групи")
 
     elif message.text == "Група 2":
         person_id = message.chat.id
@@ -81,6 +97,7 @@ def message_reply(message: types.Message):
         cursor.execute(f"DELETE FROM group3 WHERE id = {person_id}")
         a = telebot.types.ReplyKeyboardRemove()
         bot.send_message(message.from_user.id, f"✅ Ви успішно підключилися до сповіщень 2 групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n/start - змінити групу.", reply_markup=a)
+        print(f"{message.from_user.username} підключився до  2 групи")
 
     elif message.text == "Група 3":
         person_id = message.chat.id
@@ -93,6 +110,7 @@ def message_reply(message: types.Message):
         cursor.execute(f"DELETE FROM group2 WHERE id = {person_id}")
         a = telebot.types.ReplyKeyboardRemove()
         bot.send_message(message.from_user.id, f"✅ Ви успішно підключилися до сповіщень 3 групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n/start - змінити групу.", reply_markup=a)
+        print(f"{message.from_user.username} підключився до  3 групи")
 
     connect.commit()
 
