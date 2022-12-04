@@ -198,7 +198,7 @@ schedule.every().thursday.at("10:30").do(sending_g1)
 schedule.every().friday.at("06:30").do(sending_g1)
 schedule.every().friday.at("18:30").do(sending_g1)
 schedule.every().saturday.at("14:30").do(sending_g1)
-schedule.every().sunday.at("21:57").do(sending_g1)
+schedule.every().sunday.at("21:59").do(sending_g1)
 
 #Розсилка для 2 групи
 schedule.every().monday.at("06:30").do(sending_g2)
