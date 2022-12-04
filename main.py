@@ -71,9 +71,9 @@ def message_reply(message: types.Message):
         bot.send_message(message.chat.id, f'✅ Для підключення сповіщень про відключення світла Вам необхідно натиснути на кнопку з номером вашої групи. \n❓ Щоб дізнатись номер вашої групи, перейдіть за посиланням та внизу сторінки, ввівши свої дані, ви зможете дізнатись свою групу: https://poweroff.loe.lviv.ua', reply_markup=markup_group)
 
     elif message.text == "🔕 Відключити сповіщення":
-        cursor.execute(f"DELETE FROM group1 WHERE id = {people_id}")
-        cursor.execute(f"DELETE FROM group2 WHERE id = {people_id}")
-        cursor.execute(f"DELETE FROM group3 WHERE id = {people_id}")
+        cursor.execute(f"DELETE FROM group1 WHERE id = {person_id}")
+        cursor.execute(f"DELETE FROM group2 WHERE id = {person_id}")
+        cursor.execute(f"DELETE FROM group3 WHERE id = {person_id}")
         bot.send_message(message.from_user.id, '❌ Ви відключилися від сповіщень про відключення електроенергії. Дякуємо за використання бота!😢 \n\nЩоб підключитись знову, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
 
     elif message.text == "Група 1":
