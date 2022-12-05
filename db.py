@@ -10,5 +10,5 @@ class Database:
             data = self.cursor.execute("SELECT `user_id` FROM `group1` WHERE `user_id` = ?", (user_id,)).fetchone()
             if data is None:
                 self.cursor.execute("INSERT INTO `group1` (`user_id`, `active`) VALUES (?, ?)", (user_id, "1",))
-            self.cursor.execute("DELETE FROM `group2` WHERE `id` = ?", (user_id,))
-            self.cursor.execute("DELETE FROM `group3` WHERE `id` = ?", (user_id,))
+            self.cursor.execute("DELETE FROM `group2` WHERE `user_id` = ?", (user_id,))
+            self.cursor.execute("DELETE FROM `group3` WHERE `user_id` = ?", (user_id,))
