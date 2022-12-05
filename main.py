@@ -6,8 +6,8 @@ from telebot import types
 from threading import Thread
 from config import TOKEN
 
-timezone1 = datetime.now()
-timezone2 = timezone1.astimezone(name=EET)
+timezone1 = timedelta(hours=2)
+timezone2 = timezone(timezone1, name="EET")
 bot = telebot.TeleBot(TOKEN)
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -115,7 +115,7 @@ def message_reply(message: types.Message):
 
     elif message.text == "/test":
         test = datetime.now() + (timedelta(minutes=150))
-        bot.send_message(message.from_user.id, {timezone2})
+        bot.send_message(message.from_user.id, datetime.now(timezone2))
 
     else:
         bot.send_message(message.from_user.id, "Данної команди не існує.")
