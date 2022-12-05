@@ -135,7 +135,7 @@ def message_reply(message: types.Message):
         pass
 
     elif message.text == "/test":
-        test = datetime.now() + timedelta(minutes=150))
+        test = datetime.now() + timedelta(minutes=150)
         bot.send_message(message.from_user.id, test)
 
     else:
