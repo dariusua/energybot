@@ -57,7 +57,4 @@ class Database:
         return loginchat
 
 # Розсилка повідомлень від адміна
-    def send(self):
-
-
-
+#     def send(self):

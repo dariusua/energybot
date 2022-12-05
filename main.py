@@ -82,7 +82,7 @@ async def message_reply(message: types.Message):
         photo = open('image.png', 'rb')
         bot.send_photo(message.from_user.id, photo)
 
-# Налаштування
+# 1Налаштування
     elif message.text == "⚙ Налаштування":
         markup_settings = types.ReplyKeyboardMarkup(resize_keyboard=True)
     #    item1 = types.KeyboardButton("🌙 Включити нічні сповіщення")
