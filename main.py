@@ -1,12 +1,18 @@
 import sqlite3
 import time
 import telebot
-import schedule
+import datetime
+# import schedule
+import scheduler
+import datetime as dt
+from scheduler import Scheduler
+from scheduler.trigger import Monday
 from datetime import datetime, timedelta
 from telebot import types
 from threading import Thread
 from config import TOKEN
 
+schedule = Scheduler()
 bot = telebot.TeleBot(TOKEN)
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -227,7 +233,7 @@ schedule.every().sunday.at("06:30").do(sending_g2)
 schedule.every().sunday.at("18:30").do(sending_g2)
 
 #Розсилка для 3 групи
-schedule.every().monday.at("14:39").do(sending_g3)
+schedule.weekly(Monday(dt.time(hour=14, minute=43)), sending_g3())
 schedule.every().tuesday.at("10:30").do(sending_g3)
 schedule.every().wednesday.at("06:30").do(sending_g3)
 schedule.every().wednesday.at("18:30").do(sending_g3)
