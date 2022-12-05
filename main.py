@@ -141,7 +141,7 @@ def message_reply(message: types.Message):
         pass
 
     elif message.text == "/test":
-        test = datetime.now() + timedelta(minutes=150)
+        test = datetime.now().strftime('%H:%M') + timedelta(minutes=150)
         bot.send_message(message.from_user.id, test)
 
     else:
@@ -191,6 +191,23 @@ def sending_g2():
 
 #Функція розсилки для 3 групи
 def sending_g3():
+    connect = sqlite3.connect('users.db')
+    cursor = connect.cursor()
+    cursor.execute("SELECT id FROM group3")
+    results = cursor.fetchall()
+    cursor.execute("SELECT active FROM group3")
+    active = cursor.fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=150)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    for result in results:
+        try:
+            bot.send_message(result[0], f"‼ За графіком 3️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
+            if int(result[0]) != 1:
+                cursor.execute("INSERT INTO group2 (active) VALUES(?);", "1")
+        except:
+            cursor.execute("INSERT INTO group2 (active) VALUES(?);", "0")
+
+def sending_g4():
     connect = sqlite3.connect('users.db')
     cursor = connect.cursor()
     cursor.execute("SELECT id FROM group3")
