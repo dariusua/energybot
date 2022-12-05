@@ -116,7 +116,7 @@ def message_reply(message: types.Message):
 
     elif message.text == "/test":
         test = datetime.now() + (timedelta(minutes=150))
-        bot.send_message(message.from_user.id, datetime.now().strftime('%H:%M'))
+        bot.send_message(message.from_user.id, datetime.now(timezone2).strftime('%H:%M'))
 
     else:
         bot.send_message(message.from_user.id, "Данної команди не існує.")
