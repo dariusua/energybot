@@ -134,6 +134,9 @@ def message_reply(message: types.Message):
     elif message.text == "/start":
         pass
 
+    elif message.text == "/test":
+        bot.send_message(message.from_user.id, datetime.now() + timedelta(minutes=150))
+
     else:
         bot.send_message(message.from_user.id, "Данної команди не існує.")
 
@@ -223,7 +226,7 @@ schedule.every().sunday.at("06:30").do(sending_g2)
 schedule.every().sunday.at("18:30").do(sending_g2)
 
 #Розсилка для 3 групи
-schedule.every().monday.at("14:30").do(sending_g3)
+schedule.every().monday.at("14:35").do(sending_g3)
 schedule.every().tuesday.at("10:30").do(sending_g3)
 schedule.every().wednesday.at("06:30").do(sending_g3)
 schedule.every().wednesday.at("18:30").do(sending_g3)
