@@ -8,7 +8,7 @@ from threading import Thread
 from config import TOKEN
 
 timezone1 = timedelta(hours=2)
-timezone2 = timezone(name="EET")
+timezone2 = timezone(timezone1, name="EET") + timezone1
 bot = telebot.TeleBot(TOKEN)
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
