@@ -2,6 +2,7 @@ import logging
 import telebot
 from aiogram import executor, types
 from db import Database
+from config import TOKEN
 
 logging.basicConfig(level=logging.INFO)
 
