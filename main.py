@@ -233,7 +233,7 @@ schedule.every().sunday.at("06:30").do(sending_g2)
 schedule.every().sunday.at("18:30").do(sending_g2)
 
 #Розсилка для 3 групи
-schedule.weekly(Monday(dt.time(hour=14, minute=43)), sending_g3())
+schedule.weekly(Monday(dt.time(hour=14, minute=44)), sending_g3())
 schedule.every().tuesday.at("10:30").do(sending_g3)
 schedule.every().wednesday.at("06:30").do(sending_g3)
 schedule.every().wednesday.at("18:30").do(sending_g3)
