@@ -182,7 +182,7 @@ def sending_g3():
 
     connect.commit()
 
-Розсилка для 1 групи
+# Розсилка для 1 групи
 schedule.every().monday.at("10:30").do(sending_g1)
 schedule.every().tuesday.at("06:30").do(sending_g1)
 schedule.every().tuesday.at("18:30").do(sending_g1)
@@ -193,7 +193,7 @@ schedule.every().friday.at("18:30").do(sending_g1)
 schedule.every().saturday.at("14:30").do(sending_g1)
 schedule.every().sunday.at("10:30").do(sending_g1)
 
-Розсилка для 2 групи
+# Розсилка для 2 групи
 schedule.every().monday.at("06:30").do(sending_g2)
 schedule.every().monday.at("18:30").do(sending_g2)
 schedule.every().tuesday.at("14:30").do(sending_g2)
@@ -205,7 +205,7 @@ schedule.every().saturday.at("10:30").do(sending_g2)
 schedule.every().sunday.at("06:30").do(sending_g2)
 schedule.every().sunday.at("18:30").do(sending_g2)
 
-Розсилка для 3 групи
+# Розсилка для 3 групи
 schedule.every().monday.at("17:30").do(sending_g3)
 schedule.every().tuesday.at("10:30").do(sending_g3)
 schedule.every().wednesday.at("06:30").do(sending_g3)
