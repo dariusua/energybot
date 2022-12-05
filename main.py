@@ -226,6 +226,12 @@ def sending_g4():
 
     connect.commit()
 
+def foo():
+    bot.send_message(880691612, "test")
+
+
+schedule.cyclic(dt.timedelta(seconds=30), foo)
+
 #Розсилка для 1 групи
 # schedule.every().monday.at("10:30").do(sending_g1)
 # schedule.every().tuesday.at("06:30").do(sending_g1)
@@ -250,7 +256,7 @@ def sending_g4():
 # schedule.every().sunday.at("18:30").do(sending_g2)
 
 #Розсилка для 3 групи
-schedule.weekly(Monday(dt.time(hour=14, minute=46)), sending_g3())
+schedule.weekly(Monday(datetime.now().strftime('%H:%M'), sending_g3())
 # schedule.every().tuesday.at("10:30").do(sending_g3)
 # schedule.every().wednesday.at("06:30").do(sending_g3)
 # schedule.every().wednesday.at("18:30").do(sending_g3)
