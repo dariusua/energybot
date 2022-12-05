@@ -9,6 +9,8 @@ bot = Bot(TOKEN)
 dp = Dispatcher(bot)
 db = Database('database.db')
 
+db.create_db()
+
 # Маркап меню
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 item1 = types.KeyboardButton("✅ Підключити сповіщення")

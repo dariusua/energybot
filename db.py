@@ -5,7 +5,15 @@ class Database:
         self.connection = sqlite3.connect(db_file)
         self.cursor = self.connection.cursor()
 
-    def add_user(self, user_id, group):
+    def create_db(self):
+        with self.connection:
+            self.cursor.execute("""CREATE TABLE IF NOT EXISTS database(
+                user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                [group] INTEGER NOT NULL,
+                active INTEGER DEFAULT (1) 
+            )""")
+
+        def add_user(self, user_id, group):
         with self.connection:
             data = self.cursor.execute("SELECT `user_id` FROM `database` WHERE `user_id` = ?", (user_id,)).fetchone()
             if data is None:
