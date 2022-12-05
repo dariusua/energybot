@@ -1,12 +1,11 @@
 import logging
-import telebot
-from aiogram import Dispatcher, executor, types
+from aiogram import Bot, Dispatcher, executor, types
 from db import Database
 from config import TOKEN
 
 logging.basicConfig(level=logging.INFO)
 
-bot = telebot.TeleBot(TOKEN)
+bot = Bot(TOKEN)
 dp = Dispatcher(bot)
 db = Database('database.db')
 
