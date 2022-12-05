@@ -33,6 +33,7 @@ async def start(message: types.Message):
 @dp.message_handler(commands=['send'])
 async def send(message: types.Message):
     if message.from_user.id == "880691612":
+        text = message.text[6:]
 
 
 
