@@ -233,7 +233,7 @@ def sending_g3():
 # schedule.every().sunday.at("18:30").do(sending_g2)
 
 #Розсилка для 3 групи
-schedule.weekly(Monday(dt.time(hour=14, minute=45)), sending_g3())
+schedule.weekly(Monday(dt.time(hour=14, minute=46)), sending_g3())
 # schedule.every().tuesday.at("10:30").do(sending_g3)
 # schedule.every().wednesday.at("06:30").do(sending_g3)
 # schedule.every().wednesday.at("18:30").do(sending_g3)
@@ -243,13 +243,13 @@ schedule.weekly(Monday(dt.time(hour=14, minute=45)), sending_g3())
 # schedule.every().saturday.at("18:30").do(sending_g3)
 # schedule.every().sunday.at("14:30").do(sending_g3)
 
-#Робота розсилки(інший потік)
-def threaded_function():
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-
-thread = Thread(target = threaded_function)
-thread.daemon = True
-thread.start()
+# #Робота розсилки(інший потік)
+# def threaded_function():
+#     while True:
+#         schedule.run_pending()
+#         time.sleep(1)
+#
+# thread = Thread(target = threaded_function)
+# thread.daemon = True
+# thread.start()
 bot.polling()
