@@ -184,7 +184,7 @@ def sending_g3():
     connect.commit()
 
 # Розсилка для 1 групи
-schedule.every().monday.at("10:30").do(sending_g1)
+schedule.every().monday.at("17:38").do(sending_g1)
 schedule.every().tuesday.at("06:30").do(sending_g1)
 schedule.every().tuesday.at("18:30").do(sending_g1)
 schedule.every().wednesday.at("14:30").do(sending_g1)
