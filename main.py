@@ -7,7 +7,7 @@ from threading import Thread
 from config import TOKEN
 
 timezone1 = datetime.now()
-timezone2 = timezone1.astimezone(offset, name=EET)
+timezone2 = timezone1.astimezone(name=EET)
 bot = telebot.TeleBot(TOKEN)
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
