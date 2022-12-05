@@ -158,7 +158,7 @@ def sending_g1():
     for result in results:
         try:
             bot.send_message(result[0], f"‼ За графіком групи №1️⃣ планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
-            if int(result[0]) != 1:
+            if int(active[0]) != 1:
                 cursor.execute("INSERT INTO group1 (active) VALUES(?);", "1")
         except:
             cursor.execute("INSERT INTO group1 (active) VALUES(?);", "0")
