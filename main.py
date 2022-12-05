@@ -1,18 +1,13 @@
 import sqlite3
-import time
 import telebot
-import datetime
-# import schedule
-import scheduler
-import datetime as dt
-from scheduler import Scheduler
-from scheduler.trigger import Monday
-from datetime import datetime, timedelta
+import schedule
+from datetime import datetime, timedelta, timezone
 from telebot import types
 from threading import Thread
 from config import TOKEN
 
-schedule = Scheduler()
+timezone1 = datetime.now()
+timezone2 = timezone1.astimezone(offset, name=EET)
 bot = telebot.TeleBot(TOKEN)
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -26,28 +21,6 @@ markup.add(item1, item2, item3, item4)
 @bot.message_handler(commands=['start'])
 def start(message):
     bot.send_message(message.chat.id, f'Привіт 👋 \n\n🤖 Цей бот створений задля сповіщення користувачів "Львівобленерго" про планові відключення у вашому населеному пункті. \n✏️ Бот буде відсилати повідомлення з попередженням за 30 хвилин до відключення світла. \n❗️ Бот не є офіційним! \n\n📋 Для підключення сповіщень, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
-
-#Розсилка по команді
-@bot.message_handler(commands=['sendforall'])
-def sendforall(message):
-    if message.from_user.id == 880691612:
-        connect = sqlite3.connect('users.db')
-        cursor = connect.cursor()
-        cursor.execute("SELECT id FROM group1")
-        results = cursor.fetchall()
-        for result in results:
-            bot.send_message(result[0], message.text)
-        cursor.execute("SELECT id FROM group2")
-        results = cursor.fetchall()
-        for result in results:
-            bot.send_message(result[0], message.text)
-        cursor.execute("SELECT id FROM group3")
-        results = cursor.fetchall()
-        for result in results:
-            bot.send_message(result[0], message.text)
-        connect.commit()
-    else:
-        bot.send_message(message.from_user.id, "Для виконання цієї команди ви повинні бути адміном бота.")
 
 #Функції кнопок меню
 @bot.message_handler(content_types='text')
@@ -135,14 +108,14 @@ def message_reply(message: types.Message):
     #    item3 = types.KeyboardButton("📖 Повний графік(фото)")
     #    item4 = types.KeyboardButton("⚙ Налаштування")
     #    markup.add(item1, item2, item3, item4)
-        bot.send_message(message.from_user.id, "Нажаль, ця команда тимчасово недоступна.")
+        bot.send_message(message.from_user.id, "Нажаль, ця команда тимчасово недоступна.", reply_markup=markup)
 
     elif message.text == "/start":
         pass
 
     elif message.text == "/test":
         test = datetime.now() + (timedelta(minutes=150))
-        bot.send_message(message.from_user.id, test.strftime('%H:%M'))
+        bot.send_message(message.from_user.id, {timezone2})
 
     else:
         bot.send_message(message.from_user.id, "Данної команди не існує.")
@@ -162,7 +135,7 @@ def sending_g1():
     for result in results:
         try:
             bot.send_message(result[0], f"‼ За графіком 1️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
-            if int(result[0]) != 1:
+            if int(active[0]) != 1:
                 cursor.execute("INSERT INTO group1 (active) VALUES(?);", "1")
         except:
             cursor.execute("INSERT INTO group1 (active) VALUES(?);", "0")
@@ -207,72 +180,49 @@ def sending_g3():
         except:
             cursor.execute("INSERT INTO group2 (active) VALUES(?);", "0")
 
-def sending_g4():
-    connect = sqlite3.connect('users.db')
-    cursor = connect.cursor()
-    cursor.execute("SELECT id FROM group3")
-    results = cursor.fetchall()
-    cursor.execute("SELECT active FROM group3")
-    active = cursor.fetchall()
-    howmuchtime1 = datetime.now() + timedelta(minutes=150)
-    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
-    for result in results:
-        try:
-            bot.send_message(result[0], f"‼ За графіком 3️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!")
-            if int(result[0]) != 1:
-                cursor.execute("INSERT INTO group2 (active) VALUES(?);", "1")
-        except:
-            cursor.execute("INSERT INTO group2 (active) VALUES(?);", "0")
-
     connect.commit()
 
-def foo():
-    bot.send_message(880691612, "test")
+Розсилка для 1 групи
+schedule.every().monday.at("10:30").do(sending_g1)
+schedule.every().tuesday.at("06:30").do(sending_g1)
+schedule.every().tuesday.at("18:30").do(sending_g1)
+schedule.every().wednesday.at("14:30").do(sending_g1)
+schedule.every().thursday.at("10:30").do(sending_g1)
+schedule.every().friday.at("06:30").do(sending_g1)
+schedule.every().friday.at("18:30").do(sending_g1)
+schedule.every().saturday.at("14:30").do(sending_g1)
+schedule.every().sunday.at("10:30").do(sending_g1)
 
+Розсилка для 2 групи
+schedule.every().monday.at("06:30").do(sending_g2)
+schedule.every().monday.at("18:30").do(sending_g2)
+schedule.every().tuesday.at("14:30").do(sending_g2)
+schedule.every().wednesday.at("10:30").do(sending_g2)
+schedule.every().thursday.at("06:30").do(sending_g2)
+schedule.every().thursday.at("18:30").do(sending_g2)
+schedule.every().friday.at("14:30").do(sending_g2)
+schedule.every().saturday.at("10:30").do(sending_g2)
+schedule.every().sunday.at("06:30").do(sending_g2)
+schedule.every().sunday.at("18:30").do(sending_g2)
 
-schedule.cyclic(dt.timedelta(seconds=30), foo)
+Розсилка для 3 групи
+schedule.every().monday.at("17:30").do(sending_g3)
+schedule.every().tuesday.at("10:30").do(sending_g3)
+schedule.every().wednesday.at("06:30").do(sending_g3)
+schedule.every().wednesday.at("18:30").do(sending_g3)
+schedule.every().thursday.at("14:30").do(sending_g3)
+schedule.every().friday.at("10:30").do(sending_g3)
+schedule.every().saturday.at("06:30").do(sending_g3)
+schedule.every().saturday.at("18:30").do(sending_g3)
+schedule.every().sunday.at("14:30").do(sending_g3)
 
-#Розсилка для 1 групи
-# schedule.every().monday.at("10:30").do(sending_g1)
-# schedule.every().tuesday.at("06:30").do(sending_g1)
-# schedule.every().tuesday.at("18:30").do(sending_g1)
-# schedule.every().wednesday.at("14:30").do(sending_g1)
-# schedule.every().thursday.at("10:30").do(sending_g1)
-# schedule.every().friday.at("06:30").do(sending_g1)
-# schedule.every().friday.at("18:30").do(sending_g1)
-# schedule.every().saturday.at("14:30").do(sending_g1)
-# schedule.every().sunday.at("10:30").do(sending_g1)
+#Робота розсилки(інший потік)
+def threaded_function():
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
-#Розсилка для 2 групи
-# schedule.every().monday.at("06:30").do(sending_g2)
-# schedule.every().monday.at("18:30").do(sending_g2)
-# schedule.every().tuesday.at("14:30").do(sending_g2)
-# schedule.every().wednesday.at("10:30").do(sending_g2)
-# schedule.every().thursday.at("06:30").do(sending_g2)
-# schedule.every().thursday.at("18:30").do(sending_g2)
-# schedule.every().friday.at("14:30").do(sending_g2)
-# schedule.every().saturday.at("10:30").do(sending_g2)
-# schedule.every().sunday.at("06:30").do(sending_g2)
-# schedule.every().sunday.at("18:30").do(sending_g2)
-
-#Розсилка для 3 групи
-# schedule.weekly(Monday(datetime.now().strftime('%H:%M'), sending_g3()))
-# schedule.every().tuesday.at("10:30").do(sending_g3)
-# schedule.every().wednesday.at("06:30").do(sending_g3)
-# schedule.every().wednesday.at("18:30").do(sending_g3)
-# schedule.every().thursday.at("14:30").do(sending_g3)
-# schedule.every().friday.at("10:30").do(sending_g3)
-# schedule.every().saturday.at("06:30").do(sending_g3)
-# schedule.every().saturday.at("18:30").do(sending_g3)
-# schedule.every().sunday.at("14:30").do(sending_g3)
-
-# #Робота розсилки(інший потік)
-# def threaded_function():
-#     while True:
-#         schedule.run_pending()
-#         time.sleep(1)
-#
-# thread = Thread(target = threaded_function)
-# thread.daemon = True
-# thread.start()
+thread = Thread(target = threaded_function)
+thread.daemon = True
+thread.start()
 bot.polling()
