@@ -9,6 +9,7 @@ from config import TOKEN
 
 timezone1 = timedelta(hours=2)
 timezone2 = timezone(timezone1, name="EET")
+timenow = datetime.now(timezone2).strftime('%H:%M')
 bot = telebot.TeleBot(TOKEN)
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -116,7 +117,7 @@ def message_reply(message: types.Message):
 
     elif message.text == "/test":
         test = datetime.now() + (timedelta(minutes=150))
-        bot.send_message(message.from_user.id, datetime.now(timezone2).strftime('%H:%M'))
+        bot.send_message(message.from_user.id, timenow)
 
     else:
         bot.send_message(message.from_user.id, "Данної команди не існує.")
@@ -183,8 +184,14 @@ def sending_g3():
 
     connect.commit()
 
+if timenow == "17:43":
+    try:
+        sending_g1()
+    except:
+        pass
+
 # Розсилка для 1 групи
-schedule.every().monday.at("17:38").do(sending_g1)
+schedule.every().monday.at("17:42").do(sending_g1)
 schedule.every().tuesday.at("06:30").do(sending_g1)
 schedule.every().tuesday.at("18:30").do(sending_g1)
 schedule.every().wednesday.at("14:30").do(sending_g1)
