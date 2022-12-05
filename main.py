@@ -1,12 +1,13 @@
 import logging
 import telebot
-from aiogram import executor, types
+from aiogram import Dispatcher, executor, types
 from db import Database
 from config import TOKEN
 
 logging.basicConfig(level=logging.INFO)
 
 bot = telebot.TeleBot(TOKEN)
+dp = Dispatcher(bot)
 db = Database('database.db')
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -24,4 +25,4 @@ async def start(message: types.Message):
 
 
 if __name__ == "__main__":
-    executor.start_polling(bot, skip_updates = True)
+    executor.start_polling(dp, skip_updates = True)
