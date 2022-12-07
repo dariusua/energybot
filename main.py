@@ -173,8 +173,8 @@ def send_g3():
     bot.send_message(880691612, f"ПОВІДОМЛЕННЯ ПРО РОЗСИЛКУ: \n\n{text}")
     connect.commit()
 
-time_for_sched = datetime.now() + timedelta(minutes=1)
-time_for_sched1 = time_for_sched.strftime('%H:%M')
+# time_for_sched = datetime.now() + timedelta(minutes=1)
+# time_for_sched1 = time_for_sched.strftime('%H:%M')
 
 #Розсилка для 1 групи
 schedule.every().monday.at("10:30").do(send_g1)
@@ -190,7 +190,7 @@ schedule.every().sunday.at("10:30").do(send_g1)
 #Розсилка для 2 групи
 schedule.every().monday.at("06:30").do(send_g2)
 schedule.every().monday.at("18:30").do(send_g2)
-schedule.every().tuesday.at("14:30").do(sen_g2)
+schedule.every().tuesday.at("14:30").do(send_g2)
 schedule.every().wednesday.at("10:30").do(send_g2)
 schedule.every().thursday.at("06:30").do(send_g2)
 schedule.every().thursday.at("18:30").do(send_g2)
