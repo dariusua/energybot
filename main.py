@@ -1,4 +1,4 @@
-# ENERGYLOEBOT version 0.8 by dariusua
+#  ENERGYLOEBOT version 0.8 by dariusua
 
 import sqlite3
 import time
