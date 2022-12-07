@@ -222,7 +222,7 @@ thread = Thread(target = threaded_function)
 thread.daemon = True
 thread.start()
 
-@dp.callback_query_handler(func=lambda call:True)
+@dp.callback_query_handler(lambda call:True)
 def callback_query(call):
     req = call.data.split('_')
     connect = sqlite3.connect('database.db')
