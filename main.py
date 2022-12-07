@@ -174,6 +174,7 @@ def send_g3():
     connect.commit()
 
 time_for_sched = datetime.now() + timedelta(minutes=1)
+time_for_sched1 = time_for_sched.strftime('%H:%M')
 
 # #Розсилка для 1 групи
 # schedule.every().monday.at("12:30").do(send_g1)
@@ -181,7 +182,7 @@ time_for_sched = datetime.now() + timedelta(minutes=1)
 # schedule.every().tuesday.at("20:30").do(send_g1)
 # schedule.every().wednesday.at("16:30").do(send_g1)
 # schedule.every().wednesday.at("16:30").do(send_g1)
-# schedule.every().thursday.at("12:30").do(send_g1)
+schedule.every().thursday.at(time_for_sched1).do(send_g1)
 # schedule.every().friday.at("08:30").do(send_g1)
 # schedule.every().friday.at("20:30").do(send_g1)
 # schedule.every().saturday.at("16:30").do(send_g1)
