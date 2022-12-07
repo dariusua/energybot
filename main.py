@@ -5,7 +5,7 @@ import time
 import schedule
 import logging
 from datetime import datetime, timedelta
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, executor
 from threading import Thread
 from telebot import types
 from config import TOKEN
@@ -289,4 +289,5 @@ def callback_query(call):
         bot.send_message(call.message.chat.id, f'✅ Ви успішно підключилися до сповіщень 3️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n\n Щоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
         bot.send_message(880691612, f"{loginchat} підключився(-лась) до 3 групи")
 
-dp_polling()
+if __name == "__main__":
+    executor.start_polling(dp, skip_updates = True)
