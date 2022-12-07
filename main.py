@@ -94,7 +94,7 @@ def message_reply(message: types.Message):
     elif message.text == "⚙ Налаштування":
         markup_settings = types.ReplyKeyboardMarkup(resize_keyboard=True)
         #    item1 = types.KeyboardButton("🌙 Включити нічні сповіщення")
-        #    item2 = types.KeyboardButton("Кнопка")
+        #    item2 = types.KeyboardButton("Включити сповіщення про можливі відключення")
         #    item3 = types.KeyboardButton("Кнопка")
         item4 = types.KeyboardButton("⬅ Назад")
         #    markup_settings.add(item1, item2, item3, item4)
@@ -176,40 +176,39 @@ def send_g3():
 time_for_sched = datetime.now() + timedelta(minutes=1)
 time_for_sched1 = time_for_sched.strftime('%H:%M')
 
-# #Розсилка для 1 групи
-# schedule.every().monday.at("12:30").do(send_g1)
-# schedule.every().tuesday.at("08:30").do(send_g1)
-# schedule.every().tuesday.at("20:30").do(send_g1)
-# schedule.every().wednesday.at("16:30").do(send_g1)
-# schedule.every().wednesday.at("16:30").do(send_g1)
-schedule.every().wednesday.at(time_for_sched1).do(send_g1)
-# schedule.every().friday.at("08:30").do(send_g1)
-# schedule.every().friday.at("20:30").do(send_g1)
-# schedule.every().saturday.at("16:30").do(send_g1)
-# schedule.every().sunday.at("12:30").do(send_g1)
-#
-# #Розсилка для 2 групи
-# schedule.every().monday.at("08:30").do(send_g2)
-# schedule.every().monday.at("20:30").do(send_g2)
-# schedule.every().tuesday.at("16:30").do(sen_g2)
-# schedule.every().wednesday.at("12:30").do(send_g2)
-# schedule.every().thursday.at("08:30").do(send_g2)
-# schedule.every().thursday.at("20:30").do(send_g2)
-# schedule.every().friday.at("16:30").do(send_g2)
-# schedule.every().saturday.at("12:30").do(send_g2)
-# schedule.every().sunday.at("08:30").do(send_g2)
-# schedule.every().sunday.at("20:30").do(send_g2)
-#
-# #Розсилка для 3 групи
-# schedule.every().monday.at("16:30").do(sending_g3)
-# schedule.every().tuesday.at("12:30").do(sending_g3)
-# schedule.every().wednesday.at("08:30").do(sending_g3)
-# schedule.every().wednesday.at("20:30").do(sending_g3)
-# schedule.every().thursday.at("16:30").do(sending_g3)
-# schedule.every().friday.at("12:30").do(sending_g3)
-# schedule.every().saturday.at("08:30").do(sending_g3)
-# schedule.every().saturday.at("20:30").do(sending_g3)
-# schedule.every().sunday.at("16:30").do(sending_g3)
+#Розсилка для 1 групи
+schedule.every().monday.at("10:30").do(send_g1)
+schedule.every().tuesday.at("06:30").do(send_g1)
+schedule.every().tuesday.at("18:30").do(send_g1)
+schedule.every().wednesday.at("14:30").do(send_g1)
+schedule.every().thursday.at("10:30").do(send_g1)
+schedule.every().friday.at("06:30").do(send_g1)
+schedule.every().friday.at("18:30").do(send_g1)
+schedule.every().saturday.at("14:30").do(send_g1)
+schedule.every().sunday.at("10:30").do(send_g1)
+
+#Розсилка для 2 групи
+schedule.every().monday.at("06:30").do(send_g2)
+schedule.every().monday.at("18:30").do(send_g2)
+schedule.every().tuesday.at("14:30").do(sen_g2)
+schedule.every().wednesday.at("10:30").do(send_g2)
+schedule.every().thursday.at("06:30").do(send_g2)
+schedule.every().thursday.at("18:30").do(send_g2)
+schedule.every().friday.at("14:30").do(send_g2)
+schedule.every().saturday.at("10:30").do(send_g2)
+schedule.every().sunday.at("06:30").do(send_g2)
+schedule.every().sunday.at("18:30").do(send_g2)
+
+#Розсилка для 3 групи
+schedule.every().monday.at("14:30").do(send_g3)
+schedule.every().tuesday.at("10:30").do(send_g3)
+schedule.every().wednesday.at("06:30").do(send_g3)
+schedule.every().wednesday.at("18:30").do(send_g3)
+schedule.every().thursday.at("14:30").do(send_g3)
+schedule.every().friday.at("10:30").do(send_g3)
+schedule.every().saturday.at("06:30").do(send_g3)
+schedule.every().saturday.at("18:30").do(send_g3)
+schedule.every().sunday.at("14:30").do(send_g3)
 
 #Робота розсилки(інший потік)
 def threaded_function():
