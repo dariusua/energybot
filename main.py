@@ -118,7 +118,7 @@ def send_g1():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
     results = cursor.execute("SELECT user_id FROM database WHERE group_number = ?", ("1")).fetchall()
-    howmuchtime1 = datetime.now() + timedelta(minutes=30)
+    howmuchtime1 = datetime.now() + timedelta(minutes=150)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     text = f"‼ За графіком 1️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
     for row in results:
@@ -138,7 +138,7 @@ def send_g2():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
     results = cursor.execute("SELECT user_id FROM database WHERE group_number = ?", ("2")).fetchall()
-    howmuchtime1 = datetime.now() + timedelta(minutes=30)
+    howmuchtime1 = datetime.now() + timedelta(minutes=150)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     text = f"‼ За графіком 2️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
     for row in results:
@@ -158,7 +158,7 @@ def send_g3():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
     results = cursor.execute("SELECT user_id FROM database WHERE group_number = ?", ("3")).fetchall()
-    howmuchtime1 = datetime.now() + timedelta(minutes=30)
+    howmuchtime1 = datetime.now() + timedelta(minutes=150)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     text = f"‼ За графіком 3️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
     for row in results:
@@ -182,7 +182,7 @@ time_for_sched1 = time_for_sched.strftime('%H:%M')
 # schedule.every().tuesday.at("20:30").do(send_g1)
 # schedule.every().wednesday.at("16:30").do(send_g1)
 # schedule.every().wednesday.at("16:30").do(send_g1)
-schedule.every().thursday.at(time_for_sched1).do(send_g1)
+schedule.every().wednesday.at(time_for_sched1).do(send_g1)
 # schedule.every().friday.at("08:30").do(send_g1)
 # schedule.every().friday.at("20:30").do(send_g1)
 # schedule.every().saturday.at("16:30").do(send_g1)
