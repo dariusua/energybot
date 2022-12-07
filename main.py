@@ -2,16 +2,16 @@
 
 import sqlite3
 import time
-import telebot
 import schedule
 import logging
 from datetime import datetime, timedelta
+from aiogram import Bot
 from threading import Thread
 from telebot import types
 from config import TOKEN
 
 logging.basicConfig(level=logging.INFO)
-bot = telebot.TeleBot(TOKEN)
+bot = Bot(TOKEN)
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True, )
 item1 = types.KeyboardButton("✅ Підключити сповіщення")
