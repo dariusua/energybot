@@ -2,17 +2,16 @@
 
 import sqlite3
 import time
+import telebot
 import schedule
 import logging
 from datetime import datetime, timedelta
-from aiogram import Bot, Dispatcher, executor
-from threading import Thread
 from telebot import types
+from threading import Thread
 from config import TOKEN
 
 logging.basicConfig(level=logging.INFO)
-bot = Bot(TOKEN)
-dp = Dispatcher(bot)
+bot = telebot.TeleBot(TOKEN)
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True, )
 item1 = types.KeyboardButton("✅ Підключити сповіщення")
@@ -22,7 +21,7 @@ item4 = types.KeyboardButton("⚙ Налаштування")
 markup.add(item1, item2).row(item3).add(item4)
 
 # Початок роботи, створення бази даних
-@dp.message_handler(commands=['start'])
+@bot.message_handler(commands=['start'])
 def start(message: types.Message):
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
@@ -40,7 +39,7 @@ def start(message: types.Message):
     bot.send_message(message.from_user.id, f'Привіт 👋 \n\n🤖 Цей бот створений задля сповіщення користувачів "Львівобленерго" про планові відключення у вашому населеному пункті. \n✏️ Бот буде відсилати повідомлення з попередженням за 30 хвилин до відключення світла. \n❗️ Бот не є офіційним! \n\n📋 Для підключення сповіщень, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
 
 # Функція розсилки через команду
-@dp.message_handler(commands=['send'])
+@bot.message_handler(commands=['send'])
 def send(message: types.Message):
     if message.from_user.id == 880691612:
         connect = sqlite3.connect('database.db')
@@ -62,7 +61,7 @@ def send(message: types.Message):
     connect.commit()
 
 # Робота кнопок
-@dp.message_handler(content_types='text')
+@bot.message_handler(content_types='text')
 def message_reply(message: types.Message):
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
@@ -226,7 +225,7 @@ thread = Thread(target = threaded_function)
 thread.daemon = True
 thread.start()
 
-@dp.callback_query_handler(lambda call:True)
+@bot.callback_query_handler(func=lambda call:True)
 def callback_query(call):
     req = call.data.split('_')
     connect = sqlite3.connect('database.db')
@@ -293,5 +292,4 @@ def callback_query(call):
         bot.send_message(call.message.chat.id, f'✅ Ви успішно підключилися до сповіщень 3️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n\n Щоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
         bot.send_message(880691612, f"{loginchat} підключився(-лась) до 3 групи")
 
-if __name__ == "__main__":
-    executor.start_polling(dp, skip_updates = True)
+bot.polling()
