@@ -7,6 +7,7 @@ import schedule
 import logging
 from datetime import datetime, timedelta
 from threading import Thread
+from telebot import types
 from config import TOKEN
 
 logging.basicConfig(level=logging.INFO)
