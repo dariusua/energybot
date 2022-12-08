@@ -13,7 +13,7 @@ from config import TOKEN
 logging.basicConfig(level=logging.INFO)
 bot = telebot.TeleBot(TOKEN)
 
-markup = types.ReplyKeyboardMarkup(resize_keyboard=True, )
+markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 item1 = types.KeyboardButton("✅ Підключити сповіщення")
 item2 = types.KeyboardButton("🔕 Відключити сповіщення")
 item3 = types.KeyboardButton("📖 Повний графік(фото)")
@@ -30,6 +30,7 @@ def start(message: types.Message):
         [group_number] INTEGER NOT NULL,
         active INTEGER DEFAULT(1)
     )""")
+    cursor.execute("ALTER TABLE database ADD COLUMN night INTEGER DEFAULT(1)")
     connect.commit()
     bot.send_message(message.from_user.id, f'{datetime.now().strftime("%X")}Привіт 👋 \n\n🤖 Цей бот створений задля сповіщення користувачів "Львівобленерго" про планові відключення у вашому населеному пункті. \n✏️ Бот буде відсилати повідомлення з попередженням за 30 хвилин до відключення світла. \n❗️ Бот не є офіційним! \n\n📋 Для підключення сповіщень, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
 
