@@ -88,7 +88,7 @@ def message_reply(message: types.Message):
 
 # Надсилання фото з графіком відключень
     elif message.text == "📖 Повний графік(фото)":
-        group_for_photo = cursor.execute("SELECT group_number FROM database WHERE user_id = ?", (message.from_user.id))
+        group_for_photo = cursor.execute("SELECT group_number FROM database WHERE user_id = ?", (message.from_user.id,))
         if group_for_photo == "1":
             photo = open('1group.png', 'rb')
             bot.send_photo(message.from_user.id, photo)
