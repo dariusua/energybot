@@ -88,8 +88,16 @@ def message_reply(message: types.Message):
 
 # Надсилання фото з графіком відключень
     elif message.text == "📖 Повний графік(фото)":
-        photo = open('image.png', 'rb')
-        bot.send_photo(message.from_user.id, photo)
+        group_for_photo = cursor.execute("SELECT group_number FROM database WHERE user_id = ?", (message.from_user.id))
+        if group_for_photo == "1":
+            photo = open('1group.png', 'rb')
+            bot.send_photo(message.from_user.id, photo)
+        if group_for_photo == "2":
+            photo = open('2group.png', 'rb')
+            bot.send_photo(message.from_user.id, photo)
+        if group_for_photo == "3":
+            photo = open('3group.png', 'rb')
+            bot.send_photo(message.from_user.id, photo)
 
 # Налаштування
     elif message.text == "⚙ Налаштування":
