@@ -30,7 +30,7 @@ def start(message: types.Message):
         [group_number] INTEGER NOT NULL,
         active INTEGER DEFAULT(1)
     )""")
-    cursor.execute("ALTER TABLE database DROP night")
+    cursor.execute("ALTER TABLE database ADD night INTEGER DEFAULT(0)")
     connect.commit()
     bot.send_message(message.from_user.id, f'Привіт 👋 \n\n🤖 Цей бот створений задля сповіщення користувачів "Львівобленерго" про планові відключення у вашому населеному пункті. \n✏️ Бот буде відсилати повідомлення з попередженням за 30 хвилин до відключення світла. \n❗️ Бот не є офіційним! \n\n📋 Для підключення сповіщень, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
 
@@ -88,16 +88,18 @@ def message_reply(message: types.Message):
 
 # Надсилання фото з графіком відключень
     elif message.text == "📖 Повний графік(фото)":
-        group_for_photo = cursor.execute("SELECT group_number FROM database WHERE user_id = ?", (message.from_user.id,))
-        if group_for_photo == "1":
+        cursor.execute("SELECT group_number FROM database WHERE user_id = ?", (message.from_user.id,))
+        data = cursor.fetchone()
+        if data == "1":
             photo = open('1group.png', 'rb')
             bot.send_photo(message.from_user.id, photo)
-        if group_for_photo == "2":
+        if data == "2":
             photo = open('2group.png', 'rb')
             bot.send_photo(message.from_user.id, photo)
-        if group_for_photo == "3":
+        if data == "3":
             photo = open('3group.png', 'rb')
             bot.send_photo(message.from_user.id, photo)
+        connect.commit()
 
 # Налаштування
     elif message.text == "⚙ Налаштування":
