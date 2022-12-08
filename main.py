@@ -30,6 +30,7 @@ def start(message: types.Message):
         [group_number] INTEGER NOT NULL,
         active INTEGER DEFAULT(1)
     )""")
+    cursor.execute()
     connect.commit()
     bot.send_message(message.from_user.id, f'Привіт 👋 \n\n🤖 Цей бот створений задля сповіщення користувачів "Львівобленерго" про планові відключення у вашому населеному пункті. \n✏️ Бот буде відсилати повідомлення з попередженням за 30 хвилин до відключення світла. \n❗️ Бот не є офіційним! \n\n📋 Для підключення сповіщень, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
 
@@ -240,7 +241,7 @@ def callback_query(call):
         data = cursor.fetchone()
         user_id = call.message.chat.id
         if data is None:
-            cursor.execute("INSERT INTO database VALUES(?, ?, ?);", (user_id, "1", "1",))
+            cursor.execute("INSERT INTO database VALUES(?, ?, ?);", (user_id, "1", "1", "0",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("1", user_id,))
         connect.commit()
@@ -260,7 +261,7 @@ def callback_query(call):
         data = cursor.fetchone()
         user_id = call.message.chat.id
         if data is None:
-            cursor.execute("INSERT INTO database VALUES(?, ?, ?);", (user_id, "2", "1",))
+            cursor.execute("INSERT INTO database VALUES(?, ?, ?);", (user_id, "2", "1", "0",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("2", user_id,))
         connect.commit()
@@ -280,7 +281,7 @@ def callback_query(call):
         data = cursor.fetchone()
         user_id = call.message.chat.id
         if data is None:
-            cursor.execute("INSERT INTO database VALUES(?, ?, ?);", (user_id, "3", "1",))
+            cursor.execute("INSERT INTO database VALUES(?, ?, ?);", (user_id, "3", "1", "0",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("3", user_id,))
         connect.commit()
