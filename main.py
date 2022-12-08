@@ -95,7 +95,7 @@ def message_reply(message: types.Message):
         elif data == "2":
             photo = open('2group.png', 'rb')
             bot.send_photo(message.from_user.id, photo)
-        elif data == "3":
+        elif data == 3:
             photo = open('3group.png', 'rb')
             bot.send_photo(message.from_user.id, photo)
         connect.commit()
