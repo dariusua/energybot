@@ -104,6 +104,8 @@ def message_reply(message: types.Message):
         elif data_photo[0] == 3:
             photo = open('3group.png', 'rb')
             bot.send_photo(message.from_user.id, photo)
+        elif data_photo[0] is None:
+            bot.send_message(message.from_user.id, "Помилка! Попробуйте підключитись до вашої групи.")
         connect.commit()
 
 # Налаштування
