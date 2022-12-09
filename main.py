@@ -33,6 +33,7 @@ def start(message: types.Message):
     connect.commit()
     bot.send_message(message.from_user.id, f'Привіт 👋 \n\n🤖 Цей бот створений задля сповіщення користувачів "Львівобленерго" про планові відключення у вашому населеному пункті. \n✏️ Бот буде відсилати повідомлення з попередженням за 30 хвилин до відключення світла. \n❗️ Бот не є офіційним! \n\n📋 Для підключення сповіщень, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
 
+
 # Функція розсилки через команду
 @bot.message_handler(commands=['send'])
 def send(message: types.Message):
@@ -51,6 +52,17 @@ def send(message: types.Message):
             except:
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
         bot.send_message(880691612, f"ПОВІДОМЛЕННЯ ПРО РОЗСИЛКУ: \n\n{text}")
+    else:
+        bot.send_message(message.from_user.id, "Для виконання цієї команди Ви повинні бути адміном.")
+    connect.commit()
+
+@bot.message_handler(commands=['test'])
+def send(message: types.Message):
+    if message.from_user.id == 880691612:
+        connect = sqlite3.connect('database.db')
+        cursor = connect.cursor()
+        data = cursor.execute("SELECT user_id FROM database WHERE group_number = '3' AND night = '0'").fetchone()
+        bot.send_message(880691612, data[0])
     else:
         bot.send_message(message.from_user.id, "Для виконання цієї команди Ви повинні бути адміном.")
     connect.commit()
@@ -88,27 +100,25 @@ def message_reply(message: types.Message):
 # Надсилання фото з графіком відключень
     elif message.text == "📖 Повний графік(фото)":
         data = cursor.execute("SELECT group_number FROM database WHERE user_id = ?", (message.from_user.id,)).fetchone()
-        if data == "1":
+        if data[0] == 1:
             photo = open('1group.png', 'rb')
             bot.send_photo(message.from_user.id, photo)
-        elif data == "2":
+        elif data[0] == 2:
             photo = open('2group.png', 'rb')
             bot.send_photo(message.from_user.id, photo)
-        elif data == 3:
+        elif data[0] == 3:
             photo = open('3group.png', 'rb')
             bot.send_photo(message.from_user.id, photo)
         connect.commit()
 
 # Налаштування
     elif message.text == "⚙ Налаштування":
-        markup_settings = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        #    item1 = types.KeyboardButton("🌙 Включити нічні сповіщення")
-        #    item2 = types.KeyboardButton("Включити сповіщення про можливі відключення")
-        #    item3 = types.KeyboardButton("Кнопка")
-        item4 = types.KeyboardButton("⬅ Назад")
-        #    markup_settings.add(item1, item2, item3, item4)
-        markup_settings.add(item4)
-        bot.send_message(message.from_user.id, "Нажаль, ця команда тимчасово недоступна.", reply_markup=markup_settings)
+        markup_settings = types.InlineKeyboardMarkup(row_width = 1)
+        item1 = types.InlineKeyboardButton("🌙 Нічні сповіщення", callback_data="check_night_notice")
+        item2 = types.InlineKeyboardButton("🌙 Змінити час надсилання сповіщення", callback_data="change_time_for_notice")
+        item3 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
+        markup_settings.add(item1, item2, item3)
+        bot.send_message(message.from_user.id, "⚙ НАЛАШТУВАННЯ: \n\n• Нічні сповіщення - сповіщення про відключення світла в період з 00:00 до 08:00 \n• Змінити час надсилання сповіщення - по стандарту, ця настройка дорівнює 30 хвилинам. Та ви можете обрати під свій смак, щоб сповіщення надсилались за: 10, 30 чи 60 хвилин.", reply_markup=markup_settings)
 
     elif message.text == "⬅ Назад":
         bot.send_message(message.from_user.id, "МЕНЮ:", reply_markup=markup)
@@ -182,8 +192,8 @@ def send_g3():
     bot.send_message(880691612, f"ПОВІДОМЛЕННЯ ПРО РОЗСИЛКУ: \n\n{text}")
     connect.commit()
 
-# time_for_sched = datetime.now() + timedelta(minutes=1)
-# time_for_sched1 = time_for_sched.strftime('%H:%M')
+time_for_sche = datetime.now() + timedelta(minutes=1)
+time_for_sched = time_for_sche.strftime('%H:%M')
 
 #Розсилка для 1 групи
 schedule.every().monday.at("10:30").do(send_g1)
@@ -249,7 +259,7 @@ def callback_query(call):
         data = cursor.fetchone()
         user_id = call.message.chat.id
         if data is None:
-            cursor.execute("INSERT INTO database VALUES(?, ?, ?);", (user_id, "1", "1", "0",))
+            cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?);", (user_id, "1", "1", "0",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("1", user_id,))
         connect.commit()
@@ -269,7 +279,7 @@ def callback_query(call):
         data = cursor.fetchone()
         user_id = call.message.chat.id
         if data is None:
-            cursor.execute("INSERT INTO database VALUES(?, ?, ?);", (user_id, "2", "1", "0",))
+            cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?);", (user_id, "2", "1", "0",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("2", user_id,))
         connect.commit()
@@ -289,11 +299,38 @@ def callback_query(call):
         data = cursor.fetchone()
         user_id = call.message.chat.id
         if data is None:
-            cursor.execute("INSERT INTO database VALUES(?, ?, ?);", (user_id, "3", "1", "0",))
+            cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?);", (user_id, "3", "1", "0",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("3", user_id,))
         connect.commit()
         bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 3️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n\n Щоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
         bot.send_message(880691612, f"{loginchat} підключився(-лась) до 3 групи")
+
+# Call_data налаштувань
+    if req[0] == "check_night_notice":
+        #if call.message.chat.username is None:
+        #    if call.message.chat.last_name is None:
+        #        loginchat = f"{call.message.chat.first_name}"
+        #    else:
+        #        loginchat = f"{call.message.chat.first_name} {call.message.chat.last_name}"
+        #else:
+        #    loginchat = f"@{call.message.chat.username}"
+
+        check_data_night = cursor.execute(f"SELECT night FROM database WHERE user_id = {person_id}").fetchone()
+        if check_data_night[0] == "0":
+            markup_check_night = types.InlineKeyboardMarkup(row_width=1)
+            item1 = types.InlineKeyboardButton("🌙 Включити нічні сповіщення", callback_data="night_notice")
+            item3 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
+            markup_сheck_night.add(item1, item2, item3)
+            bot.edit_message_text("text", reply_markup=markup_check_night, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        elif check_data_night[0] == "1":
+            markup_check_night = types.InlineKeyboardMarkup(row_width=1)
+            item1 = types.InlineKeyboardButton("🌙 Виключити нічні сповіщення", callback_data="night_notice")
+            item3 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
+            markup_сheck_night.add(item1, item2, item3)
+            bot.edit_message_text(f'text 2', reply_markup=markup_check_night, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        connect.commit()
+        #cursor.execute("UPDATE database SET night = ")
+        #pass
 
 bot.polling()
