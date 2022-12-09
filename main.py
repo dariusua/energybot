@@ -56,17 +56,6 @@ def send(message: types.Message):
         bot.send_message(message.from_user.id, "Для виконання цієї команди Ви повинні бути адміном.")
     connect.commit()
 
-@bot.message_handler(commands=['test'])
-def send(message: types.Message):
-    if message.from_user.id == 880691612:
-        connect = sqlite3.connect('database.db')
-        cursor = connect.cursor()
-        data = cursor.execute("SELECT user_id FROM database WHERE group_number = '3' AND night = '0'").fetchone()
-        bot.send_message(880691612, data[0])
-    else:
-        bot.send_message(message.from_user.id, "Для виконання цієї команди Ви повинні бути адміном.")
-    connect.commit()
-
 # Робота кнопок
 @bot.message_handler(content_types='text')
 def message_reply(message: types.Message):
@@ -99,14 +88,14 @@ def message_reply(message: types.Message):
 
 # Надсилання фото з графіком відключень
     elif message.text == "📖 Повний графік(фото)":
-        data = cursor.execute("SELECT group_number FROM database WHERE user_id = ?", (message.from_user.id,)).fetchone()
-        if data[0] == 1:
+        data_photo = cursor.execute("SELECT group_number FROM database WHERE user_id = ?", (message.from_user.id,)).fetchone()
+        if data_photo[0] == 1:
             photo = open('1group.png', 'rb')
             bot.send_photo(message.from_user.id, photo)
-        elif data[0] == 2:
+        elif data_photo[0] == 2:
             photo = open('2group.png', 'rb')
             bot.send_photo(message.from_user.id, photo)
-        elif data[0] == 3:
+        elif data_photo[0] == 3:
             photo = open('3group.png', 'rb')
             bot.send_photo(message.from_user.id, photo)
         connect.commit()
@@ -255,8 +244,8 @@ def callback_inline(call):
         else:
             loginchat = f"@{call.message.chat.username}"
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
-        data = cursor.fetchone()
-        if data is None:
+        data_call_group = cursor.fetchone()
+        if data_call_group is None:
             cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?);", (person_id, "1", "1", "0",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("1", person_id,))
@@ -274,8 +263,8 @@ def callback_inline(call):
         else:
             loginchat = f"@{call.message.chat.username}"
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
-        data = cursor.fetchone()
-        if data is None:
+        data_call_group = cursor.fetchone()
+        if data_call_group is None:
             cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?);", (person_id, "2", "1", "0",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("2", person_id,))
@@ -293,8 +282,8 @@ def callback_inline(call):
         else:
             loginchat = f"@{call.message.chat.username}"
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
-        data = cursor.fetchone()
-        if data is None:
+        data_call_group = cursor.fetchone()
+        if data_call_group is None:
             cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?);", (person_id, "3", "1", "0",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("3", person_id,))
@@ -313,15 +302,15 @@ def callback_inline(call):
         #    loginchat = f"@{call.message.chat.username}"
 
         cursor.execute(f"SELECT night FROM database WHERE user_id = {person_id}")
-        data = cursor.fetchone()
+        data_check_night = cursor.fetchone()
         bot.send_message(880691612, "text")
-        if data[0] == 0:
+        if data_check_night[0] == 0:
             markup_check_night = types.InlineKeyboardMarkup(row_width=1)
             item1 = types.InlineKeyboardButton("🌙 Включити нічні сповіщення", callback_data="night_notice")
             item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
             markup_check_night.add(item1, item2)
             bot.edit_message_text("text", reply_markup=markup_check_night, chat_id=call.message.chat.id, message_id=call.message.message_id)
-        elif data[0] == 1:
+        elif data_check_night[0] == 1:
             markup_check_night = types.InlineKeyboardMarkup(row_width=1)
             item1 = types.InlineKeyboardButton("🌙 Виключити нічні сповіщення", callback_data="night_notice")
             item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
