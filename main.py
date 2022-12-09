@@ -329,5 +329,6 @@ def callback_inline(call):
         bot.edit_message_text("❌ Ви відключили нічні сповіщення. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
 
     elif call.data == 'back':
-        bot.edit_message_text("МЕНЮ:", reply_markup=markup, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
+        bot.send_message(person_id, "МЕНЮ:", reply_markup=markup)
 bot.polling()
