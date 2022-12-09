@@ -184,8 +184,31 @@ def send_g3():
     bot.send_message(880691612, f"ПОВІДОМЛЕННЯ ПРО РОЗСИЛКУ: \n\n{text}")
     connect.commit()
 
+#Функція розсилки нічних сповіщень для 1 групи
+def send_night_g1():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = ? AND night = ?", ("3", "1")).fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=150)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ За графіком 3️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], {text})
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    bot.send_message(880691612, f"ПОВІДОМЛЕННЯ ПРО РОЗСИЛКУ: \n\n{text}")
+    connect.commit()
+
+
 time_for_sche = datetime.now() + timedelta(minutes=1)
 time_for_sched = time_for_sche.strftime('%H:%M')
+
+schedule.every().friday.at("21:40").do(send_night_g1)
 
 #Розсилка для 1 групи
 schedule.every().monday.at("10:30").do(send_g1)
@@ -296,14 +319,6 @@ def callback_inline(call):
 
 # Call_data налаштувань
     elif call.data == 'check_night_notice':
-        #if call.message.chat.username is None:
-        #    if call.message.chat.last_name is None:
-        #        loginchat = f"{call.message.chat.first_name}"
-        #    else:
-        #        loginchat = f"{call.message.chat.first_name} {call.message.chat.last_name}"
-        #else:
-        #    loginchat = f"@{call.message.chat.username}"
-
         cursor.execute(f"SELECT night FROM database WHERE user_id = {person_id}")
         data_check_night = cursor.fetchone()
         if data_check_night[0] == 0:
