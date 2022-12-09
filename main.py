@@ -239,15 +239,15 @@ thread = Thread(target = threaded_function)
 thread.daemon = True
 thread.start()
 
-@bot.callback_query_handler(func=lambda call:True)
-def check_callback_data(callback):
+@bot.callback_query_handler(func=lambda call: True)
+def callback_inline(call):
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
     person_id = call.message.chat.id
 
 # Підключення до 1 групи
-    if callback == 'group1':
-        if call.message.chat.username is None:
+    if call.data == 'group1':
+        if callback.message.chat.username is None:
             if call.message.chat.last_name is None:
                 loginchat = f"{call.message.chat.first_name}"
             else:
