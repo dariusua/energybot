@@ -320,14 +320,14 @@ def callback_query(call):
         if check_data_night[0] == "0":
             markup_check_night = types.InlineKeyboardMarkup(row_width=1)
             item1 = types.InlineKeyboardButton("🌙 Включити нічні сповіщення", callback_data="night_notice")
-            item3 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
-            markup_сheck_night.add(item1, item2, item3)
+            item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
+            markup_сheck_night.add(item1, item2)
             bot.edit_message_text("text", reply_markup=markup_check_night, chat_id=call.message.chat.id, message_id=call.message.message_id)
         elif check_data_night[0] == "1":
             markup_check_night = types.InlineKeyboardMarkup(row_width=1)
             item1 = types.InlineKeyboardButton("🌙 Виключити нічні сповіщення", callback_data="night_notice")
-            item3 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
-            markup_сheck_night.add(item1, item2, item3)
+            item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
+            markup_сheck_night.add(item1, item2)
             bot.edit_message_text(f'text 2', reply_markup=markup_check_night, chat_id=call.message.chat.id, message_id=call.message.message_id)
         connect.commit()
         #cursor.execute("UPDATE database SET night = ")
