@@ -323,10 +323,12 @@ def callback_inline(call):
     elif call.data == 'night_notice_on':
         cursor.execute(f"UPDATE database SET night = 1 WHERE user_id = {person_id}")
         bot.edit_message_text("✅ Ви успішно включили нічні сповіщення. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        connect.commit()
 
     elif call.data == 'night_notice_off':
         cursor.execute(f"UPDATE database SET night = 0 WHERE user_id = {person_id}")
         bot.edit_message_text("❌ Ви відключили нічні сповіщення. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        connect.commit()
 
     elif call.data == 'back':
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
