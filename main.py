@@ -315,7 +315,7 @@ def callback_inline(call):
         cursor.execute(f"SELECT night FROM database WHERE user_id = {person_id}")
         data = cursor.fetchone()
         bot.send_message(880691612, "text")
-        if data[0] == "0":
+        if data[0] == 0:
             markup_check_night = types.InlineKeyboardMarkup(row_width=1)
             item1 = types.InlineKeyboardButton("🌙 Включити нічні сповіщення", callback_data="night_notice")
             item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
