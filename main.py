@@ -114,9 +114,9 @@ def message_reply(message: types.Message):
 # Налаштування
     elif message.text == "⚙ Налаштування":
         markup_settings = types.InlineKeyboardMarkup(row_width = 1)
-        item1 = types.InlineKeyboardButton("🌙 Нічні сповіщення", callback_data="check_night_notice")
-        item2 = types.InlineKeyboardButton("🌙 Змінити час надсилання сповіщення", callback_data="change_time_for_notice")
-        item3 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
+        item1 = types.InlineKeyboardButton("🌙 Нічні сповіщення", callback_data='check_night_notice')
+        item2 = types.InlineKeyboardButton("🌙 Змінити час надсилання сповіщення", callback_data='change_time_for_notice')
+        item3 = types.InlineKeyboardButton("⬅ Назад", callback_data='back')
         markup_settings.add(item1, item2, item3)
         bot.send_message(message.from_user.id, "⚙ НАЛАШТУВАННЯ: \n\n• Нічні сповіщення - сповіщення про відключення світла в період з 00:00 до 08:00 \n• Змінити час надсилання сповіщення - по стандарту, ця настройка дорівнює 30 хвилинам. Та ви можете обрати під свій смак, щоб сповіщення надсилались за: 10, 30 чи 60 хвилин.", reply_markup=markup_settings)
 
@@ -307,7 +307,7 @@ def callback_query(call):
         bot.send_message(880691612, f"{loginchat} підключився(-лась) до 3 групи")
 
 # Call_data налаштувань
-    if req[0] == "check_night_notice":
+    if req[0] == 'check_night_notice':
         #if call.message.chat.username is None:
         #    if call.message.chat.last_name is None:
         #        loginchat = f"{call.message.chat.first_name}"
