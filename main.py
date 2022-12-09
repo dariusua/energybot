@@ -114,9 +114,9 @@ def message_reply(message: types.Message):
 # Налаштування
     elif message.text == "⚙ Налаштування":
         markup_settings = types.InlineKeyboardMarkup(row_width = 1)
-        item1 = types.InlineKeyboardButton("🌙 Нічні сповіщення", callback_data='check_night_notice')
-        item2 = types.InlineKeyboardButton("🌙 Змінити час надсилання сповіщення", callback_data='change_time_for_notice')
-        item3 = types.InlineKeyboardButton("⬅ Назад", callback_data='back')
+        item1 = types.InlineKeyboardButton(text="🌙 Нічні сповіщення", callback_data='check_night_notice')
+        item2 = types.InlineKeyboardButton(text="🌙 Змінити час надсилання сповіщення", callback_data='change_time_for_notice')
+        item3 = types.InlineKeyboardButton(text="⬅ Назад", callback_data='back')
         markup_settings.add(item1, item2, item3)
         bot.send_message(message.from_user.id, "⚙ НАЛАШТУВАННЯ: \n\n• Нічні сповіщення - сповіщення про відключення світла в період з 00:00 до 08:00 \n• Змінити час надсилання сповіщення - по стандарту, ця настройка дорівнює 30 хвилинам. Та ви можете обрати під свій смак, щоб сповіщення надсилались за: 10, 30 чи 60 хвилин.", reply_markup=markup_settings)
 
@@ -316,14 +316,15 @@ def callback_query(call):
         #else:
         #    loginchat = f"@{call.message.chat.username}"
 
-        check_data_night = cursor.execute(f"SELECT night FROM database WHERE user_id = {person_id}").fetchone()
-        if check_data_night[0] == "0":
+        cursor.execute(f"SELECT night FROM database WHERE user_id = {person_id}")
+        data = cursor.fetchone()
+        if data[0] == "0":
             markup_check_night = types.InlineKeyboardMarkup(row_width=1)
             item1 = types.InlineKeyboardButton("🌙 Включити нічні сповіщення", callback_data="night_notice")
             item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
             markup_сheck_night.add(item1, item2)
             bot.edit_message_text("text", reply_markup=markup_check_night, chat_id=call.message.chat.id, message_id=call.message.message_id)
-        elif check_data_night[0] == "1":
+        elif data[0] == "1":
             markup_check_night = types.InlineKeyboardMarkup(row_width=1)
             item1 = types.InlineKeyboardButton("🌙 Виключити нічні сповіщення", callback_data="night_notice")
             item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
