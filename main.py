@@ -307,13 +307,13 @@ def callback_inline(call):
         if data_check_night[0] == 0:
             markup_check_night = types.InlineKeyboardMarkup(row_width=1)
             item1 = types.InlineKeyboardButton("🌙 Включити нічні сповіщення", callback_data="night_notice_on")
-            item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_options")
+            item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
             markup_check_night.add(item1, item2)
             bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\n• При включенні цієї функції, бот буде надсилати сповіщення в нічний період(з 00:00 до 08:00). \n❌ На даний момент сповіщення відключені, для включення натисніть на кнопку нижче:", reply_markup=markup_check_night, chat_id=call.message.chat.id, message_id=call.message.message_id)
         elif data_check_night[0] == 1:
             markup_check_night = types.InlineKeyboardMarkup(row_width=1)
             item1 = types.InlineKeyboardButton("🌙 Виключити нічні сповіщення", callback_data="night_notice_off")
-            item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_options")
+            item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
             markup_check_night.add(item1, item2)
             bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\n✅ На даний момент сповіщення в нічний період(з 00:00 до 08:00) підключені. \nДля відключення натисніть на кнопку нижче:", reply_markup=markup_check_night, chat_id=call.message.chat.id, message_id=call.message.message_id)
         connect.commit()
@@ -321,6 +321,11 @@ def callback_inline(call):
     elif call.data == 'night_notice_on':
         cursor.execute(f"UPDATE database SET night = 1 WHERE user_id = {person_id}")
         bot.edit_message_text("✅ Ви успішно включили нічні сповіщення. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
-        #pass
 
+    elif call.data == 'night_notice_off':
+        cursor.execute(f"UPDATE database SET night = 0 WHERE user_id = {person_id}")
+        bot.edit_message_text("❌ Ви відключили нічні сповіщення. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+
+    elif call.data == 'back':
+        bot.send_message("МЕНЮ:", reply_markup=markup, chat_id=call.message.chat.id, message_id=call.message.message.id)
 bot.polling()
