@@ -287,7 +287,7 @@ def callback_query(call):
         bot.send_message(880691612, f"{loginchat} підключився(-лась) до 2 групи")
 
 # Підключення до 3 групи
-    if req[0] == 'group3':
+    elif req[0] == 'group3':
         if call.message.chat.username is None:
             if call.message.chat.last_name is None:
                 loginchat = f"{call.message.chat.first_name}"
@@ -307,7 +307,7 @@ def callback_query(call):
         bot.send_message(880691612, f"{loginchat} підключився(-лась) до 3 групи")
 
 # Call_data налаштувань
-    if req[0] == 'check_night_notice':
+    elif req[0] == 'check_night_notice':
         #if call.message.chat.username is None:
         #    if call.message.chat.last_name is None:
         #        loginchat = f"{call.message.chat.first_name}"
