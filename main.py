@@ -1,4 +1,4 @@
-#  ENERGYLOEBOT version 0.8 by dariusua
+#  ENERGYLOEBOT version 0.9 by dariusua
 
 import sqlite3
 import time
@@ -124,7 +124,7 @@ def message_reply(message: types.Message):
     else:
         bot.send_message(message.from_user.id, "Цієї команди не існує.")
 
-#Функція розсилки для 1 групи
+# Функція розсилки для 1 групи
 def send_g1():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
@@ -144,7 +144,7 @@ def send_g1():
     bot.send_message(880691612, f"ПОВІДОМЛЕННЯ ПРО РОЗСИЛКУ: \n\n{text}")
     connect.commit()
 
-#Функція розсилки для 2 групи
+# Функція розсилки для 2 групи
 def send_g2():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
@@ -164,7 +164,7 @@ def send_g2():
     bot.send_message(880691612, f"ПОВІДОМЛЕННЯ ПРО РОЗСИЛКУ: \n\n{text}")
     connect.commit()
 
-#Функція розсилки для 3 групи
+# Функція розсилки для 3 групи
 def send_g3():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
@@ -184,11 +184,49 @@ def send_g3():
     bot.send_message(880691612, f"ПОВІДОМЛЕННЯ ПРО РОЗСИЛКУ: \n\n{text}")
     connect.commit()
 
-#Функція розсилки нічних сповіщень для 1 групи
+# Функція розсилки нічних сповіщень для 1 групи
 def send_night_g1():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
-    results = cursor.execute("SELECT user_id FROM database WHERE group_number = ? AND night = ?", ("3", "1")).fetchall()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '1' AND night = '1'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=150)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ За графіком 1️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], {text})
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+# Функція розсилки нічних сповіщень для 2 групи
+def send_night_g2():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' AND night = '1'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=150)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ За графіком 2️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], {text})
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+# Функція розсилки нічних сповііщень для 3 групи
+def send_night_g3():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '3' AND night = '1'").fetchall()
     howmuchtime1 = datetime.now() + timedelta(minutes=150)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     text = f"‼ За графіком 3️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
@@ -201,47 +239,57 @@ def send_night_g1():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
-    bot.send_message(880691612, f"ПОВІДОМЛЕННЯ ПРО РОЗСИЛКУ: \n\n{text}")
     connect.commit()
 
 
 time_for_sche = datetime.now() + timedelta(minutes=1)
 time_for_sched = time_for_sche.strftime('%H:%M')
 
-schedule.every().friday.at("21:40").do(send_night_g1)
-
 #Розсилка для 1 групи
+schedule.every().sunday.at("22:30").do(send_night_g1)
 schedule.every().monday.at("10:30").do(send_g1)
 schedule.every().tuesday.at("06:30").do(send_g1)
 schedule.every().tuesday.at("18:30").do(send_g1)
+schedule.every().wednesday.at("02:30").do(send_night_g1)
 schedule.every().wednesday.at("14:30").do(send_g1)
+schedule.every().wednesday.at("22:30").do(send_night_g1)
 schedule.every().thursday.at("10:30").do(send_g1)
 schedule.every().friday.at("06:30").do(send_g1)
 schedule.every().friday.at("18:30").do(send_g1)
+schedule.every().saturday.at("02:30").do(send_night_g1)
 schedule.every().saturday.at("14:30").do(send_g1)
 schedule.every().sunday.at("10:30").do(send_g1)
 
 #Розсилка для 2 групи
 schedule.every().monday.at("06:30").do(send_g2)
 schedule.every().monday.at("18:30").do(send_g2)
+schedule.every().tuesday.at("02:30").do(send_night_g2)
 schedule.every().tuesday.at("14:30").do(send_g2)
+schedule.every().tuesday.at("22:30").do(send_night_g2)
 schedule.every().wednesday.at("10:30").do(send_g2)
 schedule.every().thursday.at("06:30").do(send_g2)
 schedule.every().thursday.at("18:30").do(send_g2)
+schedule.every().friday.at("02:30").do(send_night_g2)
 schedule.every().friday.at("14:30").do(send_g2)
+schedule.every().friday.at("22:30").do(send_night_g2)
 schedule.every().saturday.at("10:30").do(send_g2)
 schedule.every().sunday.at("06:30").do(send_g2)
 schedule.every().sunday.at("18:30").do(send_g2)
 
 #Розсилка для 3 групи
+schedule.every().monday.at("02:30").do(send_night_g3)
 schedule.every().monday.at("14:30").do(send_g3)
+schedule.every().monday.at("22:30").do(send_night_g3)
 schedule.every().tuesday.at("10:30").do(send_g3)
 schedule.every().wednesday.at("06:30").do(send_g3)
 schedule.every().wednesday.at("18:30").do(send_g3)
+schedule.every().thursday.at("02:30").do(send_night_g3)
 schedule.every().thursday.at("14:30").do(send_g3)
+schedule.every().thursday.at("22:30").do(send_night_g3)
 schedule.every().friday.at("10:30").do(send_g3)
 schedule.every().saturday.at("06:30").do(send_g3)
 schedule.every().saturday.at("18:30").do(send_g3)
+schedule.every().sunday.at("02:30").do(send_night_g3)
 schedule.every().sunday.at("14:30").do(send_g3)
 
 #Робота розсилки(інший потік)
