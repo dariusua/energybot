@@ -247,7 +247,7 @@ def callback_inline(call):
 
 # Підключення до 1 групи
     if call.data == 'group1':
-        if callback.message.chat.username is None:
+        if call.message.chat.username is None:
             if call.message.chat.last_name is None:
                 loginchat = f"{call.message.chat.first_name}"
             else:
@@ -256,11 +256,10 @@ def callback_inline(call):
             loginchat = f"@{call.message.chat.username}"
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
         data = cursor.fetchone()
-        user_id = call.message.chat.id
         if data is None:
-            cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?);", (user_id, "1", "1", "0",))
+            cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?);", (person_id, "1", "1", "0",))
         else:
-            cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("1", user_id,))
+            cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("1", person_id,))
         connect.commit()
         bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 1️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n\n Щоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
         bot.send_message(880691612, f"{loginchat} підключився(-лась) до 1 групи")
