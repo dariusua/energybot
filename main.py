@@ -305,17 +305,20 @@ def callback_inline(call):
         data_check_night = cursor.fetchone()
         if data_check_night[0] == 0:
             markup_check_night = types.InlineKeyboardMarkup(row_width=1)
-            item1 = types.InlineKeyboardButton("🌙 Включити нічні сповіщення", callback_data="night_notice")
-            item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
+            item1 = types.InlineKeyboardButton("🌙 Включити нічні сповіщення", callback_data="night_notice_on")
+            item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_options")
             markup_check_night.add(item1, item2)
-            bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\nПри включенні данної функції, бот буде надсилати сповіщення в нічний період(з 00:00 до 08:00).", reply_markup=markup_check_night, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\n• При включенні цієї функції, бот буде надсилати сповіщення в нічний період(з 00:00 до 08:00). \nНа даний момент сповіщення відключені ❌, для включення натисніть на кнопку нижче:", reply_markup=markup_check_night, chat_id=call.message.chat.id, message_id=call.message.message_id)
         elif data_check_night[0] == 1:
             markup_check_night = types.InlineKeyboardMarkup(row_width=1)
-            item1 = types.InlineKeyboardButton("🌙 Виключити нічні сповіщення", callback_data="night_notice")
-            item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
-            markup_сheck_night.add(item1, item2)
-            bot.edit_message_text(f'text 2', reply_markup=markup_check_night, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            item1 = types.InlineKeyboardButton("🌙 Виключити нічні сповіщення", callback_data="night_notice_off")
+            item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_options")
+            markup_check_night.add(item1, item2)
+            bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\nНа даний момент сповіщення в нічний період(з 00:00 до 08:00) підключені. ✅\nДля відключення натисніть на кнопку нижче:", reply_markup=markup_check_night, chat_id=call.message.chat.id, message_id=call.message.message_id)
         connect.commit()
+
+    elif call.data == 'night_notice_on':
+        pass
         #cursor.execute("UPDATE database SET night = ")
         #pass
 
