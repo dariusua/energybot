@@ -22,9 +22,9 @@ markup.add(item1, item2).row(item3).add(item4)
 
 markup_settings = types.InlineKeyboardMarkup(row_width = 1)
 item1 = types.InlineKeyboardButton(text="🌙 Нічні сповіщення", callback_data='check_night_notice')
-item2 = types.InlineKeyboardButton(text="🌙 Змінити час надсилання сповіщення", callback_data='change_time_for_notice')
+#item2 = types.InlineKeyboardButton(text="🌙 Змінити час надсилання сповіщення", callback_data='change_time_for_notice')
 item3 = types.InlineKeyboardButton(text="⬅ Назад", callback_data='back')
-markup_settings.add(item1, item2, item3)
+markup_settings.add(item1, item3) # item3)
 
 # Початок роботи, створення бази даних
 @bot.message_handler(commands=['start'])
@@ -329,5 +329,5 @@ def callback_inline(call):
         bot.edit_message_text("❌ Ви відключили нічні сповіщення. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
 
     elif call.data == 'back':
-        bot.send_message("МЕНЮ:", reply_markup=markup, chat_id=call.message.chat.id, message_id=call.message.message.id)
+        bot.send_message("МЕНЮ:", reply_markup=markup, chat_id=call.message.chat.id, message_id=call.message.message_id)
 bot.polling()
