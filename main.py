@@ -322,12 +322,12 @@ def callback_inline(call):
 
     elif call.data == 'night_notice_on':
         cursor.execute(f"UPDATE database SET night = 1 WHERE user_id = {person_id}")
-        bot.edit_message_text("✅ Ви успішно включили нічні сповіщення. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        bot.edit_message_text("✅ Ви успішно включили нічні сповіщення. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat_id, message_id=call.message.message_id)
 
     elif call.data == 'night_notice_off':
         cursor.execute(f"UPDATE database SET night = 0 WHERE user_id = {person_id}")
-        bot.edit_message_text("❌ Ви відключили нічні сповіщення. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        bot.edit_message_text("❌ Ви відключили нічні сповіщення. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat_id, message_id=call.message.message_id)
 
     elif call.data == 'back':
-        bot.send_message("МЕНЮ:", reply_markup=markup, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        bot.send_message("МЕНЮ:", reply_markup=markup, chat_id=call.message.chat_id, message_id=call.message.message_id)
 bot.polling()
