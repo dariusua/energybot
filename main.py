@@ -5,7 +5,7 @@ import time
 import telebot
 import schedule
 import logging
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
 from telebot import types
 from threading import Thread
 from config import TOKEN
