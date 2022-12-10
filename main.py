@@ -22,8 +22,8 @@ markup.add(item1, item2).row(item3).add(item4)
 
 markup_settings = types.InlineKeyboardMarkup(row_width = 1)
 item1 = types.InlineKeyboardButton(text="🌙 Нічні сповіщення", callback_data='check_night_notice')
-item2 = types.InlineKeyboardButton(text="🕐 Змінити час до надсилання сповіщення", callback_data='change_time_for_notice')
-markup_settings.add(item1, item2)
+#item2 = types.InlineKeyboardButton(text="🕐 Змінити час до надсилання сповіщення", callback_data='change_time_for_notice')
+markup_settings.add(item1)#, item2)
 
 # Початок роботи, створення бази даних
 @bot.message_handler(commands=['start'])
