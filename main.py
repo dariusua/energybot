@@ -35,10 +35,8 @@ def start(message: types.Message):
         [group_number] INTEGER NOT NULL,
         active INTEGER DEFAULT(1)
     )""")
-    cursor.execute("ALTER TABLE database ADD time_to INTEGER DEFAULT 30")
     connect.commit()
     bot.send_message(message.from_user.id, f'Привіт 👋 \n\n🤖 Цей бот створений задля сповіщення користувачів "Львівобленерго" про планові відключення у вашому населеному пункті. \n✏️ Бот буде відсилати повідомлення з попередженням за 30 хвилин до відключення світла. \n❗️ Бот не є офіційним! \n\n📋 Для підключення сповіщень, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
-
 
 # Функція розсилки через команду
 @bot.message_handler(commands=['send'])
@@ -242,13 +240,6 @@ def send_night_g3():
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
     connect.commit()
 
-def test_send():
-    bot.send_message(880691612, "test")
-
-time_test_send = (time(hour=16, minute=00) - timedelta(minutes=3)).time()
-
-schedule.every().saturday.at(time_test_send).do(test_send)
-
 time_for_sche = datetime.now() + timedelta(minutes=1)
 time_for_sched = time_for_sche.strftime('%H:%M')
 
@@ -377,18 +368,21 @@ def callback_inline(call):
     elif call.data == 'check_night_notice':
         cursor.execute(f"SELECT night FROM database WHERE user_id = {person_id}")
         data_check_night = cursor.fetchone()
-        if data_check_night[0] == 0:
-            markup_check_night_off = types.InlineKeyboardMarkup(row_width=1)
-            item1 = types.InlineKeyboardButton("🌙 Включити нічні сповіщення", callback_data="night_notice_on")
-            item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_settings")
-            markup_check_night_off.add(item1, item2)
-            bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\n• При включенні цієї функції, бот буде надсилати сповіщення в нічний період(з 00:00 до 08:00). \n❌ На даний момент сповіщення відключені, для включення натисніть на кнопку нижче:", reply_markup=markup_check_night_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
-        elif data_check_night[0] == 1:
-            markup_check_night_on = types.InlineKeyboardMarkup(row_width=1)
-            item1 = types.InlineKeyboardButton("🌙 Виключити нічні сповіщення", callback_data="night_notice_off")
-            item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_settings")
-            markup_check_night_on.add(item1, item2)
-            bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\n✅ На даний момент сповіщення в нічний період(з 00:00 до 08:00) підключені. \nДля відключення натисніть на кнопку нижче:", reply_markup=markup_check_night_on, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        try:
+            if data_check_night[0] == 0:
+                markup_check_night_off = types.InlineKeyboardMarkup(row_width=1)
+                item1 = types.InlineKeyboardButton("🌙 Включити нічні сповіщення", callback_data="night_notice_on")
+                item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_settings")
+                markup_check_night_off.add(item1, item2)
+                bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\n• При включенні цієї функції, бот буде надсилати сповіщення в нічний період(з 00:00 до 08:00). \n❌ На даний момент сповіщення відключені, для включення натисніть на кнопку нижче:", reply_markup=markup_check_night_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            elif data_check_night[0] == 1:
+                markup_check_night_on = types.InlineKeyboardMarkup(row_width=1)
+                item1 = types.InlineKeyboardButton("🌙 Виключити нічні сповіщення", callback_data="night_notice_off")
+                item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_settings")
+                markup_check_night_on.add(item1, item2)
+                bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\n✅ На даний момент сповіщення в нічний період(з 00:00 до 08:00) підключені. \nДля відключення натисніть на кнопку нижче:", reply_markup=markup_check_night_on, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        except:
+            edit.message_text("Помилка! Попробуйте підключитись до вашої групи.", reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
         connect.commit()
 
     elif call.data == 'night_notice_on':
