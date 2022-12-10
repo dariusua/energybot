@@ -5,7 +5,7 @@ import time
 import telebot
 import schedule
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from telebot import types
 from threading import Thread
 from config import TOKEN
@@ -22,9 +22,8 @@ markup.add(item1, item2).row(item3).add(item4)
 
 markup_settings = types.InlineKeyboardMarkup(row_width = 1)
 item1 = types.InlineKeyboardButton(text="🌙 Нічні сповіщення", callback_data='check_night_notice')
-#item2 = types.InlineKeyboardButton(text="🌙 Змінити час надсилання сповіщення", callback_data='change_time_for_notice')
-item3 = types.InlineKeyboardButton(text="⬅ Назад", callback_data='back')
-markup_settings.add(item1, item3) # item3)
+item2 = types.InlineKeyboardButton(text="🕐 Змінити час до надсилання сповіщення", callback_data='change_time_for_notice')
+markup_settings.add(item1, item2)
 
 # Початок роботи, створення бази даних
 @bot.message_handler(commands=['start'])
@@ -36,6 +35,7 @@ def start(message: types.Message):
         [group_number] INTEGER NOT NULL,
         active INTEGER DEFAULT(1)
     )""")
+    cursor.execute("ALTER TABLE database ADD time_to INTEGER DEFAULT 30")
     connect.commit()
     bot.send_message(message.from_user.id, f'Привіт 👋 \n\n🤖 Цей бот створений задля сповіщення користувачів "Львівобленерго" про планові відключення у вашому населеному пункті. \n✏️ Бот буде відсилати повідомлення з попередженням за 30 хвилин до відключення світла. \n❗️ Бот не є офіційним! \n\n📋 Для підключення сповіщень, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
 
@@ -242,6 +242,12 @@ def send_night_g3():
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
     connect.commit()
 
+def test_send():
+    bot.send_message(880691612, "test")
+
+time_test_send = (time(hour=16, minute=00) - timedelta(minutes=3)).time()
+
+schedule.every().saturday.at(time_test_send).do(test_send)
 
 time_for_sche = datetime.now() + timedelta(minutes=1)
 time_for_sched = time_for_sche.strftime('%H:%M')
@@ -367,6 +373,7 @@ def callback_inline(call):
         bot.send_message(880691612, f"{loginchat} підключився(-лась) до 3 групи")
 
 # Call_data налаштувань
+# Нічні сповіщення
     elif call.data == 'check_night_notice':
         cursor.execute(f"SELECT night FROM database WHERE user_id = {person_id}")
         data_check_night = cursor.fetchone()
@@ -397,7 +404,8 @@ def callback_inline(call):
     elif call.data == "back_to_settings":
         bot.edit_message_text("⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
 
-    elif call.data == 'back':
-        bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
-        bot.send_message(person_id, "МЕНЮ:", reply_markup=markup)
+# Час до надсилання сповіщень
+    elif call.data == "change_time_for_notice":
+        pass
+
 bot.polling()
