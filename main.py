@@ -373,13 +373,13 @@ def callback_inline(call):
         if data_check_night[0] == 0:
             markup_check_night_off = types.InlineKeyboardMarkup(row_width=1)
             item1 = types.InlineKeyboardButton("🌙 Включити нічні сповіщення", callback_data="night_notice_on")
-            item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
+            item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="check_night_notice")
             markup_check_night_off.add(item1, item2)
             bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\n• При включенні цієї функції, бот буде надсилати сповіщення в нічний період(з 00:00 до 08:00). \n❌ На даний момент сповіщення відключені, для включення натисніть на кнопку нижче:", reply_markup=markup_check_night_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
         elif data_check_night[0] == 1:
             markup_check_night_on = types.InlineKeyboardMarkup(row_width=1)
             item1 = types.InlineKeyboardButton("🌙 Виключити нічні сповіщення", callback_data="night_notice_off")
-            item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back")
+            item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="check_night_notice")
             markup_check_night_on.add(item1, item2)
             bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\n✅ На даний момент сповіщення в нічний період(з 00:00 до 08:00) підключені. \nДля відключення натисніть на кнопку нижче:", reply_markup=markup_check_night_on, chat_id=call.message.chat.id, message_id=call.message.message_id)
         connect.commit()
