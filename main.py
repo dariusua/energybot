@@ -95,16 +95,17 @@ def message_reply(message: types.Message):
 # Надсилання фото з графіком відключень
     elif message.text == "📖 Повний графік(фото)":
         data_photo = cursor.execute("SELECT group_number FROM database WHERE user_id = ?", (message.from_user.id,)).fetchone()
-        if data_photo[0] == 1:
-            photo = open('1group.png', 'rb')
-            bot.send_photo(message.from_user.id, photo)
-        elif data_photo[0] == 2:
-            photo = open('2group.png', 'rb')
-            bot.send_photo(message.from_user.id, photo)
-        elif data_photo[0] == 3:
-            photo = open('3group.png', 'rb')
-            bot.send_photo(message.from_user.id, photo)
-        else:
+        try:
+            if data_photo[0] == 1:
+                photo = open('1group.png', 'rb')
+                bot.send_photo(message.from_user.id, photo)
+            elif data_photo[0] == 2:
+                photo = open('2group.png', 'rb')
+                bot.send_photo(message.from_user.id, photo)
+            elif data_photo[0] == 3:
+                photo = open('3group.png', 'rb')
+                bot.send_photo(message.from_user.id, photo)
+        except:
             bot.send_message(message.from_user.id, "Помилка! Попробуйте підключитись до вашої групи.")
         connect.commit()
 
