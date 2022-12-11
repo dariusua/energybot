@@ -11,8 +11,8 @@ from threading import Thread
 from config import TOKEN
 
 logging.basicConfig(level=logging.INFO)
-bot = telebot.TeleBot("5976583067:AAHW-opSW5CAL_7ZxNzx_wRXFD1JMyTlrq4")
-#bot = telebot.TeleBot(TOKEN)
+#bot = telebot.TeleBot("5976583067:AAHW-opSW5CAL_7ZxNzx_wRXFD1JMyTlrq4")
+bot = telebot.TeleBot(TOKEN)
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 item1 = types.KeyboardButton("✅ Підключити сповіщення")
