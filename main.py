@@ -11,7 +11,8 @@ from threading import Thread
 from config import TOKEN
 
 logging.basicConfig(level=logging.INFO)
-bot = telebot.TeleBot(TOKEN)
+bot = telebot.TeleBot("5976583067:AAHW-opSW5CAL_7ZxNzx_wRXFD1JMyTlrq4")
+#bot = telebot.TeleBot(TOKEN)
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 item1 = types.KeyboardButton("✅ Підключити сповіщення")
@@ -22,8 +23,10 @@ markup.add(item1, item2).row(item3).add(item4)
 
 markup_settings = types.InlineKeyboardMarkup(row_width = 1)
 item1 = types.InlineKeyboardButton(text="🌙 Нічні сповіщення", callback_data='night_notice')
-#item2 = types.InlineKeyboardButton(text="🕐 Змінити час до надсилання сповіщення", callback_data='change_time_for_notice')
-markup_settings.add(item1)#, item2)
+item2 = types.InlineKeyboardButton(text="🔘 Сповіщення про можливі відключення", callback_data='maybe_notice')
+item3 = types.InlineKeyboardButton(text="🕐 Час до надсилання сповіщення", callback_data='change_time_to_notice')
+item4 = types.InlineKeyboardButton(text="⬅ Назад", callback_data='back')
+markup_settings.add(item1, item2, item3, item4)
 
 # Початок роботи, створення бази даних
 @bot.message_handler(commands=['start'])
@@ -127,18 +130,18 @@ def message_reply(message: types.Message):
         bot.send_message(message.from_user.id, "Цієї команди не існує.")
 
 # Функція розсилки для 1 групи
-def send_g1():
+def send10_g1():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
-    results = cursor.execute("SELECT user_id FROM database WHERE group_number = ?", ("1")).fetchall()
-    howmuchtime1 = datetime.now() + timedelta(minutes=150)
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '1' AND time_to = '10'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=130)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     text = f"‼ За графіком 1️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
     for row in results:
         active_value = row[0]
         set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
         try:
-            bot.send_message(row[0], {text})
+            bot.send_message(row[0], text)
             if set_active != 1:
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
@@ -146,11 +149,66 @@ def send_g1():
     bot.send_message(880691612, f"ПОВІДОМЛЕННЯ ПРО РОЗСИЛКУ: \n\n{text}")
     connect.commit()
 
-# Функція розсилки для 2 групи
-def send_g2():
+def send30_g1():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
-    results = cursor.execute("SELECT user_id FROM database WHERE group_number = ?", ("2")).fetchall()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '1' AND time_to = '30'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=150)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ За графіком 1️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send60_g1():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '1' AND time_to = '60'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=180)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ За графіком 1️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+# Функція розсилки для 2 групи
+def send10_g2():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number '2' = AND time_to = '10'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=130)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ За графіком 2️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+
+def send30_g2():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' = AND time_to = '30'").fetchall()
     howmuchtime1 = datetime.now() + timedelta(minutes=150)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     text = f"‼ За графіком 2️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
@@ -158,19 +216,55 @@ def send_g2():
         active_value = row[0]
         set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
         try:
-            bot.send_message(row[0], {text})
+            bot.send_message(row[0], text)
             if set_active != 1:
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
-    bot.send_message(880691612, f"ПОВІДОМЛЕННЯ ПРО РОЗСИЛКУ: \n\n{text}")
+    connect.commit()
+
+
+def send60_g2():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' = AND time_to = '60'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=180)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ За графіком 2️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
     connect.commit()
 
 # Функція розсилки для 3 групи
-def send_g3():
+def send10_g3():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
-    results = cursor.execute("SELECT user_id FROM database WHERE group_number = ?", ("3")).fetchall()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '3' AND time_to = '10'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=130)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ За графіком 3️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send30_g3():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '3' AND time_to = '30'").fetchall()
     howmuchtime1 = datetime.now() + timedelta(minutes=150)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     text = f"‼ За графіком 3️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
@@ -178,19 +272,54 @@ def send_g3():
         active_value = row[0]
         set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
         try:
-            bot.send_message(row[0], {text})
+            bot.send_message(row[0], text)
             if set_active != 1:
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
-    bot.send_message(880691612, f"ПОВІДОМЛЕННЯ ПРО РОЗСИЛКУ: \n\n{text}")
+    connect.commit()
+
+def send60_g3():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '3' AND time_to = '60'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=180)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ За графіком 3️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
     connect.commit()
 
 # Функція розсилки нічних сповіщень для 1 групи
-def send_night_g1():
+def send10_night_g1():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
-    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '1' AND night = '1'").fetchall()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '1' AND night = '1' AND time_to = '10'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=130)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ За графіком 1️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send30_night_g1():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '1' AND night = '1' AND time_to = '30'").fetchall()
     howmuchtime1 = datetime.now() + timedelta(minutes=150)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     text = f"‼ За графіком 1️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
@@ -198,7 +327,25 @@ def send_night_g1():
         active_value = row[0]
         set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
         try:
-            bot.send_message(row[0], {text})
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send60_night_g1():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '1' AND night = '1' AND time_to = '60'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=180)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ За графіком 1️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
             if set_active != 1:
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
@@ -206,13 +353,69 @@ def send_night_g1():
     connect.commit()
 
 # Функція розсилки нічних сповіщень для 2 групи
-def send_night_g2():
+def send10_night_g2():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
-    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' AND night = '1'").fetchall()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' AND night = '1' AND time_to = '10'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=130)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ За графіком 2️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+
+def send30_night_g2():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' AND night = '1' AND time_to = '30'").fetchall()
     howmuchtime1 = datetime.now() + timedelta(minutes=150)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     text = f"‼ За графіком 2️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send60_night_g2():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' AND night = '1' AND time_to = '60'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=180)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ За графіком 2️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+# Функція розсилки нічних сповіщень для 3 групи
+def send10_night_g3():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '3' AND night = '1' AND time_to = '10'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=130)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ За графіком 3️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
     for row in results:
         active_value = row[0]
         set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
@@ -224,11 +427,10 @@ def send_night_g2():
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
     connect.commit()
 
-# Функція розсилки нічних сповііщень для 3 групи
-def send_night_g3():
+def send30_night_g3():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
-    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '3' AND night = '1'").fetchall()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '3' AND night = '1' AND time_to = '30'").fetchall()
     howmuchtime1 = datetime.now() + timedelta(minutes=150)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     text = f"‼ За графіком 3️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
@@ -237,6 +439,354 @@ def send_night_g3():
         set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
         try:
             bot.send_message(row[0], {text})
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send60_night_g3():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '3' AND night = '1' AND time_to = '60'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=180)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ За графіком 3️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], {text})
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+# Функція розсилки сповіщень про можливі відключення для 1 групи
+def send10_maybe_g1():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '1' AND maybe = '1' AND time_to = '10'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=130)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 1️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send30_maybe_g1():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '1' AND maybe = '1' AND time_to = '30'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=150)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 1️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send60_maybe_g1():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '1' AND maybe = '1' AND time_to = '60'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=180)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 1️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+# Функція розсилки сповіщень про можливі відключення для 2 групи
+def send10_maybe_g2():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' AND maybe = '1' AND time_to = '10'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=130)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 2️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send30_maybe_g2():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' AND maybe = '1' AND time_to = '30'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=150)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 2️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send60_maybe_g2():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' AND maybe = '1' AND time_to = '60'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=180)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 2️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+# Функція розсилки сповіщень про можливі відключення для 3 групи
+def send10_maybe_g3():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '3' AND maybe = '1' and time_to = '10'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=130)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 3️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send30_maybe_g3():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '3' AND maybe = '1' and time_to = '30'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=150)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 3️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send60_maybe_g3():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '3' AND maybe = '1' and time_to = '60'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=180)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 3️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+# Функція розсилки нічних сповіщень про можливі відключення для 1 групи
+def send10_night_maybe_g1():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '1' AND night = '1' AND maybe = '1' AND time_to = '10'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=130)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 1️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send30_night_maybe_g1():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '1' AND night = '1' AND maybe = '1' AND time_to = '30'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=150)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 1️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send60_night_maybe_g1():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '1' AND night = '1' AND maybe = '1' AND time_to = '60'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=180)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 1️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+# Функція розсилки нічних сповіщень про можливі відключення для 2 групи
+def send10_night_maybe_g2():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' AND night = '1' AND maybe = '1' AND time_to = '10'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=130)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 2️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send30_night_maybe_g2():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' AND night = '1' AND maybe = '1' AND time_to = '30'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=150)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 2️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send60_night_maybe_g2():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' AND night = '1' AND maybe = '1' AND time_to = '60'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=180)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 2️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+# Функція розсилки нічних сповіщень про можливі відключення для 3 групи
+def send10_night_maybe_g3():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '3' AND night = '1' AND maybe = '1' AND time_to = '10'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=130)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 3️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send30_night_maybe_g3():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '3' AND night = '1' AND maybe = '1' AND time_to = '30'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=150)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 3️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
+            if set_active != 1:
+                cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+        except:
+            cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+    connect.commit()
+
+def send60_night_maybe_g3():
+    connect = sqlite3.connect('database.db')
+    cursor = connect.cursor()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '3' AND night = '1' AND maybe = '1' AND time_to = '60'").fetchall()
+    howmuchtime1 = datetime.now() + timedelta(minutes=180)
+    howmuchtime2 = howmuchtime1 + timedelta(hours=4)
+    text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для 3️⃣ групи!"
+    for row in results:
+        active_value = row[0]
+        set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
+        try:
+            bot.send_message(row[0], text)
             if set_active != 1:
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
@@ -247,51 +797,280 @@ time_for_sche = datetime.now() + timedelta(minutes=1)
 time_for_sched = time_for_sche.strftime('%H:%M')
 
 #Розсилка для 1 групи
-schedule.every().sunday.at("22:30").do(send_night_g1)
-schedule.every().monday.at("10:30").do(send_g1)
-schedule.every().tuesday.at("06:30").do(send_g1)
-schedule.every().tuesday.at("18:30").do(send_g1)
-schedule.every().wednesday.at("02:30").do(send_night_g1)
-schedule.every().wednesday.at("14:30").do(send_g1)
-schedule.every().wednesday.at("22:30").do(send_night_g1)
-schedule.every().thursday.at("10:30").do(send_g1)
-schedule.every().friday.at("06:30").do(send_g1)
-schedule.every().friday.at("18:30").do(send_g1)
-schedule.every().saturday.at("02:30").do(send_night_g1)
-schedule.every().saturday.at("14:30").do(send_g1)
-schedule.every().sunday.at("10:30").do(send_g1)
+schedule.every().sunday.at("22:00").do(send60_night_g1)
+schedule.every().sunday.at("22:30").do(send30_night_g1)
+schedule.every().sunday.at("22:50").do(send10_night_g1)
+schedule.every().monday.at("06:00").do(send60_night_maybe_g1)
+schedule.every().monday.at("06:30").do(send30_night_maybe_g1)
+schedule.every().monday.at("06:50").do(send10_night_maybe_g1)
+schedule.every().monday.at("10:00").do(send60_g1)
+schedule.every().monday.at("10:30").do(send30_g1)
+schedule.every().monday.at("10:50").do(send10_g1)
+schedule.every().monday.at("18:00").do(send60_maybe_g1)
+schedule.every().monday.at("18:30").do(send30_maybe_g1)
+schedule.every().monday.at("18:50").do(send10_maybe_g1)
+
+schedule.every().wednesday.at("22:00").do(send60_night_g1)
+schedule.every().wednesday.at("22:30").do(send30_night_g1)
+schedule.every().wednesday.at("22:50").do(send10_night_g1)
+schedule.every().thursday.at("06:00").do(send60_night_maybe_g1)
+schedule.every().thursday.at("06:30").do(send30_night_maybe_g1)
+schedule.every().thursday.at("06:50").do(send10_night_maybe_g1)
+schedule.every().thursday.at("10:00").do(send60_g1)
+schedule.every().thursday.at("10:30").do(send30_g1)
+schedule.every().thursday.at("10:50").do(send10_g1)
+schedule.every().thursday.at("18:00").do(send60_maybe_g1)
+schedule.every().thursday.at("18:30").do(send30_maybe_g1)
+schedule.every().thursday.at("18:50").do(send10_maybe_g1)
+
+schedule.every().saturday.at("22:00").do(send60_night_g1)
+schedule.every().saturday.at("22:30").do(send30_night_g1)
+schedule.every().saturday.at("22:50").do(send10_night_g1)
+schedule.every().sunday.at("06:00").do(send60_night_maybe_g1)
+schedule.every().sunday.at("06:30").do(send30_night_maybe_g1)
+schedule.every().sunday.at("06:50").do(send10_night_maybe_g1)
+schedule.every().sunday.at("10:00").do(send60_g1)
+schedule.every().sunday.at("10:30").do(send30_g1)
+schedule.every().sunday.at("10:50").do(send10_g1)
+schedule.every().sunday.at("18:00").do(send60_maybe_g1)
+schedule.every().sunday.at("18:30").do(send30_maybe_g1)
+schedule.every().sunday.at("18:50").do(send10_maybe_g1)
+
+schedule.every().tuesday.at("02:00").do(send60_night_maybe_g1)
+schedule.every().tuesday.at("02:30").do(send30_night_maybe_g1)
+schedule.every().tuesday.at("02:50").do(send10_night_maybe_g1)
+schedule.every().tuesday.at("06:00").do(send60_night_g1)
+schedule.every().tuesday.at("06:30").do(send30_night_g1)
+schedule.every().tuesday.at("06:50").do(send10_night_g1)
+schedule.every().tuesday.at("14:00").do(send60_maybe_g1)
+schedule.every().tuesday.at("14:30").do(send30_maybe_g1)
+schedule.every().tuesday.at("14:50").do(send10_maybe_g1)
+schedule.every().tuesday.at("18:00").do(send60_g1)
+schedule.every().tuesday.at("18:30").do(send30_g1)
+schedule.every().tuesday.at("18:50").do(send10_g1)
+
+schedule.every().friday.at("02:00").do(send60_night_maybe_g1)
+schedule.every().friday.at("02:30").do(send30_night_maybe_g1)
+schedule.every().friday.at("02:50").do(send10_night_maybe_g1)
+schedule.every().friday.at("06:00").do(send60_night_g1)
+schedule.every().friday.at("06:30").do(send30_night_g1)
+schedule.every().friday.at("06:50").do(send10_night_g1)
+schedule.every().friday.at("14:00").do(send60_maybe_g1)
+schedule.every().friday.at("14:30").do(send30_maybe_g1)
+schedule.every().friday.at("14:50").do(send10_maybe_g1)
+schedule.every().friday.at("18:00").do(send60_g1)
+schedule.every().friday.at("18:30").do(send30_g1)
+schedule.every().friday.at("18:50").do(send10_g1)
+
+schedule.every().tuesday.at("22:00").do(send60_night_maybe_g1)
+schedule.every().tuesday.at("22:30").do(send30_night_maybe_g1)
+schedule.every().tuesday.at("22:50").do(send10_night_maybe_g1)
+schedule.every().wednesday.at("02:00").do(send60_night_g1)
+schedule.every().wednesday.at("02:30").do(send30_night_g1)
+schedule.every().wednesday.at("02:50").do(send10_night_g1)
+schedule.every().wednesday.at("10:00").do(send60_maybe_g1)
+schedule.every().wednesday.at("10:30").do(send30_maybe_g1)
+schedule.every().wednesday.at("10:50").do(send10_maybe_g1)
+schedule.every().wednesday.at("14:00").do(send60_g1)
+schedule.every().wednesday.at("14:30").do(send30_g1)
+schedule.every().wednesday.at("14:50").do(send10_g1)
+
+schedule.every().friday.at("22:00").do(send60_night_maybe_g1)
+schedule.every().friday.at("22:30").do(send30_night_maybe_g1)
+schedule.every().friday.at("22:50").do(send10_night_maybe_g1)
+schedule.every().saturday.at("02:00").do(send60_night_g1)
+schedule.every().saturday.at("02:30").do(send30_night_g1)
+schedule.every().saturday.at("02:50").do(send10_night_g1)
+schedule.every().saturday.at("10:00").do(send60_maybe_g1)
+schedule.every().saturday.at("10:30").do(send30_maybe_g1)
+schedule.every().saturday.at("10:50").do(send10_maybe_g1)
+schedule.every().saturday.at("14:00").do(send60_g1)
+schedule.every().saturday.at("14:30").do(send30_g1)
+schedule.every().saturday.at("14:50").do(send10_g1)
 
 #Розсилка для 2 групи
-schedule.every().monday.at("06:30").do(send_g2)
-schedule.every().monday.at("18:30").do(send_g2)
-schedule.every().tuesday.at("02:30").do(send_night_g2)
-schedule.every().tuesday.at("14:30").do(send_g2)
-schedule.every().tuesday.at("22:30").do(send_night_g2)
-schedule.every().wednesday.at("10:30").do(send_g2)
-schedule.every().thursday.at("06:30").do(send_g2)
-schedule.every().thursday.at("18:30").do(send_g2)
-schedule.every().friday.at("02:30").do(send_night_g2)
-schedule.every().friday.at("14:30").do(send_g2)
-schedule.every().friday.at("22:30").do(send_night_g2)
-schedule.every().saturday.at("10:30").do(send_g2)
-schedule.every().sunday.at("06:30").do(send_g2)
-schedule.every().sunday.at("18:30").do(send_g2)
+schedule.every().monday.at("02:30").do(send30_night_maybe_g2)
+schedule.every().monday.at("02:00").do(send60_night_maybe_g2)
+schedule.every().monday.at("02:50").do(send10_night_maybe_g2)
+schedule.every().monday.at("06:00").do(send60_night_g2)
+schedule.every().monday.at("06:30").do(send30_night_g2)
+schedule.every().monday.at("06:50").do(send10_night_g2)
+schedule.every().monday.at("14:00").do(send60_maybe_g2)
+schedule.every().monday.at("14:30").do(send30_maybe_g2)
+schedule.every().monday.at("14:50").do(send10_maybe_g2)
+schedule.every().monday.at("18:00").do(send60_g2)
+schedule.every().monday.at("18:30").do(send30_g2)
+schedule.every().monday.at("18:50").do(send10_g2)
+
+schedule.every().thursday.at("02:00").do(send60_night_maybe_g2)
+schedule.every().thursday.at("02:30").do(send30_night_maybe_g2)
+schedule.every().thursday.at("02:50").do(send10_night_maybe_g2)
+schedule.every().thursday.at("06:00").do(send60_night_g2)
+schedule.every().thursday.at("06:30").do(send30_night_g2)
+schedule.every().thursday.at("06:50").do(send10_night_g2)
+schedule.every().thursday.at("14:00").do(send60_maybe_g2)
+schedule.every().thursday.at("14:30").do(send30_maybe_g2)
+schedule.every().thursday.at("14:50").do(send10_maybe_g2)
+schedule.every().thursday.at("18:00").do(send60_g2)
+schedule.every().thursday.at("18:30").do(send30_g2)
+schedule.every().thursday.at("18:50").do(send10_g2)
+
+schedule.every().sunday.at("02:00").do(send60_night_maybe_g2)
+schedule.every().sunday.at("02:30").do(send30_night_maybe_g2)
+schedule.every().sunday.at("02:50").do(send10_night_maybe_g2)
+schedule.every().sunday.at("06:00").do(send60_night_g2)
+schedule.every().sunday.at("06:30").do(send30_night_g2)
+schedule.every().sunday.at("06:50").do(send10_night_g2)
+schedule.every().sunday.at("14:00").do(send60_maybe_g2)
+schedule.every().sunday.at("14:30").do(send30_maybe_g2)
+schedule.every().sunday.at("14:50").do(send10_maybe_g2)
+schedule.every().sunday.at("18:00").do(send60_g2)
+schedule.every().sunday.at("18:30").do(send30_g2)
+schedule.every().sunday.at("18:50").do(send10_g2)
+
+schedule.every().monday.at("22:00").do(send60_night_maybe_g2)
+schedule.every().monday.at("22:30").do(send30_night_maybe_g2)
+schedule.every().monday.at("22:50").do(send10_night_maybe_g2)
+schedule.every().tuesday.at("02:00").do(send60_night_g2)
+schedule.every().tuesday.at("02:30").do(send30_night_g2)
+schedule.every().tuesday.at("02:50").do(send10_night_g2)
+schedule.every().tuesday.at("10:00").do(send60_maybe_g2)
+schedule.every().tuesday.at("10:30").do(send30_maybe_g2)
+schedule.every().tuesday.at("10:50").do(send10_maybe_g2)
+schedule.every().tuesday.at("14:00").do(send60_g2)
+schedule.every().tuesday.at("14:30").do(send30_g2)
+schedule.every().tuesday.at("14:50").do(send10_g2)
+
+schedule.every().thursday.at("22:00").do(send60_night_maybe_g2)
+schedule.every().thursday.at("22:30").do(send30_night_maybe_g2)
+schedule.every().thursday.at("22:50").do(send10_night_maybe_g2)
+schedule.every().friday.at("02:00").do(send60_night_g2)
+schedule.every().friday.at("02:30").do(send30_night_g2)
+schedule.every().friday.at("02:50").do(send10_night_g2)
+schedule.every().friday.at("10:00").do(send60_maybe_g2)
+schedule.every().friday.at("10:30").do(send30_maybe_g2)
+schedule.every().friday.at("10:50").do(send10_maybe_g2)
+schedule.every().friday.at("14:00").do(send60_g2)
+schedule.every().friday.at("14:30").do(send30_g2)
+schedule.every().friday.at("14:50").do(send10_g2)
+
+schedule.every().tuesday.at("22:00").do(send60_night_g2)
+schedule.every().tuesday.at("22:30").do(send30_night_g2)
+schedule.every().tuesday.at("22:50").do(send10_night_g2)
+schedule.every().wednesday.at("06:00").do(send60_night_maybe_g2)
+schedule.every().wednesday.at("06:30").do(send30_night_maybe_g2)
+schedule.every().wednesday.at("06:50").do(send10_night_maybe_g2)
+schedule.every().wednesday.at("10:00").do(send60_g2)
+schedule.every().wednesday.at("10:30").do(send30_g2)
+schedule.every().wednesday.at("10:50").do(send10_g2)
+schedule.every().wednesday.at("18:00").do(send60_maybe_g2)
+schedule.every().wednesday.at("18:30").do(send30_maybe_g2)
+schedule.every().wednesday.at("18:50").do(send10_maybe_g2)
+
+schedule.every().friday.at("22:00").do(send60_night_g2)
+schedule.every().friday.at("22:30").do(send30_night_g2)
+schedule.every().friday.at("22:50").do(send10_night_g2)
+schedule.every().saturday.at("06:00").do(send60_night_maybe_g2)
+schedule.every().saturday.at("06:30").do(send30_night_maybe_g2)
+schedule.every().saturday.at("06:50").do(send10_night_maybe_g2)
+schedule.every().saturday.at("10:00").do(send60_g2)
+schedule.every().saturday.at("10:30").do(send30_g2)
+schedule.every().saturday.at("10:50").do(send10_g2)
+schedule.every().saturday.at("18:00").do(send60_maybe_g2)
+schedule.every().saturday.at("18:30").do(send30_maybe_g2)
+schedule.every().saturday.at("18:50").do(send10_maybe_g2)
 
 #Розсилка для 3 групи
-schedule.every().monday.at("02:30").do(send_night_g3)
-schedule.every().monday.at("14:30").do(send_g3)
-schedule.every().monday.at("22:30").do(send_night_g3)
-schedule.every().tuesday.at("10:30").do(send_g3)
-schedule.every().wednesday.at("06:30").do(send_g3)
-schedule.every().wednesday.at("18:30").do(send_g3)
-schedule.every().thursday.at("02:30").do(send_night_g3)
-schedule.every().thursday.at("14:30").do(send_g3)
-schedule.every().thursday.at("22:30").do(send_night_g3)
-schedule.every().friday.at("10:30").do(send_g3)
-schedule.every().saturday.at("06:30").do(send_g3)
-schedule.every().saturday.at("18:30").do(send_g3)
-schedule.every().sunday.at("02:30").do(send_night_g3)
-schedule.every().sunday.at("14:30").do(send_g3)
+schedule.every().sunday.at("22:00").do(send60_night_maybe_g3)
+schedule.every().sunday.at("22:30").do(send30_night_maybe_g3)
+schedule.every().sunday.at("22:50").do(send10_night_maybe_g3)
+schedule.every().monday.at("02:00").do(send60_night_g3)
+schedule.every().monday.at("02:30").do(send30_night_g3)
+schedule.every().monday.at("02:50").do(send10_night_g3)
+schedule.every().monday.at("10:00").do(send60_maybe_g3)
+schedule.every().monday.at("10:30").do(send30_maybe_g3)
+schedule.every().monday.at("10:50").do(send10_maybe_g3)
+schedule.every().monday.at("14:00").do(send60_g3)
+schedule.every().monday.at("14:30").do(send30_g3)
+schedule.every().monday.at("14:50").do(send10_g3)
+
+schedule.every().wednesday.at("22:00").do(send60_night_maybe_g3)
+schedule.every().wednesday.at("22:30").do(send30_night_maybe_g3)
+schedule.every().wednesday.at("22:50").do(send10_night_maybe_g3)
+schedule.every().thursday.at("02:00").do(send60_night_g3)
+schedule.every().thursday.at("02:30").do(send30_night_g3)
+schedule.every().thursday.at("02:50").do(send10_night_g3)
+schedule.every().thursday.at("10:00").do(send60_maybe_g3)
+schedule.every().thursday.at("10:30").do(send30_maybe_g3)
+schedule.every().thursday.at("10:50").do(send10_maybe_g3)
+schedule.every().thursday.at("14:00").do(send60_g3)
+schedule.every().thursday.at("14:30").do(send30_g3)
+schedule.every().thursday.at("14:50").do(send10_g3)
+
+schedule.every().saturday.at("22:00").do(send60_night_maybe_g3)
+schedule.every().saturday.at("22:30").do(send30_night_maybe_g3)
+schedule.every().saturday.at("22:50").do(send10_night_maybe_g3)
+schedule.every().sunday.at("02:00").do(send60_night_g3)
+schedule.every().sunday.at("02:30").do(send30_night_g3)
+schedule.every().sunday.at("02:50").do(send10_night_g3)
+schedule.every().sunday.at("10:00").do(send60_maybe_g3)
+schedule.every().sunday.at("10:30").do(send30_maybe_g3)
+schedule.every().sunday.at("10:50").do(send10_maybe_g3)
+schedule.every().sunday.at("14:00").do(send60_g3)
+schedule.every().sunday.at("14:30").do(send30_g3)
+schedule.every().sunday.at("14:50").do(send10_g3)
+
+schedule.every().monday.at("22:00").do(send60_night_g3)
+schedule.every().monday.at("22:30").do(send30_night_g3)
+schedule.every().monday.at("22:50").do(send10_night_g3)
+schedule.every().tuesday.at("06:00").do(send60_night_maybe_g3)
+schedule.every().tuesday.at("06:30").do(send30_night_maybe_g3)
+schedule.every().tuesday.at("06:50").do(send10_night_maybe_g3)
+schedule.every().tuesday.at("10:00").do(send60_g3)
+schedule.every().tuesday.at("10:30").do(send30_g3)
+schedule.every().tuesday.at("10:50").do(send10_g3)
+schedule.every().tuesday.at("18:00").do(send60_maybe_g3)
+schedule.every().tuesday.at("18:30").do(send30_maybe_g3)
+schedule.every().tuesday.at("18:50").do(send10_maybe_g3)
+
+schedule.every().tuesday.at("22:00").do(send60_night_g3)
+schedule.every().tuesday.at("22:30").do(send30_night_g3)
+schedule.every().tuesday.at("22:50").do(send10_night_g3)
+schedule.every().friday.at("06:00").do(send60_night_maybe_g3)
+schedule.every().friday.at("06:30").do(send30_night_maybe_g3)
+schedule.every().friday.at("06:50").do(send10_night_maybe_g3)
+schedule.every().friday.at("10:00").do(send60_g3)
+schedule.every().friday.at("10:30").do(send30_g3)
+schedule.every().friday.at("10:50").do(send10_g3)
+schedule.every().friday.at("18:00").do(send60_maybe_g3)
+schedule.every().friday.at("18:30").do(send30_maybe_g3)
+schedule.every().friday.at("18:50").do(send10_maybe_g3)
+
+schedule.every().wednesday.at("02:00").do(send60_night_maybe_g3)
+schedule.every().wednesday.at("02:30").do(send30_night_maybe_g3)
+schedule.every().wednesday.at("02:50").do(send10_night_maybe_g3)
+schedule.every().wednesday.at("06:00").do(send60_night_g3)
+schedule.every().wednesday.at("06:30").do(send30_night_g3)
+schedule.every().wednesday.at("06:50").do(send10_night_g3)
+schedule.every().wednesday.at("14:00").do(send60_maybe_g3)
+schedule.every().wednesday.at("14:30").do(send30_maybe_g3)
+schedule.every().wednesday.at("14:50").do(send10_maybe_g3)
+schedule.every().wednesday.at("18:00").do(send60_g3)
+schedule.every().wednesday.at("18:30").do(send30_g3)
+schedule.every().wednesday.at("18:50").do(send10_g3)
+
+schedule.every().saturday.at("02:00").do(send60_night_maybe_g3)
+schedule.every().saturday.at("02:30").do(send30_night_maybe_g3)
+schedule.every().saturday.at("02:50").do(send10_night_maybe_g3)
+schedule.every().saturday.at("06:00").do(send60_night_g3)
+schedule.every().saturday.at("06:30").do(send30_night_g3)
+schedule.every().saturday.at("06:50").do(send10_night_g3)
+schedule.every().saturday.at("14:00").do(send60_maybe_g3)
+schedule.every().saturday.at("14:30").do(send30_maybe_g3)
+schedule.every().saturday.at("14:50").do(send10_maybe_g3)
+schedule.every().saturday.at("18:00").do(send60_g3)
+schedule.every().saturday.at("18:30").do(send30_g3)
+schedule.every().saturday.at("18:50").do(send10_g3)
 
 #Робота розсилки(інший потік)
 def threaded_function():
@@ -321,7 +1100,7 @@ def callback_inline(call):
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
         data_call_group = cursor.fetchone()
         if data_call_group is None:
-            cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?);", (person_id, "1", "1", "0",))
+            cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?, ?, ?);", (person_id, "1", "1", "0", "0", "30",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("1", person_id,))
         connect.commit()
@@ -340,7 +1119,7 @@ def callback_inline(call):
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
         data_call_group = cursor.fetchone()
         if data_call_group is None:
-            cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?);", (person_id, "2", "1", "0",))
+            cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?, ?, ?);", (person_id, "2", "1", "0", "0", "30",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("2", person_id,))
         connect.commit()
@@ -359,7 +1138,7 @@ def callback_inline(call):
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
         data_call_group = cursor.fetchone()
         if data_call_group is None:
-            cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?);", (person_id, "3", "1", "0",))
+            cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?, ?, ?);", (person_id, "3", "1", "0", "0", "30",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("3", person_id,))
         connect.commit()
@@ -377,7 +1156,7 @@ def callback_inline(call):
                 item1 = types.InlineKeyboardButton("🌙 Включити нічні сповіщення", callback_data="night_notice_on")
                 item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_settings")
                 markup_check_night_off.add(item1, item2)
-                bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\n• При включенні цієї функції, бот буде надсилати сповіщення в нічний період(з 00:00 до 08:00). \n❌ На даний момент сповіщення відключені, для включення натисніть на кнопку нижче:", reply_markup=markup_check_night_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
+                bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\n• При включенні цієї функції, бот буде надсилати сповіщення в нічний період(з 00:00 до 08:00). \n❌ На даний момент такі сповіщення відключені, для включення натисніть на кнопку нижче:", reply_markup=markup_check_night_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
             elif data_check_night[0] == 1:
                 markup_check_night_on = types.InlineKeyboardMarkup(row_width=1)
                 item1 = types.InlineKeyboardButton("🌙 Виключити нічні сповіщення", callback_data="night_notice_off")
@@ -398,11 +1177,73 @@ def callback_inline(call):
         bot.edit_message_text("❌ Ви відключили нічні сповіщення. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
         connect.commit()
 
-    elif call.data == "back_to_settings":
-        bot.edit_message_text("⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+# Сповіщення про можливі відключення
+    elif call.data == 'maybe_notice':
+        cursor.execute(f"SELECT maybe FROM database WHERE user_id = {person_id}")
+        data_check_maybe = cursor.fetchone()
+        try:
+            if data_check_maybe[0] == 0:
+                markup_check_maybe_off = types.InlineKeyboardMarkup(row_width=1)
+                item1 = types.InlineKeyboardButton("🔘 Включити сповіщення про можливі відключення", callback_data="maybe_notice_on")
+                item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_settings")
+                markup_check_maybe_off.add(item1, item2)
+                bot.edit_message_text("🔘 СПОВІЩЕННЯ ПРО МОЖЛИВІ ВІДКЛЮЧЕННЯ: \n\n• При включенні цієї функції, бот буде надсилати сповіщення про можливі відключення(детальніше про це на фото вашого графіку).\n❌ На даний момент дані сповіщення відключені, для включення натисніть на кнопку нижче:", reply_markup=markup_check_maybe_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            elif data_check_maybe[0] == 1:
+                markup_check_maybe_on = types.InlineKeyboardMarkup(row_width=1)
+                item1 = types.InlineKeyboardButton("🔘 Виключити сповіщення про можливі відключення", callback_data="maybe_notice_off")
+                item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_settings")
+                markup_check_maybe_on.add(item1, item2)
+                bot.edit_message_text("🔘 СПОВІЩЕННЯ ПРО МОЖЛИВІ ВІДКЛЮЧЕННЯ:: \n\n✅ На даний момент сповіщення про можливі відключення світла підключені. \nДля відключення натисніть на кнопку нижче:", reply_markup=markup_check_maybe_on, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        except:
+            edit.message_text("Помилка! Попробуйте підключитись до вашої групи.", reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        connect.commit()
+
+    elif call.data == 'maybe_notice_on':
+        cursor.execute(f"UPDATE database SET maybe = 1 WHERE user_id = {person_id}")
+        bot.edit_message_text("✅ Ви успішно включили сповіщення про можливі відключення світла. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        connect.commit()
+
+    elif call.data == 'maybe_notice_off':
+        cursor.execute(f"UPDATE database SET maybe = 0 WHERE user_id = {person_id}")
+        bot.edit_message_text("❌ Ви відключили сповіщення про можливі відключення світла. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        connect.commit()
 
 # Час до надсилання сповіщень
-    elif call.data == "change_time_for_notice":
-        pass
+    elif call.data == "change_time_to_notice":
+        cursor.execute(f"SELECT time_to FROM database WHERE user_id = {person_id}")
+        data_check_time_to = cursor.fetchone()
+        if data_check_time_to[0] == 10:
+            time_to_off_stiker = "🔟"
+        elif data_check_time_to[0] == 30:
+            time_to_off_stiker = "3️⃣0️⃣"
+        elif data_check_time_to[0] == 60:
+            time_to_off_stiker = "6️⃣0️⃣"
+        markup_check_time_to_off = types.InlineKeyboardMarkup(row_width=1)
+        item1 = types.InlineKeyboardButton("🕐 10 хвилин", callback_data="set_10min")
+        item2 = types.InlineKeyboardButton("🕓 30 хвилин", callback_data="set_30min")
+        item3 = types.InlineKeyboardButton("🕔 60 хвилин", callback_data="set_60min")
+        item4 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_settings")
+        markup_check_time_to_off.add(item1, item2, item3, item4)
+        bot.edit_message_text(f"🕐 ЧАС ДО НАДСИЛАННЯ СПОВІЩЕННЯ: \n\n• Тут ви можете змінити час до надсилання сповіщень, від 10 до 60 хвилин.\n• На цей момент сповіщенням вам будуть надсилатися за {time_to_off_stiker} хвилин до відключення світла, щоб змінити, натисніть на одну з кнопок нижче:", reply_markup=markup_check_time_to_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        connect.commit()
+
+    elif call.data == 'set_10min':
+        cursor.execute(f"UPDATE database SET time_to = 10 WHERE user_id = {person_id}")
+        bot.edit_message_text('✅ Ви успішно змінили час до надсилання сповіщень до 🔟 хвилин. \n\n⚙ НАЛАШТУВАННЯ:', reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        connect.commit()
+
+    elif call.data == 'set_30min':
+        cursor.execute(f"UPDATE database SET time_to = 30 WHERE user_id = {person_id}")
+        bot.edit_message_text('✅ Ви успішно змінили час до надсилання сповіщень до 3️⃣0️⃣ хвилин. \n\n⚙ НАЛАШТУВАННЯ:', reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        connect.commit()
+
+    elif call.data == 'set_60min':
+        cursor.execute(f"UPDATE database SET time_to = 60 WHERE user_id = {person_id}")
+        bot.edit_message_text('✅ Ви успішно змінили час до надсилання сповіщень до ️6️⃣0️⃣ хвилин. \n\n⚙ НАЛАШТУВАННЯ:', reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        connect.commit()
+
+    elif call.data == 'back':
+        bot.edit_message_text("МЕНЮ:", reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
+
 
 bot.polling()
