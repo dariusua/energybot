@@ -1242,6 +1242,9 @@ def callback_inline(call):
         bot.edit_message_text('✅ Ви успішно змінили час до надсилання сповіщень до ️6️⃣0️⃣ хвилин. \n\n⚙ НАЛАШТУВАННЯ:', reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
         connect.commit()
 
+    elif call.data == 'back_to_settings':
+        bot.edit_message_text("⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+
     elif call.data == 'back':
         bot.edit_message_text("МЕНЮ:", reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
 
