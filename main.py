@@ -21,7 +21,7 @@ item4 = types.KeyboardButton("⚙ Налаштування")
 markup.add(item1, item2).row(item3).add(item4)
 
 markup_settings = types.InlineKeyboardMarkup(row_width = 1)
-item1 = types.InlineKeyboardButton(text="🌙 Нічні сповіщення", callback_data='check_night_notice')
+item1 = types.InlineKeyboardButton(text="🌙 Нічні сповіщення", callback_data='night_notice')
 #item2 = types.InlineKeyboardButton(text="🕐 Змінити час до надсилання сповіщення", callback_data='change_time_for_notice')
 markup_settings.add(item1)#, item2)
 
@@ -73,7 +73,7 @@ def message_reply(message: types.Message):
         item1 = types.InlineKeyboardButton(text="Група 1", callback_data='group1')
         item2 = types.InlineKeyboardButton(text="Група 2", callback_data='group2')
         item3 = types.InlineKeyboardButton(text="Група 3", callback_data='group3')
-        learngroup = types.InlineKeyboardButton(text="Дізнатись свою групу", url='https://poweroff.loe.lviv.ua')
+        learngroup = types.InlineKeyboardButton(text="Дізнатись свою групу", url='https://poweroff.loe.lviv.ua/gav_city3')
         markup_group.add(item1, item2, item3, learngroup)
         bot.send_message(message.chat.id, f'✅ Для підключення сповіщень про відключення світла Вам необхідно натиснути на кнопку з номером вашої групи. \n❓ Щоб дізнатись номер вашої групи, натисніть на кнопку "Дізнатись свою групу", та перейшовши за посиланням і ввівши свої дані, ви зможете дізнатись свою групу.', reply_markup=markup_group)
 
@@ -365,7 +365,7 @@ def callback_inline(call):
 
 # Call_data налаштувань
 # Нічні сповіщення
-    elif call.data == 'check_night_notice':
+    elif call.data == 'night_notice':
         cursor.execute(f"SELECT night FROM database WHERE user_id = {person_id}")
         data_check_night = cursor.fetchone()
         try:
