@@ -189,7 +189,7 @@ def send60_g1():
 def send10_g2():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
-    results = cursor.execute("SELECT user_id FROM database WHERE group_number '2' = AND time_to = '10'").fetchall()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' AND time_to = '10'").fetchall()
     howmuchtime1 = datetime.now() + timedelta(minutes=130)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     text = f"‼ За графіком 2️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
@@ -208,7 +208,7 @@ def send10_g2():
 def send30_g2():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
-    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' = AND time_to = '30'").fetchall()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' AND time_to = '30'").fetchall()
     howmuchtime1 = datetime.now() + timedelta(minutes=150)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     text = f"‼ За графіком 2️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
@@ -227,7 +227,7 @@ def send30_g2():
 def send60_g2():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
-    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' = AND time_to = '60'").fetchall()
+    results = cursor.execute("SELECT user_id FROM database WHERE group_number = '2' AND time_to = '60'").fetchall()
     howmuchtime1 = datetime.now() + timedelta(minutes=180)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     text = f"‼ За графіком 2️⃣ групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
