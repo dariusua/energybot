@@ -1212,12 +1212,15 @@ def callback_inline(call):
     elif call.data == "change_time_to_notice":
         cursor.execute(f"SELECT time_to FROM database WHERE user_id = {person_id}")
         data_check_time_to = cursor.fetchone()
-        if data_check_time_to[0] == 10:
-            time_to_off_stiker = "🔟"
-        elif data_check_time_to[0] == 30:
-            time_to_off_stiker = "3️⃣0️⃣"
-        elif data_check_time_to[0] == 60:
-            time_to_off_stiker = "6️⃣0️⃣"
+        try:
+            if data_check_time_to[0] == 10:
+                time_to_off_stiker = "🔟"
+            elif data_check_time_to[0] == 30:
+                time_to_off_stiker = "3️⃣0️⃣"
+            elif data_check_time_to[0] == 60:
+                time_to_off_stiker = "6️⃣0️⃣"
+        except:
+            pass
         markup_check_time_to_off = types.InlineKeyboardMarkup(row_width=1)
         item1 = types.InlineKeyboardButton("🕐 10 хвилин", callback_data="set_10min")
         item2 = types.InlineKeyboardButton("🕓 30 хвилин", callback_data="set_30min")
