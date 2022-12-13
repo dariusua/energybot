@@ -146,6 +146,7 @@ def send10_g1():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     bot.send_message(880691612, f"ПОВІДОМЛЕННЯ ПРО РОЗСИЛКУ: \n\n{text}")
     connect.commit()
 
@@ -165,6 +166,7 @@ def send30_g1():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send60_g1():
@@ -183,6 +185,7 @@ def send60_g1():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 # Функція розсилки для 2 групи
@@ -202,6 +205,7 @@ def send10_g2():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 
@@ -221,6 +225,7 @@ def send30_g2():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 
@@ -240,6 +245,7 @@ def send60_g2():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 # Функція розсилки для 3 групи
@@ -259,6 +265,7 @@ def send10_g3():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send30_g3():
@@ -277,6 +284,7 @@ def send30_g3():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send60_g3():
@@ -295,6 +303,7 @@ def send60_g3():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 # Функція розсилки нічних сповіщень для 1 групи
@@ -314,6 +323,7 @@ def send10_night_g1():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send30_night_g1():
@@ -332,6 +342,7 @@ def send30_night_g1():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send60_night_g1():
@@ -350,6 +361,7 @@ def send60_night_g1():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 # Функція розсилки нічних сповіщень для 2 групи
@@ -369,6 +381,7 @@ def send10_night_g2():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 
@@ -388,6 +401,7 @@ def send30_night_g2():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send60_night_g2():
@@ -406,6 +420,7 @@ def send60_night_g2():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 # Функція розсилки нічних сповіщень для 3 групи
@@ -425,6 +440,7 @@ def send10_night_g3():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send30_night_g3():
@@ -443,6 +459,7 @@ def send30_night_g3():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send60_night_g3():
@@ -461,6 +478,7 @@ def send60_night_g3():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 # Функція розсилки сповіщень про можливі відключення для 1 групи
@@ -480,6 +498,7 @@ def send10_maybe_g1():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send30_maybe_g1():
@@ -498,6 +517,7 @@ def send30_maybe_g1():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send60_maybe_g1():
@@ -516,6 +536,7 @@ def send60_maybe_g1():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 # Функція розсилки сповіщень про можливі відключення для 2 групи
@@ -535,6 +556,7 @@ def send10_maybe_g2():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send30_maybe_g2():
@@ -553,6 +575,7 @@ def send30_maybe_g2():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send60_maybe_g2():
@@ -571,6 +594,7 @@ def send60_maybe_g2():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 # Функція розсилки сповіщень про можливі відключення для 3 групи
@@ -590,6 +614,7 @@ def send10_maybe_g3():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send30_maybe_g3():
@@ -608,6 +633,7 @@ def send30_maybe_g3():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send60_maybe_g3():
@@ -626,6 +652,7 @@ def send60_maybe_g3():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 # Функція розсилки нічних сповіщень про можливі відключення для 1 групи
@@ -645,6 +672,7 @@ def send10_night_maybe_g1():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send30_night_maybe_g1():
@@ -663,6 +691,7 @@ def send30_night_maybe_g1():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send60_night_maybe_g1():
@@ -681,6 +710,7 @@ def send60_night_maybe_g1():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 # Функція розсилки нічних сповіщень про можливі відключення для 2 групи
@@ -700,6 +730,7 @@ def send10_night_maybe_g2():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send30_night_maybe_g2():
@@ -718,6 +749,7 @@ def send30_night_maybe_g2():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send60_night_maybe_g2():
@@ -736,6 +768,7 @@ def send60_night_maybe_g2():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 # Функція розсилки нічних сповіщень про можливі відключення для 3 групи
@@ -755,6 +788,7 @@ def send10_night_maybe_g3():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send30_night_maybe_g3():
@@ -773,6 +807,7 @@ def send30_night_maybe_g3():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 def send60_night_maybe_g3():
@@ -791,6 +826,7 @@ def send60_night_maybe_g3():
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
         except:
             cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+            time.sleep(1)
     connect.commit()
 
 time_for_sche = datetime.now() + timedelta(minutes=1)
