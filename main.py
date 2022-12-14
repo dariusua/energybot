@@ -1203,7 +1203,7 @@ def callback_inline(call):
                 markup_check_night_on.add(item1, item2)
                 bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\n✅ На даний момент сповіщення в нічний період(з 00:00 до 08:00) підключені. \nДля відключення натисніть на кнопку нижче:", reply_markup=markup_check_night_on, chat_id=call.message.chat.id, message_id=call.message.message_id)
         except:
-            bot.edit.message_text("Помилка! Попробуйте підключитись до вашої групи.", reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            bot.edit_message_text("Помилка! Попробуйте підключитись до вашої групи.", reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
         connect.commit()
 
     elif call.data == 'night_notice_on':
@@ -1234,7 +1234,7 @@ def callback_inline(call):
                 markup_check_maybe_on.add(item1, item2)
                 bot.edit_message_text("🔘 СПОВІЩЕННЯ ПРО МОЖЛИВІ ВІДКЛЮЧЕННЯ:: \n\n✅ На даний момент сповіщення про можливі відключення світла підключені. \nДля відключення натисніть на кнопку нижче:", reply_markup=markup_check_maybe_on, chat_id=call.message.chat.id, message_id=call.message.message_id)
         except:
-            bot.edit.message_text("Помилка! Попробуйте підключитись до вашої групи.", reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            bot.edit_message_text("Помилка! Попробуйте підключитись до вашої групи.", reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
         connect.commit()
 
     elif call.data == 'maybe_notice_on':
