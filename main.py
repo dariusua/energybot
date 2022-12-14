@@ -11,8 +11,8 @@ from threading import Thread
 from config import TOKEN
 
 logging.basicConfig(level=logging.INFO)
-#bot = telebot.TeleBot("5976583067:AAHW-opSW5CAL_7ZxNzx_wRXFD1JMyTlrq4")
-bot = telebot.TeleBot(TOKEN)
+bot = telebot.TeleBot("5976583067:AAHW-opSW5CAL_7ZxNzx_wRXFD1JMyTlrq4")
+#bot = telebot.TeleBot(TOKEN)
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 item1 = types.KeyboardButton("✅ Підключити сповіщення")
@@ -1139,8 +1139,9 @@ def callback_inline(call):
             cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?, ?, ?);", (person_id, "1", "1", "0", "0", "30",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("1", person_id,))
+        data_time_to = cursor.execute(f"SELECT time_to FROM database WHERE user_id = {person_id}").fetchone()
         connect.commit()
-        bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 1️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n\n Щоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 1️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за {data_time_to[0]} хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n\n Щоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
         bot.send_message(880691612, f"{loginchat} підключився(-лась) до 1 групи")
 
 # Підключення до 2 групи
@@ -1158,8 +1159,9 @@ def callback_inline(call):
             cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?, ?, ?);", (person_id, "2", "1", "0", "0", "30",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("2", person_id,))
+        data_time_to = cursor.execute(f"SELECT time_to FROM database WHERE user_id = {person_id}").fetchone()
         connect.commit()
-        bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 2️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за 30 хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n\n Щоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 2️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за {data_time_to[0]} хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n\n Щоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
         bot.send_message(880691612, f"{loginchat} підключився(-лась) до 2 групи")
 
 # Підключення до 3 групи
@@ -1248,22 +1250,24 @@ def callback_inline(call):
     elif call.data == "change_time_to_notice":
         cursor.execute(f"SELECT time_to FROM database WHERE user_id = {person_id}")
         data_check_time_to = cursor.fetchone()
-        try:
-            if data_check_time_to[0] == 10:
-                time_to_off_stiker = "🔟"
-            elif data_check_time_to[0] == 30:
-                time_to_off_stiker = "3️⃣0️⃣"
-            elif data_check_time_to[0] == 60:
-                time_to_off_stiker = "6️⃣0️⃣"
-        except:
-            pass
         markup_check_time_to_off = types.InlineKeyboardMarkup(row_width=1)
         item1 = types.InlineKeyboardButton("🕐 10 хвилин", callback_data="set_10min")
         item2 = types.InlineKeyboardButton("🕓 30 хвилин", callback_data="set_30min")
         item3 = types.InlineKeyboardButton("🕔 60 хвилин", callback_data="set_60min")
         item4 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_settings")
         markup_check_time_to_off.add(item1, item2, item3, item4)
-        bot.edit_message_text(f"🕐 ЧАС ДО НАДСИЛАННЯ СПОВІЩЕННЯ: \n\n• Тут ви можете змінити час до надсилання сповіщень, від 10 до 60 хвилин.\n• На цей момент сповіщенням вам будуть надсилатися за {time_to_off_stiker} хвилин до відключення світла, щоб змінити, натисніть на одну з кнопок нижче:", reply_markup=markup_check_time_to_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        try:
+            if data_check_time_to[0] == 10:
+                time_to_off_stiker = "🔟"
+                bot.edit_message_text(f"🕐 ЧАС ДО НАДСИЛАННЯ СПОВІЩЕННЯ: \n\n• Тут ви можете змінити час до надсилання сповіщень, від 10 до 60 хвилин.\n• На цей момент сповіщенням вам будуть надсилатися за {time_to_off_stiker} хвилин до відключення світла, щоб змінити, натисніть на одну з кнопок нижче:", reply_markup=markup_check_time_to_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            elif data_check_time_to[0] == 30:
+                time_to_off_stiker = "3️⃣0️⃣"
+                bot.edit_message_text(f"🕐 ЧАС ДО НАДСИЛАННЯ СПОВІЩЕННЯ: \n\n• Тут ви можете змінити час до надсилання сповіщень, від 10 до 60 хвилин.\n• На цей момент сповіщенням вам будуть надсилатися за {time_to_off_stiker} хвилин до відключення світла, щоб змінити, натисніть на одну з кнопок нижче:", reply_markup=markup_check_time_to_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            elif data_check_time_to[0] == 60:
+                time_to_off_stiker = "6️⃣0️⃣"
+                bot.edit_message_text(f"🕐 ЧАС ДО НАДСИЛАННЯ СПОВІЩЕННЯ: \n\n• Тут ви можете змінити час до надсилання сповіщень, від 10 до 60 хвилин.\n• На цей момент сповіщенням вам будуть надсилатися за {time_to_off_stiker} хвилин до відключення світла, щоб змінити, натисніть на одну з кнопок нижче:", reply_markup=markup_check_time_to_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
+        except:
+            pass
         connect.commit()
 
     elif call.data == 'set_10min':
