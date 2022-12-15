@@ -62,9 +62,9 @@ def send(message: types.Message):
             except:
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
         bot.send_message(880691612, f"ПОВІДОМЛЕННЯ ПРО РОЗСИЛКУ: \n\n{text}")
+        connect.commit()
     else:
         bot.send_message(message.from_user.id, "Для виконання цієї команди Ви повинні бути адміном.")
-    connect.commit()
 
 # Робота кнопок
 @bot.message_handler(content_types='text')
