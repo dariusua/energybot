@@ -1,4 +1,4 @@
-#  ENERGYLOEBOT version 0.9 by dariusua
+#  ENERGYLOEBOT version 1.1 by dariusua
 
 import sqlite3
 import time
@@ -17,7 +17,7 @@ bot = telebot.TeleBot(TOKEN)
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 item1 = types.KeyboardButton("✅ Підключити сповіщення")
 item2 = types.KeyboardButton("🔕 Відключити сповіщення")
-item3 = types.KeyboardButton("📖 Повний графік(фото)")
+item3 = types.KeyboardButton("🖼 Повний графік(фото)")
 item4 = types.KeyboardButton("⚙ Налаштування")
 markup.add(item1, item2).row(item3).add(item4)
 
@@ -1183,6 +1183,7 @@ def callback_inline(call):
         connect.commit()
         bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 3️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за {data_time_to[0]} хвилин до відключення світла. \n🔕 Задля вашого ж комфорту, сповіщення не будуть надсилатися в нічний період(з 00:00 до 08:00). \n\n Щоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
         bot.send_message(880691612, f"{loginchat} підключився(-лась) до 3 групи")
+
 
 # Call_data налаштувань
 # Нічні сповіщення
