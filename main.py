@@ -85,16 +85,13 @@ def message_reply(message: types.Message):
 
 # Відключити сповіщень
     elif message.text == "🔕 Відключити сповіщення":
-        if message.from_user.username is None:
-            if message.from_user.last_name is None:
-                loginchat = f"{message.from_user.first_name}"
-            else:
-                loginchat = f"{message.from_user.first_name} {message.from_user.last_name}"
+        if message.from_user.last_name is None:
+            loginchat = f"{message.from_user.first_name}"
         else:
-            loginchat = f"@{message.from_user.username}"
+            loginchat = f"{message.from_user.first_name} {message.from_user.last_name}"
         cursor.execute("DELETE FROM `database` WHERE `user_id` = ?", (person_id,))
         bot.send_message(message.from_user.id, '❌ Ви відключилися від сповіщень про відключення електроенергії. Дякуємо за використання бота!😢 \n\nЩоб підключитись знову, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
-        bot.send_message(880691612, f"{loginchat} відключився(-лась) від сповіщень")
+        bot.send_message(880691612, f"<a href='tg://user?id={person_id}'>{loginchat}</a> відключився від сповіщень", parse_mode='HTML')
 
 # Надсилання фото з графіком відключень
     elif message.text == "🖼 Повний графік(фото)" or message.text == "📖 Повний графік(фото)":
