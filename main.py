@@ -1130,6 +1130,18 @@ def callback_inline(call):
             loginchat = f"{call.message.chat.first_name}"
         else:
             loginchat = f"{call.message.chat.first_name} {call.message.chat.last_name}"
+        cursor.execute(f"SELECT maybe FROM database WHERE user_id = {person_id}")
+        repair_maybe = cursor.fetchone()
+        if repair_maybe == 30:
+            cursor.execute("UPDATE database SET maybe = ? WHERE user_id = ?", ("0", person_id,))
+        else:
+            pass
+        cursor.execute(f"SELECT time_to FROM database WHERE user_id = {person_id}")
+        repair_time_to = cursor.fetchone()
+        if repair_time_to == 0:
+            cursor.execute("UPDATE database SET maybe = ? WHERE user_id = ?", ("30", person_id,))
+        else:
+            pass
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
         data_call_group = cursor.fetchone()
         if data_call_group is None:
@@ -1147,6 +1159,18 @@ def callback_inline(call):
             loginchat = f"{call.message.chat.first_name}"
         else:
             loginchat = f"{call.message.chat.first_name} {call.message.chat.last_name}"
+        cursor.execute(f"SELECT maybe FROM database WHERE user_id = {person_id}")
+        repair_maybe = cursor.fetchone()
+        if repair_maybe == 30:
+            cursor.execute("UPDATE database SET maybe = ? WHERE user_id = ?", ("0", person_id,))
+        else:
+            pass
+        cursor.execute(f"SELECT time_to FROM database WHERE user_id = {person_id}")
+        repair_time_to = cursor.fetchone()
+        if repair_time_to == 0:
+            cursor.execute("UPDATE database SET maybe = ? WHERE user_id = ?", ("30", person_id,))
+        else:
+            pass
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
         data_call_group = cursor.fetchone()
         if data_call_group is None:
@@ -1164,6 +1188,18 @@ def callback_inline(call):
             loginchat = f"{call.message.chat.first_name}"
         else:
             loginchat = f"{call.message.chat.first_name} {call.message.chat.last_name}"
+        cursor.execute(f"SELECT maybe FROM database WHERE user_id = {person_id}")
+        repair_maybe = cursor.fetchone()
+        if repair_maybe == 30:
+            cursor.execute("UPDATE database SET maybe = ? WHERE user_id = ?", ("0", person_id,))
+        else:
+            pass
+        cursor.execute(f"SELECT time_to FROM database WHERE user_id = {person_id}")
+        repair_time_to = cursor.fetchone()
+        if repair_time_to == 0:
+            cursor.execute("UPDATE database SET maybe = ? WHERE user_id = ?", ("30", person_id,))
+        else:
+            pass
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
         data_call_group = cursor.fetchone()
         if data_call_group is None:
