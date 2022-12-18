@@ -1127,14 +1127,6 @@ def callback_inline(call):
             loginchat = f"{call.message.chat.first_name}"
         else:
             loginchat = f"{call.message.chat.first_name} {call.message.chat.last_name}"
-        cursor.execute(f"SELECT maybe FROM database WHERE user_id = {person_id}")
-        repair_maybe = cursor.fetchone()
-        if repair_maybe != 0 or repair_maybe != 1:
-            cursor.execute("UPDATE database SET maybe = ? WHERE user_id = ?", ("0", person_id,))
-        cursor.execute(f"SELECT time_to FROM database WHERE user_id = {person_id}")
-        repair_time_to = cursor.fetchone()
-        if repair_time_to != 10 or repair_time_to != 30 or repair_time_to != 60:
-            cursor.execute("UPDATE database SET maybe = ? WHERE user_id = ?", ("30", person_id,))
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
         data_call_group = cursor.fetchone()
         if data_call_group is None:
@@ -1152,14 +1144,6 @@ def callback_inline(call):
             loginchat = f"{call.message.chat.first_name}"
         else:
             loginchat = f"{call.message.chat.first_name} {call.message.chat.last_name}"
-        cursor.execute(f"SELECT maybe FROM database WHERE user_id = {person_id}")
-        repair_maybe = cursor.fetchone()
-        if repair_maybe != 1 or repair_maybe != 0:
-            cursor.execute("UPDATE database SET maybe = ? WHERE user_id = ?", ("0", person_id,))
-        cursor.execute(f"SELECT time_to FROM database WHERE user_id = {person_id}")
-        repair_time_to = cursor.fetchone()
-        if repair_time_to != 10 or repair_time_to != 30 or repair_time_to != 60:
-            cursor.execute("UPDATE database SET maybe = ? WHERE user_id = ?", ("30", person_id,))
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
         data_call_group = cursor.fetchone()
         if data_call_group is None:
@@ -1177,14 +1161,6 @@ def callback_inline(call):
             loginchat = f"{call.message.chat.first_name}"
         else:
             loginchat = f"{call.message.chat.first_name} {call.message.chat.last_name}"
-        cursor.execute(f"SELECT maybe FROM database WHERE user_id = {person_id}")
-        repair_maybe = cursor.fetchone()
-        if repair_maybe != "1" or repair_maybe != "0":
-            cursor.execute("UPDATE database SET maybe = ? WHERE user_id = ?", ("0", person_id,))
-        cursor.execute(f"SELECT time_to FROM database WHERE user_id = {person_id}")
-        repair_time_to = cursor.fetchone()
-        if repair_time_to != "10" or repair_time_to != "30" or repair_time_to != "60":
-            cursor.execute("UPDATE database SET maybe = ? WHERE user_id = ?", ("30", person_id,))
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
         data_call_group = cursor.fetchone()
         if data_call_group is None:
@@ -1245,6 +1221,13 @@ def callback_inline(call):
                 item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_settings")
                 markup_check_maybe_on.add(item1, item2)
                 bot.edit_message_text("🔘 СПОВІЩЕННЯ ПРО МОЖЛИВІ ВІДКЛЮЧЕННЯ:: \n\n✅ На даний момент сповіщення про можливі відключення світла підключені. \nДля відключення натисніть на кнопку нижче:", reply_markup=markup_check_maybe_on, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            else:
+                markup_check_maybe_off = types.InlineKeyboardMarkup(row_width=1)
+                item1 = types.InlineKeyboardButton("🔘 Включити сповіщення про можливі відключення", callback_data="maybe_notice_on")
+                item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_settings")
+                markup_check_maybe_off.add(item1, item2)
+                bot.edit_message_text("🔘 СПОВІЩЕННЯ ПРО МОЖЛИВІ ВІДКЛЮЧЕННЯ: \n\n• При включенні цієї функції, бот буде надсилати сповіщення про можливі відключення(детальніше про це на фото вашого графіку).\n❌ На даний момент дані сповіщення відключені, для включення натисніть на кнопку нижче:", reply_markup=markup_check_maybe_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
+                cursor.execute(f"UPDATE database SET maybe = 0 WHERE user_id = {person_id}")
         except:
             bot.edit_message_text("Помилка! Попробуйте підключитись до вашої групи.", reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
         connect.commit()
@@ -1279,6 +1262,10 @@ def callback_inline(call):
             elif data_check_time_to[0] == 60:
                 time_to_off_stiker = "6️⃣0️⃣"
                 bot.edit_message_text(f"🕐 ЧАС ДО НАДСИЛАННЯ СПОВІЩЕННЯ: \n\n• Тут ви можете змінити час до надсилання сповіщень, від 10 до 60 хвилин.\n• На цей момент сповіщенням вам будуть надсилатися за {time_to_off_stiker} хвилин до відключення світла, щоб змінити, натисніть на одну з кнопок нижче:", reply_markup=markup_check_time_to_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            else:
+                time_to_off_stiker = "3️⃣0️⃣"
+                bot.edit_message_text(f"🕐 ЧАС ДО НАДСИЛАННЯ СПОВІЩЕННЯ: \n\n• Тут ви можете змінити час до надсилання сповіщень, від 10 до 60 хвилин.\n• На цей момент сповіщенням вам будуть надсилатися за {time_to_off_stiker} хвилин до відключення світла, щоб змінити, натисніть на одну з кнопок нижче:", reply_markup=markup_check_time_to_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
+                cursor.execute(f"UPDATE database SET time_to = 30 WHERE user_id = {person_id}")
         except:
             pass
         connect.commit()
