@@ -71,6 +71,8 @@ def send(message: types.Message):
     if message.from_user.id == 880691612 or message.from_user.id == 720509891:
         connect = sqlite3.connect('database.db')
         cursor = connect.cursor()
+        cursor.execute("UPDATE database SET maybe = ? WHERE maybe != ? AND maybe != ?", ("0", "0", "1",))
+        cursor.execute("UPDATE database SET time_to = ? WHERE time_to != ? AND time_to != ? AND time_to != ?", ("30", "10", "30", "60",))
         result_all = cursor.execute("SELECT COUNT(*) FROM database").fetchone()
         result_active = cursor.execute("SELECT COUNT(*) FROM database WHERE active = 1").fetchone()
         result_not_active = cursor.execute("SELECT COUNT(*) FROM database WHERE active = 0").fetchone()
