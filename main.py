@@ -69,7 +69,7 @@ def send(message: types.Message):
 # Підрахунок скільки користувачів в боті
 @bot.message_handler(commands=['stats'])
 def send(message: types.Message):
-    if message.from_user.id == 880691612 or message_from_user.id == 720509891:
+    if message.from_user.id == 880691612 or message.from_user.id == 720509891:
         connect = sqlite3.connect('database.db')
         cursor = connect.cursor()
         result_all = cursor.execute("SELECT COUNT(*) FROM database").fetchone()
