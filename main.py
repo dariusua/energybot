@@ -92,7 +92,7 @@ def send(message: types.Message):
         bot.send_message(message.from_user.id, "Для виконання цієї команди Ви повинні бути адміном.")
 
 @bot.message_handler(commands=['fix'])
-def fix_bugs():
+def fix_bugs(message: types.Message):
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
     cursor.execute("UPDATE database SET maybe = ? WHERE maybe != ? AND maybe != ?", ("0", "0", "1",))
