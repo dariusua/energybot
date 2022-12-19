@@ -66,6 +66,33 @@ def send(message: types.Message):
     else:
         bot.send_message(message.from_user.id, "Для виконання цієї команди Ви повинні бути адміном.")
 
+# Підрахунок скільки користувачів в боті
+@bot.message_handler(commands=['stats'])
+def send(message: types.Message):
+    if message.from_user.id == 880691612 or message_from_user.id == 720509891:
+        connect = sqlite3.connect('database.db')
+        cursor = connect.cursor()
+        result_all = cursor.execute("SELECT COUNT(*) FROM database").fetchone()
+        result_active = cursor.execute("SELECT COUNT(*) FROM database WHERE active = 1").fetchone()
+        result_not_active = cursor.execute("SELECT COUNT(*) FROM database WHERE active = 0").fetchone()
+        result_g1 = cursor.execute("SELECT COUNT(*) FROM database WHERE group_number = 1").fetchone()
+        result_g2 = cursor.execute("SELECT COUNT(*) FROM database WHERE group_number = 2").fetchone()
+        result_g3 = cursor.execute("SELECT COUNT(*) FROM database WHERE group_number = 3").fetchone()
+        result_night = cursor.execute("SELECT COUNT(*) FROM database WHERE night = 1").fetchone()
+        result_maybe = cursor.execute("SELECT COUNT(*) FROM database WHERE maybe = 1").fetchone()
+        result_night_maybe = cursor.execute("SELECT COUNT(*) FROM database WHERE night = 1 AND maybe = 1").fetchone()
+        result_time10 = cursor.execute("SELECT COUNT(*) FROM database WHERE time_to = 10").fetchone()
+        result_time30 = cursor.execute("SELECT COUNT(*) FROM database WHERE time_to = 30").fetchone()
+        result_time60 = cursor.execute("SELECT COUNT(*) FROM database WHERE time_to = 60").fetchone()
+        result_bagged_users_night = cursor.execute("SELECT COUNT(*) FROM database WHERE night != 1 AND night != 0").fetchone()
+        result_bagged_users_maybe = cursor.execute("SELECT COUNT(*) FROM database WHERE maybe != 1 AND maybe != 0").fetchone()
+        result_bagged_users_time_to = cursor.execute("SELECT COUNT(*) FROM database WHERE time_to != 10 AND time_to != 30 AND time_to != 60").fetchone()
+        result_bagged_users = result_bagged_users_night[0] + result_bagged_users_maybe[0] + result_bagged_users_time_to[0]
+        bot.send_message(880691612, f"📊 Статистика всіх користувачів: \n\nАктивних користувачів: {result_active[0]} \nНеактивних користувачів: {result_not_active[0]} \n\nКористувачів 1 групи: {result_g1[0]} \nКористувачів 2 групи: {result_g2[0]} \nКористувачів 3 групи: {result_g3[0]} \n\nКористувачів, які користуються нічними сповіщеннями: {result_night[0]} \nКористувачів, які користуються сповіщеннями про можливі відключення: {result_maybe[0]} \nКористувачів, які користуються нічними сповіщеннями та сповіщення про можливі відключення: {result_night_maybe[0]} \n\nКористувачів, яким сповіщення приходять за 10 хвилин до відключення: {result_time10[0]} \nКористувачів, яким сповіщення приходять за 30 хвилин до відключення: {result_time30[0]} \nКористувачів, яким сповіщення приходять за 60 хвилин до відключення: {result_time60[0]} \n\nКористувачів, в яких виникла помилка та не надсилаються сповіщення: {result_bagged_users} \n\nВсього користувачів: {result_all[0]}")
+        connect.commit()
+    else:
+        bot.send_message(message.from_user.id, "Для виконання цієї команди Ви повинні бути адміном.")
+
 # Робота кнопок
 @bot.message_handler(content_types='text')
 def message_reply(message: types.Message):
