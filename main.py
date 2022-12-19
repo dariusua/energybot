@@ -91,7 +91,7 @@ def send(message: types.Message):
     else:
         bot.send_message(message.from_user.id, "Для виконання цієї команди Ви повинні бути адміном.")
 
-@bot.message_handler(commands='fix')
+@bot.message_handler(commands=['fix'])
 def fix_bugs():
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
@@ -154,6 +154,12 @@ def message_reply(message: types.Message):
         pass
 
     elif message.text == "/send":
+        pass
+
+    elif message.text == "/fix":
+        pass
+
+    elif message.text == "/stats":
         pass
 
     else:
