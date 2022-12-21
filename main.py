@@ -117,7 +117,7 @@ def message_reply(message: types.Message):
         bot.send_message(880691612, f"<a href='tg://user?id={person_id}'>{loginchat}</a> відключився від сповіщень", parse_mode='HTML')
 
 # Надсилання фото з графіком відключень
-    elif message.text == "🖼 Повний графік(фото)" or message.text == "📖 Повний графік(фото)" or message.text == "Повний графік(фото)":
+    elif message.text == "🖼 Повний графік(фото)" or message.text == "📖 Повний графік(фото)":
         data_photo = cursor.execute("SELECT group_number FROM database WHERE user_id = ?", (message.from_user.id,)).fetchone()
         try:
             if data_photo[0] == 1:
