@@ -169,8 +169,6 @@ def send(group, night, maybe, time_to, whattext):
     global group_number, text, results
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
-    if what == "":
-    
     if night == 0 and maybe == 0:
         results = cursor.execute(f"SELECT user_id FROM database WHERE group_number = {group} AND time_to = {time_to}").fetchall()
     elif night == 1 and maybe == 0:
