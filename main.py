@@ -656,7 +656,7 @@ def callback_inline(call):
                 pass
         except:
             pass
-    connect.commit()
+        connect.commit()
 
     elif call.data == 'maybe_notice_on':
         cursor.execute(f"UPDATE database SET maybe = 1 WHERE user_id = {person_id}")
