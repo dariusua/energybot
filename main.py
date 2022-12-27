@@ -12,8 +12,8 @@ from config import TOKEN
 
 
 logging.basicConfig(level=logging.INFO)
-bot = telebot.TeleBot("5976583067:AAHW-opSW5CAL_7ZxNzx_wRXFD1JMyTlrq4")
-#bot = telebot.TeleBot(TOKEN)
+#bot = telebot.TeleBot("5976583067:AAHW-opSW5CAL_7ZxNzx_wRXFD1JMyTlrq4")
+bot = telebot.TeleBot(TOKEN)
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 item1 = types.KeyboardButton("✅ Підключити сповіщення")
@@ -208,8 +208,6 @@ def send(group, night, maybe, time_to, whattext):
             cursor.execute(f"UPDATE database SET active = 1 WHERE user_id = {active_value}")
             time.sleep(1)
     connect.commit()
-
-schedule.every(15).seconds.do(send, 3, 1, 1, 60, 1)
 
 #Розсилка для 1 групи
 schedule.every().sunday.at("22:00").do(send, 1, 1, 0, 60, 1)
