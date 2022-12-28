@@ -29,13 +29,6 @@ item3 = types.InlineKeyboardButton(text="🕐 Час до надсилання �
 item4 = types.InlineKeyboardButton(text="⬅ Назад", callback_data='back')
 markup_settings.add(item1, item2, item3, item4)
 
-@bot.message_handler(commands=['test'])
-def tests(message: types.Message):
-    connect = sqlite3.connect('database.db')
-    cursor = connect.cursor()
-    text = cursor.execute("SELECT * FROM database").fetchall()
-    bot.send_message(880691612, text[0])
-
 # Початок роботи, створення бази даних
 @bot.message_handler(commands=['start'])
 def start(message: types.Message):
@@ -163,6 +156,11 @@ def message_reply(message: types.Message):
 
     else:
         bot.send_message(message.from_user.id, "Цієї команди не існує.")
+
+def checkworkingbot():
+    bot.send_message(880691612, ".")
+
+schedule.every(60).minutes.do(checkworkingbot)
 
 # Функція розсилки
 def send(group, night, maybe, time_to, whattext):
