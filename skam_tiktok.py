@@ -4,7 +4,6 @@ import telebot
 from telebot import types
 
 
-logging.basicConfig(level=logging.INFO)
 bot = telebot.TeleBot("5847837649:AAE2ekLBWbKksrx5derg74Shy_sA_qjMDAU")
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
