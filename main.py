@@ -1,4 +1,4 @@
-#  ENERGYLOEBOT version 1.5 by dariusua
+#  ENERGYLOEBOT version 1.5.2 by dariusua
 
 import sqlite3
 import time
@@ -113,8 +113,7 @@ def message_reply(message: types.Message):
         item1 = types.InlineKeyboardButton(text="Група 1", callback_data='group1')
         item2 = types.InlineKeyboardButton(text="Група 2", callback_data='group2')
         item3 = types.InlineKeyboardButton(text="Група 3", callback_data='group3')
-        WebApp = types.WebAppInfo("https://poweroff.loe.lviv.ua/gav_city3")
-        learngroup = types.InlineKeyboardButton(text="Дізнатись свою групу", web_app=WebApp)
+        learngroup = types.InlineKeyboardButton(text="Дізнатись свою групу", url='https://poweroff.loe.lviv.ua/gav_city3')
         markup_group.add(item1, item2, item3, learngroup)
         try:
             bot.send_message(message.chat.id, f'✅ Для підключення сповіщень про відключення світла Вам необхідно натиснути на кнопку з номером вашої групи. \n❓ Щоб дізнатись номер вашої групи, натисніть на кнопку "Дізнатись свою групу", та перейшовши за посиланням і ввівши свої дані, ви зможете дізнатись свою групу.', reply_markup=markup_group)
