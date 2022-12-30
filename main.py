@@ -44,7 +44,10 @@ def start(message: types.Message):
     # time_to INTEGER DEFAULT(30)
     # timeconnect INTEGER DEFAULT(0)
     connect.commit()
-    bot.send_message(message.from_user.id, f'Привіт 👋 \n\n🤖 Цей бот створений задля сповіщення користувачів "Львівобленерго" про планові відключення у вашому населеному пункті. \n✏️ Бот буде відсилати повідомлення з попередженням за 30 хвилин до відключення світла. \n❗️ Бот не є офіційним! \n\n📋 Для підключення сповіщень, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
+    try:
+        bot.send_message(message.from_user.id, f'Привіт 👋 \n\n🤖 Цей бот створений задля сповіщення користувачів "Львівобленерго" про планові відключення у вашому населеному пункті. \n✏️ Бот буде відсилати повідомлення з попередженням за 30 хвилин до відключення світла. \n❗️ Бот не є офіційним! \n\n📋 Для підключення сповіщень, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
+    except telebot.apihelper.ApiTelegramException:
+        pass
 
 # Функція розсилки через команду
 @bot.message_handler(commands=['send'])
@@ -58,14 +61,17 @@ def sendforall(message: types.Message):
             active_value = row[0]
             set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
             try:
-                bot.send_message(row[0], {text})
+                bot.send_message(row[0], text)
                 if set_active != 1:
                     cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
             except:
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
         connect.commit()
     else:
-        bot.send_message(message.from_user.id, "Для виконання цієї команди Ви повинні бути адміном.")
+        try:
+            bot.send_message(message.from_user.id, "Для виконання цієї команди Ви повинні бути адміном.")
+        except telebot.apihelper.ApiTelegramException:
+            pass
 
 # Підрахунок скільки користувачів в боті
 @bot.message_handler(commands=['stats'])
@@ -89,7 +95,10 @@ def stats(message: types.Message):
         bot.send_message(message.from_user.id, f"📊 Статистика всіх користувачів: \n\nАктивних користувачів: {result_active[0]} \nНеактивних користувачів: {result_not_active[0]} \n\nКористувачів 1 групи: {result_g1[0]} \nКористувачів 2 групи: {result_g2[0]} \nКористувачів 3 групи: {result_g3[0]} \n\nКористувачів, які користуються нічними сповіщеннями: {result_night[0]} \nКористувачів, які користуються сповіщеннями про можливі відключення: {result_maybe[0]} \nКористувачів, які користуються нічними сповіщеннями та сповіщення про можливі відключення: {result_night_maybe[0]} \n\nКористувачів, яким сповіщення приходять за 10 хвилин до відключення: {result_time10[0]} \nКористувачів, яким сповіщення приходять за 30 хвилин до відключення: {result_time30[0]} \nКористувачів, яким сповіщення приходять за 60 хвилин до відключення: {result_time60[0]} \n\nКористувачів, в яких виникла помилка та не надсилаються сповіщення: {result_bagged_users[0]} \n\nВсього користувачів: {result_all[0]}")
         connect.commit()
     else:
-        bot.send_message(message.from_user.id, "Для виконання цієї команди Ви повинні бути адміном.")
+        try:
+            bot.send_message(message.from_user.id, "Для виконання цієї команди Ви повинні бути адміном.")
+        except telebot.apihelper.ApiTelegramException:
+            pass
 
 # Робота кнопок
 @bot.message_handler(content_types='text')
@@ -104,9 +113,13 @@ def message_reply(message: types.Message):
         item1 = types.InlineKeyboardButton(text="Група 1", callback_data='group1')
         item2 = types.InlineKeyboardButton(text="Група 2", callback_data='group2')
         item3 = types.InlineKeyboardButton(text="Група 3", callback_data='group3')
-        learngroup = types.InlineKeyboardButton(text="Дізнатись свою групу", url='https://poweroff.loe.lviv.ua/gav_city3')
+        WebApp = types.WebAppInfo("https://poweroff.loe.lviv.ua/gav_city3")
+        learngroup = types.InlineKeyboardButton(text="Дізнатись свою групу", web_app=WebApp)
         markup_group.add(item1, item2, item3, learngroup)
-        bot.send_message(message.chat.id, f'✅ Для підключення сповіщень про відключення світла Вам необхідно натиснути на кнопку з номером вашої групи. \n❓ Щоб дізнатись номер вашої групи, натисніть на кнопку "Дізнатись свою групу", та перейшовши за посиланням і ввівши свої дані, ви зможете дізнатись свою групу.', reply_markup=markup_group)
+        try:
+            bot.send_message(message.chat.id, f'✅ Для підключення сповіщень про відключення світла Вам необхідно натиснути на кнопку з номером вашої групи. \n❓ Щоб дізнатись номер вашої групи, натисніть на кнопку "Дізнатись свою групу", та перейшовши за посиланням і ввівши свої дані, ви зможете дізнатись свою групу.', reply_markup=markup_group)
+        except telebot.apihelper.ApiTelegramException:
+            pass
 
 # Відключити сповіщень
     elif message.text == "🔕 Відключити сповіщення":
@@ -115,7 +128,10 @@ def message_reply(message: types.Message):
         else:
             loginchat = f"{message.from_user.first_name} {message.from_user.last_name}"
         cursor.execute("DELETE FROM `database` WHERE `user_id` = ?", (person_id,))
-        bot.send_message(message.from_user.id, '❌ Ви відключилися від сповіщень про відключення електроенергії. Дякуємо за використання бота!😢 \n\nЩоб підключитись знову, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
+        try:
+            bot.send_message(message.from_user.id, '❌ Ви відключилися від сповіщень про відключення електроенергії. Дякуємо за використання бота!😢 \n\nЩоб підключитись знову, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
+        except telebot.apihelper.ApiTelegramException:
+            pass
         bot.send_message(880691612, f"<a href='tg://user?id={person_id}'>{loginchat}</a> відключився від сповіщень", parse_mode='HTML')
 
 # Надсилання фото з графіком відключень
@@ -124,23 +140,41 @@ def message_reply(message: types.Message):
         try:
             if data_photo[0] == 1:
                 photo = open('1group.png', 'rb')
-                bot.send_photo(message.from_user.id, photo)
+                try:
+                    bot.send_photo(message.from_user.id, photo)
+                except telebot.apihelper.ApiTelegramException:
+                    pass
             elif data_photo[0] == 2:
                 photo = open('2group.png', 'rb')
-                bot.send_photo(message.from_user.id, photo)
+                try:
+                    bot.send_photo(message.from_user.id, photo)
+                except telebot.apihelper.ApiTelegramException:
+                    pass
             elif data_photo[0] == 3:
                 photo = open('3group.png', 'rb')
-                bot.send_photo(message.from_user.id, photo)
+                try:
+                    bot.send_photo(message.from_user.id, photo)
+                except telebot.apihelper.ApiTelegramException:
+                    pass
         except:
-            bot.send_message(message.from_user.id, "Помилка! Попробуйте підключитись до вашої групи.")
+            try:
+                bot.send_message(message.from_user.id, "Помилка! Попробуйте підключитись до вашої групи.")
+            except telebot.apihelper.ApiTelegramException:
+                pass
         connect.commit()
 
 # Налаштування
     elif message.text == "⚙ Налаштування":
-        bot.send_message(message.from_user.id, "⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings)
+        try:
+            bot.send_message(message.from_user.id, "⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings)
+        except telebot.apihelper.ApiTelegramException:
+            pass
 
     elif message.text == "⬅ Назад":
-        bot.send_message(message.from_user.id, "МЕНЮ:", reply_markup=markup)
+        try:
+            bot.send_message(message.from_user.id, "МЕНЮ:", reply_markup=markup)
+        except telebot.apihelper.ApiTelegramException:
+            pass
 
     elif message.text == "/start":
         pass
@@ -155,7 +189,10 @@ def message_reply(message: types.Message):
         pass
 
     else:
-        bot.send_message(message.from_user.id, "Цієї команди не існує.")
+        try:
+            bot.send_message(message.from_user.id, "Цієї команди не існує.")
+        except telebot.apihelper.ApiTelegramException:
+            pass
 
 def checkworkingbot():
     bot.send_message(880691612, ".")
@@ -742,4 +779,4 @@ def callback_inline(call):
             pass
 
 
-bot.polling()
+bot.infinity_polling()
