@@ -1,2 +1,5 @@
 __pycache__
+database.db
 config.py
+restoredb.py
+result.json

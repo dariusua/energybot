@@ -12,7 +12,6 @@ from config import TOKEN
 
 
 logging.basicConfig(level=logging.INFO)
-#bot = telebot.TeleBot("5976583067:AAHW-opSW5CAL_7ZxNzx_wRXFD1JMyTlrq4")
 bot = telebot.TeleBot(TOKEN)
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -126,7 +125,7 @@ def message_reply(message: types.Message):
             loginchat = f"{message.from_user.first_name}"
         else:
             loginchat = f"{message.from_user.first_name} {message.from_user.last_name}"
-        cursor.execute("DELETE FROM `database` WHERE `user_id` = ?", (person_id,))
+        cursor.execute("DELETE FROM 'database' WHERE 'user_id' = ?", (person_id,))
         try:
             bot.send_message(message.from_user.id, '❌ Ви відключилися від сповіщень про відключення електроенергії. Дякуємо за використання бота!😢 \n\nЩоб підключитись знову, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
         except telebot.apihelper.ApiTelegramException:
@@ -138,19 +137,19 @@ def message_reply(message: types.Message):
         data_photo = cursor.execute("SELECT group_number FROM database WHERE user_id = ?", (message.from_user.id,)).fetchone()
         try:
             if data_photo[0] == 1:
-                photo = open('1group.png', 'rb')
+                photo = open('1group.png' 'rb')
                 try:
                     bot.send_photo(message.from_user.id, photo)
                 except telebot.apihelper.ApiTelegramException:
                     pass
             elif data_photo[0] == 2:
-                photo = open('2group.png', 'rb')
+                photo = open('2group.png' 'rb')
                 try:
                     bot.send_photo(message.from_user.id, photo)
                 except telebot.apihelper.ApiTelegramException:
                     pass
             elif data_photo[0] == 3:
-                photo = open('3group.png', 'rb')
+                photo = open('3group.png' 'rb')
                 try:
                     bot.send_photo(message.from_user.id, photo)
                 except telebot.apihelper.ApiTelegramException:
@@ -532,6 +531,7 @@ def callback_inline(call):
     connect = sqlite3.connect('database.db')
     cursor = connect.cursor()
     person_id = call.message.chat.id
+    message_id = call.message.message_id
 
 # Підключення до 1 групи
     if call.data == 'group1':
@@ -556,7 +556,7 @@ def callback_inline(call):
             pass
         connect.commit()
         try:
-            bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 1️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за {data_time_to[0]} хвилин до відключення світла. \n{night} \n\nЩоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 1️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за {data_time_to[0]} хвилин до відключення світла. \n{night} \n\nЩоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=person_id, message_id=message_id)
         except telebot.apihelper.ApiTelegramException:
             pass
         bot.send_message(880691612, f"<a href='tg://user?id={person_id}'>{loginchat}</a> підключився(-лась) до 1 групи", parse_mode='HTML')
@@ -584,7 +584,7 @@ def callback_inline(call):
             pass
         connect.commit()
         try:
-            bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 2️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за {data_time_to[0]} хвилин до відключення світла. \n{night} \n\nЩоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 2️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за {data_time_to[0]} хвилин до відключення світла. \n{night} \n\nЩоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=person_id, message_id=message_id)
         except telebot.apihelper.ApiTelegramException:
             pass
         bot.send_message(880691612, f"<a href='tg://user?id={person_id}'>{loginchat}</a> підключився(-лась) до 2 групи", parse_mode='HTML')
@@ -614,7 +614,7 @@ def callback_inline(call):
             pass
         connect.commit()
         try:
-            bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 3️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за {data_time_to[0]} хвилин до відключення світла. \n{night}\n\nЩоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 3️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за {data_time_to[0]} хвилин до відключення світла. \n{night}\n\nЩоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=person_id, message_id=message_id)
         except telebot.apihelper.ApiTelegramException:
             pass
         bot.send_message(880691612, f"<a href='tg://user?id={person_id}'>{loginchat}</a> підключився(-лась) до 3 групи", parse_mode='HTML')
@@ -631,7 +631,7 @@ def callback_inline(call):
                 item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_settings")
                 markup_check_night_off.add(item1, item2)
                 try:
-                    bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\n• При включенні цієї функції, бот буде надсилати сповіщення в нічний період(з 00:00 до 07:59). \n❌ На даний момент такі сповіщення відключені, для включення натисніть на кнопку нижче:", reply_markup=markup_check_night_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
+                    bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\n• При включенні цієї функції, бот буде надсилати сповіщення в нічний період(з 00:00 до 07:59). \n❌ На даний момент такі сповіщення відключені, для включення натисніть на кнопку нижче:", reply_markup=markup_check_night_off, chat_id=person_id, message_id=message_id)
                 except telebot.apihelper.ApiTelegramException:
                     pass
             elif data_check_night[0] == 1:
@@ -640,7 +640,7 @@ def callback_inline(call):
                 item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_settings")
                 markup_check_night_on.add(item1, item2)
                 try:
-                    bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\n✅ На даний момент сповіщення в нічний період(з 00:00 до 07:59) підключені. \nДля відключення натисніть на кнопку нижче:", reply_markup=markup_check_night_on, chat_id=call.message.chat.id, message_id=call.message.message_id)
+                    bot.edit_message_text("🌙 НІЧНІ СПОВІЩЕННЯ: \n\n✅ На даний момент сповіщення в нічний період(з 00:00 до 07:59) підключені. \nДля відключення натисніть на кнопку нижче:", reply_markup=markup_check_night_on, chat_id=person_id, message_id=message_id)
                 except telebot.apihelper.ApiTelegramException:
                     pass
         except:
@@ -650,7 +650,7 @@ def callback_inline(call):
     elif call.data == 'night_notice_on':
         cursor.execute(f"UPDATE database SET night = 1 WHERE user_id = {person_id}")
         try:
-            bot.edit_message_text("✅ Ви успішно включили нічні сповіщення. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            bot.edit_message_text("✅ Ви успішно включили нічні сповіщення. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=person_id, message_id=message_id)
         except telebot.apihelper.ApiTelegramException:
             pass
         connect.commit()
@@ -658,7 +658,7 @@ def callback_inline(call):
     elif call.data == 'night_notice_off':
         cursor.execute(f"UPDATE database SET night = 0 WHERE user_id = {person_id}")
         try:
-            bot.edit_message_text("❌ Ви відключили нічні сповіщення. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            bot.edit_message_text("❌ Ви відключили нічні сповіщення. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=person_id, message_id=message_id)
         except telebot.apihelper.ApiTelegramException:
             pass
         connect.commit()
@@ -674,7 +674,7 @@ def callback_inline(call):
                 item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_settings")
                 markup_check_maybe_off.add(item1, item2)
                 try:
-                    bot.edit_message_text("🔘 СПОВІЩЕННЯ ПРО МОЖЛИВІ ВІДКЛЮЧЕННЯ: \n\n• При включенні цієї функції, бот буде надсилати сповіщення про можливі відключення(детальніше про це на фото вашого графіку).\n❌ На даний момент дані сповіщення відключені, для включення натисніть на кнопку нижче:", reply_markup=markup_check_maybe_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
+                    bot.edit_message_text("🔘 СПОВІЩЕННЯ ПРО МОЖЛИВІ ВІДКЛЮЧЕННЯ: \n\n• При включенні цієї функції, бот буде надсилати сповіщення про можливі відключення(детальніше про це на фото вашого графіку).\n❌ На даний момент дані сповіщення відключені, для включення натисніть на кнопку нижче:", reply_markup=markup_check_maybe_off, chat_id=person_id, message_id=message_id)
                 except telebot.apihelper.ApiTelegramException:
                     pass
             elif data_check_maybe[0] == 1:
@@ -683,7 +683,7 @@ def callback_inline(call):
                 item2 = types.InlineKeyboardButton("⬅ Назад", callback_data="back_to_settings")
                 markup_check_maybe_on.add(item1, item2)
                 try:
-                    bot.edit_message_text("🔘 СПОВІЩЕННЯ ПРО МОЖЛИВІ ВІДКЛЮЧЕННЯ: \n\n✅ На даний момент сповіщення про можливі відключення світла підключені. \nДля відключення натисніть на кнопку нижче:", reply_markup=markup_check_maybe_on, chat_id=call.message.chat.id, message_id=call.message.message_id)
+                    bot.edit_message_text("🔘 СПОВІЩЕННЯ ПРО МОЖЛИВІ ВІДКЛЮЧЕННЯ: \n\n✅ На даний момент сповіщення про можливі відключення світла підключені. \nДля відключення натисніть на кнопку нижче:", reply_markup=markup_check_maybe_on, chat_id=person_id, message_id=message_id)
                 except telebot.apihelper.ApiTelegramException:
                     pass
             else:
@@ -695,7 +695,7 @@ def callback_inline(call):
     elif call.data == 'maybe_notice_on':
         cursor.execute(f"UPDATE database SET maybe = 1 WHERE user_id = {person_id}")
         try:
-            bot.edit_message_text("✅ Ви успішно включили сповіщення про можливі відключення світла. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            bot.edit_message_text("✅ Ви успішно включили сповіщення про можливі відключення світла. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=person_id, message_id=message_id)
         except telebot.apihelper.ApiTelegramException:
             pass
         connect.commit()
@@ -703,7 +703,7 @@ def callback_inline(call):
     elif call.data == 'maybe_notice_off':
         cursor.execute(f"UPDATE database SET maybe = 0 WHERE user_id = {person_id}")
         try:
-            bot.edit_message_text("❌ Ви відключили сповіщення про можливі відключення світла. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            bot.edit_message_text("❌ Ви відключили сповіщення про можливі відключення світла. \n\n⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=person_id, message_id=message_id)
         except telebot.apihelper.ApiTelegramException:
             pass
         connect.commit()
@@ -722,19 +722,19 @@ def callback_inline(call):
             if data_check_time_to[0] == 10:
                 time_to_off_stiker = "🔟"
                 try:
-                    bot.edit_message_text(f"🕐 ЧАС ДО НАДСИЛАННЯ СПОВІЩЕННЯ: \n\n• Тут ви можете змінити час до надсилання сповіщень, від 10 до 60 хвилин.\n• На цей момент сповіщенням вам будуть надсилатися за {time_to_off_stiker} хвилин до відключення світла, щоб змінити, натисніть на одну з кнопок нижче:", reply_markup=markup_check_time_to_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
+                    bot.edit_message_text(f"🕐 ЧАС ДО НАДСИЛАННЯ СПОВІЩЕННЯ: \n\n• Тут ви можете змінити час до надсилання сповіщень, від 10 до 60 хвилин.\n• На цей момент сповіщенням вам будуть надсилатися за {time_to_off_stiker} хвилин до відключення світла, щоб змінити, натисніть на одну з кнопок нижче:", reply_markup=markup_check_time_to_off, chat_id=person_id, message_id=message_id)
                 except telebot.apihelper.ApiTelegramException:
                     pass
             elif data_check_time_to[0] == 30:
                 time_to_off_stiker = "3️⃣0️⃣"
                 try:
-                    bot.edit_message_text(f"🕐 ЧАС ДО НАДСИЛАННЯ СПОВІЩЕННЯ: \n\n• Тут ви можете змінити час до надсилання сповіщень, від 10 до 60 хвилин.\n• На цей момент сповіщенням вам будуть надсилатися за {time_to_off_stiker} хвилин до відключення світла, щоб змінити, натисніть на одну з кнопок нижче:", reply_markup=markup_check_time_to_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
+                    bot.edit_message_text(f"🕐 ЧАС ДО НАДСИЛАННЯ СПОВІЩЕННЯ: \n\n• Тут ви можете змінити час до надсилання сповіщень, від 10 до 60 хвилин.\n• На цей момент сповіщенням вам будуть надсилатися за {time_to_off_stiker} хвилин до відключення світла, щоб змінити, натисніть на одну з кнопок нижче:", reply_markup=markup_check_time_to_off, chat_id=person_id, message_id=message_id)
                 except telebot.apihelper.ApiTelegramException:
                     pass
             elif data_check_time_to[0] == 60:
                 time_to_off_stiker = "6️⃣0️⃣"
                 try:
-                    bot.edit_message_text(f"🕐 ЧАС ДО НАДСИЛАННЯ СПОВІЩЕННЯ: \n\n• Тут ви можете змінити час до надсилання сповіщень, від 10 до 60 хвилин.\n• На цей момент сповіщенням вам будуть надсилатися за {time_to_off_stiker} хвилин до відключення світла, щоб змінити, натисніть на одну з кнопок нижче:", reply_markup=markup_check_time_to_off, chat_id=call.message.chat.id, message_id=call.message.message_id)
+                    bot.edit_message_text(f"🕐 ЧАС ДО НАДСИЛАННЯ СПОВІЩЕННЯ: \n\n• Тут ви можете змінити час до надсилання сповіщень, від 10 до 60 хвилин.\n• На цей момент сповіщенням вам будуть надсилатися за {time_to_off_stiker} хвилин до відключення світла, щоб змінити, натисніть на одну з кнопок нижче:", reply_markup=markup_check_time_to_off, chat_id=person_id, message_id=message_id)
                 except telebot.apihelper.ApiTelegramException:
                     pass
         except:
@@ -744,7 +744,7 @@ def callback_inline(call):
     elif call.data == 'set_10min':
         cursor.execute(f"UPDATE database SET time_to = 10 WHERE user_id = {person_id}")
         try:
-            bot.edit_message_text('✅ Ви успішно змінили час до надсилання сповіщень до 🔟 хвилин. \n\n⚙ НАЛАШТУВАННЯ:', reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            bot.edit_message_text('✅ Ви успішно змінили час до надсилання сповіщень до 🔟 хвилин. \n\n⚙ НАЛАШТУВАННЯ:', reply_markup=markup_settings, chat_id=person_id, message_id=message_id)
         except telebot.apihelper.ApiTelegramException:
             pass
         connect.commit()
@@ -752,7 +752,7 @@ def callback_inline(call):
     elif call.data == 'set_30min':
         cursor.execute(f"UPDATE database SET time_to = 30 WHERE user_id = {person_id}")
         try:
-            bot.edit_message_text('✅ Ви успішно змінили час до надсилання сповіщень до 3️⃣0️⃣ хвилин. \n\n⚙ НАЛАШТУВАННЯ:', reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            bot.edit_message_text('✅ Ви успішно змінили час до надсилання сповіщень до 3️⃣0️⃣ хвилин. \n\n⚙ НАЛАШТУВАННЯ:', reply_markup=markup_settings, chat_id=person_id, message_id=message_id)
         except telebot.apihelper.ApiTelegramException:
             pass
         connect.commit()
@@ -760,22 +760,21 @@ def callback_inline(call):
     elif call.data == 'set_60min':
         cursor.execute(f"UPDATE database SET time_to = 60 WHERE user_id = {person_id}")
         try:
-            bot.edit_message_text('✅ Ви успішно змінили час до надсилання сповіщень до ️6️⃣0️⃣ хвилин. \n\n⚙ НАЛАШТУВАННЯ:', reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            bot.edit_message_text('✅ Ви успішно змінили час до надсилання сповіщень до ️6️⃣0️⃣ хвилин. \n\n⚙ НАЛАШТУВАННЯ:', reply_markup=markup_settings, chat_id=person_id, message_id=message_id)
         except telebot.apihelper.ApiTelegramException:
             pass
         connect.commit()
 
     elif call.data == 'back_to_settings':
         try:
-            bot.edit_message_text("⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            bot.edit_message_text("⚙ НАЛАШТУВАННЯ:", reply_markup=markup_settings, chat_id=person_id, message_id=message_id)
         except telebot.apihelper.ApiTelegramException:
             pass
 
     elif call.data == 'back':
         try:
-            bot.edit_message_text("МЕНЮ:", reply_markup=None, chat_id=call.message.chat.id, message_id=call.message.message_id)
+            bot.edit_message_text("МЕНЮ:", reply_markup=None, chat_id=person_id, message_id=message_id)
         except telebot.apihelper.ApiTelegramException:
             pass
 
-
-bot.infinity_polling()
+bot.polling(none_stop=True)
