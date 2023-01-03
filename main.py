@@ -13,6 +13,7 @@ from config import TOKEN
 
 logging.basicConfig(level=logging.INFO)
 bot = telebot.TeleBot(TOKEN)
+timeworked = 0
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 item1 = types.KeyboardButton("✅ Підключити сповіщення")
@@ -135,21 +136,22 @@ def message_reply(message: types.Message):
 # Надсилання фото з графіком відключень
     elif message.text == "🖼 Повний графік(фото)" or message.text == "📖 Повний графік(фото)":
         data_photo = cursor.execute("SELECT group_number FROM database WHERE user_id = ?", (message.from_user.id,)).fetchone()
+        bot.send_message(880691612, data_photo[0])
         try:
             if data_photo[0] == 1:
-                photo = open('1group.png' 'rb')
+                photo = open('1group.png', 'rb')
                 try:
                     bot.send_photo(message.from_user.id, photo)
                 except telebot.apihelper.ApiTelegramException:
                     pass
             elif data_photo[0] == 2:
-                photo = open('2group.png' 'rb')
+                photo = open('2group.png', 'rb')
                 try:
                     bot.send_photo(message.from_user.id, photo)
                 except telebot.apihelper.ApiTelegramException:
                     pass
             elif data_photo[0] == 3:
-                photo = open('3group.png' 'rb')
+                photo = open('3group.png', 'rb')
                 try:
                     bot.send_photo(message.from_user.id, photo)
                 except telebot.apihelper.ApiTelegramException:
@@ -193,7 +195,9 @@ def message_reply(message: types.Message):
             pass
 
 def checkworkingbot():
-    bot.send_message(880691612, ".")
+    global timeworked
+    timeworked += 1
+    bot.send_message(880691612, f"Бот працює вже {timeworked} годин.")
 
 schedule.every(60).minutes.do(checkworkingbot)
 
