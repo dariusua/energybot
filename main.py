@@ -1,4 +1,4 @@
-#  ENERGYLOEBOT version 1.5.5 by dariusua
+#  ENERGYLOEBOT version 1.5.6 by dariusua
 
 import sqlite3
 import time
@@ -136,7 +136,6 @@ def message_reply(message: types.Message):
 # Надсилання фото з графіком відключень
     elif message.text == "🖼 Повний графік(фото)" or message.text == "📖 Повний графік(фото)":
         data_photo = cursor.execute("SELECT group_number FROM database WHERE user_id = ?", (message.from_user.id,)).fetchone()
-        bot.send_message(880691612, data_photo[0])
         try:
             if data_photo[0] == 1:
                 photo = open('1group.png', 'rb')
