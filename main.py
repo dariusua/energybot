@@ -1,4 +1,4 @@
-#  ENERGYLOEBOT version 1.5.2 by dariusua
+#  ENERGYLOEBOT version 1.5.5 by dariusua
 
 import sqlite3
 import time
@@ -542,7 +542,7 @@ def callback_inline(call):
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
         data_call_group = cursor.fetchone()
         if data_call_group is None:
-            cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?, ?, ?);", (person_id, "1", "1", "0", "30", "0",))
+            cursor.execute("INSERT INTO database (user_id, group_number) VALUES(?, ?);", (person_id, "1",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("1", person_id,))
         data_time_to = cursor.execute(f"SELECT time_to FROM database WHERE user_id = {person_id}").fetchone()
@@ -570,7 +570,7 @@ def callback_inline(call):
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
         data_call_group = cursor.fetchone()
         if data_call_group is None:
-            cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?, ?, ?);", (person_id, "2", "1", "0", "30", "0",))
+            cursor.execute("INSERT INTO database (user_id, group_number) VALUES(?, ?);", (person_id, "2",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("2", person_id,))
         data_time_to = cursor.execute(f"SELECT time_to FROM database WHERE user_id = {person_id}").fetchone()
@@ -598,7 +598,7 @@ def callback_inline(call):
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
         data_call_group = cursor.fetchone()
         if data_call_group is None:
-            cursor.execute("INSERT INTO database VALUES(?, ?, ?, ?, ?, ?);", (person_id, "3", "1", "0", "30", "0",))
+            cursor.execute("INSERT INTO database (user_id, group_number) VALUES(?, ?);", (person_id, "3",))
         else:
             cursor.execute("UPDATE database SET group_number = ? WHERE user_id = ?", ("3", person_id,))
         data_time_to = cursor.execute(f"SELECT time_to FROM database WHERE user_id = {person_id}").fetchone()
