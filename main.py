@@ -7,14 +7,13 @@ import schedule
 import logging
 from datetime import datetime, timedelta
 from telebot import types
-from threading import Thread
+from threading import Thread, Lock
 from config import TOKEN
 
 
 logging.basicConfig(level=logging.INFO)
 bot = telebot.TeleBot(TOKEN)
 timeworked = 0
-
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 item1 = types.KeyboardButton("✅ Підключити сповіщення")
@@ -23,17 +22,29 @@ item3 = types.KeyboardButton("🖼 Повний графік(фото)")
 item4 = types.KeyboardButton("⚙ Налаштування")
 markup.add(item1, item2).row(item3).add(item4)
 
-markup_settings = types.InlineKeyboardMarkup(row_width = 1)
+markup_settings = types.InlineKeyboardMarkup(row_width=1)
 item1 = types.InlineKeyboardButton(text="🌙 Нічні сповіщення", callback_data='night_notice')
 item2 = types.InlineKeyboardButton(text="🔘 Сповіщення про можливі відключення", callback_data='maybe_notice')
 item3 = types.InlineKeyboardButton(text="🕐 Час до надсилання сповіщення", callback_data='change_time_to_notice')
 item4 = types.InlineKeyboardButton(text="⬅ Назад", callback_data='back')
 markup_settings.add(item1, item2, item3, item4)
 
+def connect_db():
+    connect = sqlite3.connect('database.db')
+    return connect
+
+mutex = Lock()
+
+def locked(f):
+    def f_locked(*args, **kwargs):
+        with mutex:
+            return f(*args, **kwargs)
+    return f_locked
 # Початок роботи, створення бази даних
 @bot.message_handler(commands=['start'])
+@locked
 def start(message: types.Message):
-    connect = sqlite3.connect('database.db')
+    connect = connect_db()
     cursor = connect.cursor()
     cursor.execute("""CREATE TABLE IF NOT EXISTS database(
         user_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,9 +63,10 @@ def start(message: types.Message):
 
 # Функція розсилки через команду
 @bot.message_handler(commands=['send'])
+@locked
 def sendforall(message: types.Message):
     if message.from_user.id == 880691612:
-        connect = sqlite3.connect('database.db')
+        connect = connect_db()
         cursor = connect.cursor()
         results = cursor.execute("SELECT user_id FROM database").fetchall()
         text = message.text[6:]
@@ -78,7 +90,7 @@ def sendforall(message: types.Message):
 @bot.message_handler(commands=['stats'])
 def stats(message: types.Message):
     if message.from_user.id == 880691612 or message.from_user.id == 720509891:
-        connect = sqlite3.connect('database.db')
+        connect = connect_db()
         cursor = connect.cursor()
         result_all = cursor.execute("SELECT COUNT(*) FROM database").fetchone()
         result_active = cursor.execute("SELECT COUNT(*) FROM database WHERE active = 1").fetchone()
@@ -103,8 +115,9 @@ def stats(message: types.Message):
 
 # Робота кнопок
 @bot.message_handler(content_types='text')
+@locked
 def message_reply(message: types.Message):
-    connect = sqlite3.connect('database.db')
+    connect = connect_db()
     cursor = connect.cursor()
     person_id = message.chat.id
 
@@ -161,7 +174,6 @@ def message_reply(message: types.Message):
                 bot.send_message(message.from_user.id, "Помилка! Попробуйте підключитись до вашої групи.")
             except telebot.apihelper.ApiTelegramException:
                 pass
-        connect.commit()
 
 # Налаштування
     elif message.text == "⚙ Налаштування":
@@ -182,9 +194,6 @@ def message_reply(message: types.Message):
     elif message.text == "/send":
         pass
 
-    elif message.text == "/fix":
-        pass
-
     elif message.text == "/stats":
         pass
 
@@ -202,9 +211,10 @@ def checkworkingbot():
 schedule.every(60).minutes.do(checkworkingbot)
 
 # Функція розсилки
+@locked
 def send(group, night, maybe, time_to, whattext):
     global group_number, text, results
-    connect = sqlite3.connect('database.db')
+    connect = connect_db()
     cursor = connect.cursor()
     if night == 0 and maybe == 0:
         results = cursor.execute(f"SELECT user_id FROM database WHERE group_number = {group} AND time_to = {time_to}").fetchall()
@@ -531,8 +541,9 @@ thread.daemon = True
 thread.start()
 
 @bot.callback_query_handler(func=lambda call: True)
+@locked
 def callback_inline(call):
-    connect = sqlite3.connect('database.db')
+    connect = connect_db()
     cursor = connect.cursor()
     person_id = call.message.chat.id
     message_id = call.message.message_id
