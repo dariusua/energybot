@@ -572,9 +572,9 @@ def callback_inline(call):
         connect.commit()
         try:
             bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 1️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за {data_time_to[0]} хвилин до відключення світла. \n{night} \n\nЩоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=person_id, message_id=message_id)
+            bot.send_message(880691612, f"<a href='tg://user?id={person_id}'>{loginchat}</a> підключився(-лась) до 1 групи", parse_mode='HTML')
         except telebot.apihelper.ApiTelegramException:
             pass
-        bot.send_message(880691612, f"<a href='tg://user?id={person_id}'>{loginchat}</a> підключився(-лась) до 1 групи", parse_mode='HTML')
 
 # Підключення до 2 групи
     elif call.data == 'group2':
@@ -600,9 +600,9 @@ def callback_inline(call):
         connect.commit()
         try:
             bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 2️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за {data_time_to[0]} хвилин до відключення світла. \n{night} \n\nЩоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=person_id, message_id=message_id)
+            bot.send_message(880691612, f"<a href='tg://user?id={person_id}'>{loginchat}</a> підключився(-лась) до 1 групи", parse_mode='HTML')
         except telebot.apihelper.ApiTelegramException:
             pass
-        bot.send_message(880691612, f"<a href='tg://user?id={person_id}'>{loginchat}</a> підключився(-лась) до 2 групи", parse_mode='HTML')
 
 # Підключення до 3 групи
     elif call.data == 'group3':
@@ -630,9 +630,9 @@ def callback_inline(call):
         connect.commit()
         try:
             bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 3️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за {data_time_to[0]} хвилин до відключення світла. \n{night}\n\nЩоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=person_id, message_id=message_id)
+            bot.send_message(880691612, f"<a href='tg://user?id={person_id}'>{loginchat}</a> підключився(-лась) до 3 групи", parse_mode='HTML')
         except telebot.apihelper.ApiTelegramException:
             pass
-        bot.send_message(880691612, f"<a href='tg://user?id={person_id}'>{loginchat}</a> підключився(-лась) до 3 групи", parse_mode='HTML')
 
 # Call_data налаштувань
 # Нічні сповіщення
