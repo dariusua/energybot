@@ -197,14 +197,15 @@ def message_reply(message: types.Message):
     elif message.text == "/stats":
         pass
 
+    elif message.text == '/what':
+        pass
+
     else:
         try:
             bot.send_message(message.from_user.id, "Цієї команди не існує.")
         except telebot.apihelper.ApiTelegramException:
             pass
 
-@bot.message_handler(commands=['workedtime'])
-@locked
 def checkworkingbot():
     global timeworked
     connect = connect_db()
@@ -213,7 +214,7 @@ def checkworkingbot():
     timeworked += 1
     bot.send_message(880691612, f"Бот працює вже стільки годин: {timeworked}, підключено людей: {connected_ppl[0]}.")
 
-schedule.every(1).hour.do(checkworkingbot)
+schedule.every(3600).seconds.do(checkworkingbot)
 
 # Функція розсилки
 @locked
