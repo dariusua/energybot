@@ -203,6 +203,7 @@ def message_reply(message: types.Message):
         except telebot.apihelper.ApiTelegramException:
             pass
 
+@bot.message_handler(commands=['workedtime'])
 @locked
 def checkworkingbot():
     global timeworked
@@ -210,7 +211,7 @@ def checkworkingbot():
     cursor = connect.cursor()
     connected_ppl = cursor.execute("SELECT COUNT(*) FROM database").fetchone()
     timeworked += 1
-    bot.send_message(880691612, f"Бот працює вже {timeworked} годин, підключено {connected_ppl[0]} людей.")
+    bot.send_message(880691612, f"Бот працює вже стільки годин: {timeworked}, підключено людей: {connected_ppl[0]}.")
 
 schedule.every(1).hour.do(checkworkingbot)
 
@@ -554,10 +555,6 @@ def callback_inline(call):
 
 # Підключення до 1 групи
     if call.data == 'group1':
-        if call.message.chat.last_name is None:
-            loginchat = f"{call.message.chat.first_name}"
-        else:
-            loginchat = f"{call.message.chat.first_name} {call.message.chat.last_name}"
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
         data_call_group = cursor.fetchone()
         if data_call_group is None:
@@ -576,16 +573,11 @@ def callback_inline(call):
         connect.commit()
         try:
             bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 1️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за {data_time_to[0]} хвилин до відключення світла. \n{night} \n\nЩоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=person_id, message_id=message_id)
-            bot.send_message(880691612, f"<a href='tg://user?id={person_id}'>{loginchat}</a> підключився(-лась) до 1 групи", parse_mode='HTML')
         except telebot.apihelper.ApiTelegramException:
             pass
 
 # Підключення до 2 групи
     elif call.data == 'group2':
-        if call.message.chat.last_name is None:
-            loginchat = f"{call.message.chat.first_name}"
-        else:
-            loginchat = f"{call.message.chat.first_name} {call.message.chat.last_name}"
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
         data_call_group = cursor.fetchone()
         if data_call_group is None:
@@ -604,16 +596,11 @@ def callback_inline(call):
         connect.commit()
         try:
             bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 2️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за {data_time_to[0]} хвилин до відключення світла. \n{night} \n\nЩоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=person_id, message_id=message_id)
-            bot.send_message(880691612, f"<a href='tg://user?id={person_id}'>{loginchat}</a> підключився(-лась) до 1 групи", parse_mode='HTML')
         except telebot.apihelper.ApiTelegramException:
             pass
 
 # Підключення до 3 групи
     elif call.data == 'group3':
-        if call.message.chat.last_name is None:
-            loginchat = f"{call.message.chat.first_name}"
-        else:
-            loginchat = f"{call.message.chat.first_name} {call.message.chat.last_name}"
         cursor.execute(f"SELECT user_id FROM database WHERE user_id = {person_id}")
         data_call_group = cursor.fetchone()
         if data_call_group is None:
@@ -634,7 +621,6 @@ def callback_inline(call):
         connect.commit()
         try:
             bot.edit_message_text(f'✅ Ви успішно підключилися до сповіщень 3️⃣ групи! \n\n🕐 Відтепер ви будете отримувати сповіщення за {data_time_to[0]} хвилин до відключення світла. \n{night}\n\nЩоб змінити групу, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=None, chat_id=person_id, message_id=message_id)
-            bot.send_message(880691612, f"<a href='tg://user?id={person_id}'>{loginchat}</a> підключився(-лась) до 3 групи", parse_mode='HTML')
         except telebot.apihelper.ApiTelegramException:
             pass
 
