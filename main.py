@@ -89,12 +89,12 @@ def sendforall(message: types.Message):
 # Підрахунок скільки користувачів в боті
 @bot.message_handler(commands=['stats'])
 def stats(message: types.Message):
+    global timeworked
+
     if message.from_user.id == 880691612 or message.from_user.id == 720509891:
         connect = connect_db()
         cursor = connect.cursor()
         result_all = cursor.execute("SELECT COUNT(*) FROM database").fetchone()
-        result_active = cursor.execute("SELECT COUNT(*) FROM database WHERE active = 1").fetchone()
-        result_not_active = cursor.execute("SELECT COUNT(*) FROM database WHERE active = 0").fetchone()
         result_g1 = cursor.execute("SELECT COUNT(*) FROM database WHERE group_number = 1").fetchone()
         result_g2 = cursor.execute("SELECT COUNT(*) FROM database WHERE group_number = 2").fetchone()
         result_g3 = cursor.execute("SELECT COUNT(*) FROM database WHERE group_number = 3").fetchone()
@@ -105,7 +105,7 @@ def stats(message: types.Message):
         result_time30 = cursor.execute("SELECT COUNT(*) FROM database WHERE time_to = 30").fetchone()
         result_time60 = cursor.execute("SELECT COUNT(*) FROM database WHERE time_to = 60").fetchone()
         result_bagged_users = cursor.execute("SELECT COUNT(*) FROM database WHERE maybe != 1 AND maybe != 0 AND time_to != 10 AND time_to != 30 AND time_to != 60").fetchone()
-        bot.send_message(message.from_user.id, f"📊 Статистика всіх користувачів: \n\nАктивних користувачів: {result_active[0]} \nНеактивних користувачів: {result_not_active[0]} \n\nКористувачів 1 групи: {result_g1[0]} \nКористувачів 2 групи: {result_g2[0]} \nКористувачів 3 групи: {result_g3[0]} \n\nКористувачів, які користуються нічними сповіщеннями: {result_night[0]} \nКористувачів, які користуються сповіщеннями про можливі відключення: {result_maybe[0]} \nКористувачів, які користуються нічними сповіщеннями та сповіщення про можливі відключення: {result_night_maybe[0]} \n\nКористувачів, яким сповіщення приходять за 10 хвилин до відключення: {result_time10[0]} \nКористувачів, яким сповіщення приходять за 30 хвилин до відключення: {result_time30[0]} \nКористувачів, яким сповіщення приходять за 60 хвилин до відключення: {result_time60[0]} \n\nКористувачів, в яких виникла помилка та не надсилаються сповіщення: {result_bagged_users[0]} \n\nВсього користувачів: {result_all[0]}")
+        bot.send_message(message.from_user.id, f"📊 Статистика всіх користувачів: \n\nКористувачів 1 групи: {result_g1[0]} \nКористувачів 2 групи: {result_g2[0]} \nКористувачів 3 групи: {result_g3[0]} \n\nКористувачів, які користуються нічними сповіщеннями: {result_night[0]} \nКористувачів, які користуються сповіщеннями про можливі відключення: {result_maybe[0]} \nКористувачів, які користуються нічними сповіщеннями та сповіщення про можливі відключення: {result_night_maybe[0]} \n\nКористувачів, яким сповіщення приходять за 10 хвилин до відключення: {result_time10[0]} \nКористувачів, яким сповіщення приходять за 30 хвилин до відключення: {result_time30[0]} \nКористувачів, яким сповіщення приходять за 60 хвилин до відключення: {result_time60[0]} \n\nКористувачів, в яких виникла помилка та не надсилаються сповіщення: {result_bagged_users[0]} \n\nВсього користувачів: {result_all[0]}")
         connect.commit()
     else:
         try:
@@ -203,12 +203,16 @@ def message_reply(message: types.Message):
         except telebot.apihelper.ApiTelegramException:
             pass
 
+@locked
 def checkworkingbot():
     global timeworked
+    connect = connect_db()
+    cursor = connect.cursor()
+    connected_ppl = cursor.execute("SELECT COUNT(*) FROM database").fetchone()
     timeworked += 1
-    bot.send_message(880691612, f"Бот працює вже {timeworked} годин.")
+    bot.send_message(880691612, f"Бот працює вже {timeworked} годин, підключено {connected_ppl[0]} людей.")
 
-schedule.every(60).minutes.do(checkworkingbot)
+schedule.every(1).hour.do(checkworkingbot)
 
 # Функція розсилки
 @locked
