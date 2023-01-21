@@ -214,7 +214,7 @@ def checkworkingbot():
     timeworked += 1
     bot.send_message(880691612, f"Бот працює вже стільки годин: {timeworked}, підключено людей: {connected_ppl[0]}.")
 
-schedule.every(3600).seconds.do(checkworkingbot)
+schedule.every(3).seconds.do(checkworkingbot)
 
 # Функція розсилки
 @locked
@@ -245,9 +245,9 @@ def send(group, night, maybe, time_to, whattext):
     howmuchtime1 = datetime.now() + timedelta(minutes=time_to)
     howmuchtime2 = howmuchtime1 + timedelta(hours=4)
     if whattext == 1:
-        text = f"‼ За графіком {group_number} групи планується відключення світла в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')}!"
+        text = f"‼ За графіком {group_number} групи планується відключення світла в період з {howmuchtime1.strftime('%H')}:00 до {howmuchtime2.strftime('%H')}:00!"
     elif whattext == 2:
-        text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H:%M')} до {howmuchtime2.strftime('%H:%M')} для {group_number} групи!"
+        text = f"‼ Можливе відключення світла планується в період з {howmuchtime1.strftime('%H')}:00 до {howmuchtime2.strftime('%H')}:00 для {group_number} групи!"
     for row in results:
         active_value = row[0]
         set_active = cursor.execute(f"SELECT active FROM database WHERE user_id = {active_value}")
