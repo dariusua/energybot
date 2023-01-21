@@ -145,7 +145,6 @@ def message_reply(message: types.Message):
             bot.send_message(message.from_user.id, '❌ Ви відключилися від сповіщень про відключення електроенергії. Дякуємо за використання бота!😢 \n\nЩоб підключитись знову, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
         except telebot.apihelper.ApiTelegramException:
             pass
-        bot.send_message(880691612, f"<a href='tg://user?id={person_id}'>{loginchat}</a> відключився від сповіщень", parse_mode='HTML')
 
 # Надсилання фото з графіком відключень
     elif message.text == "🖼 Повний графік(фото)" or message.text == "📖 Повний графік(фото)":
@@ -214,7 +213,7 @@ def checkworkingbot():
     timeworked += 1
     bot.send_message(880691612, f"Бот працює вже стільки годин: {timeworked}, підключено людей: {connected_ppl[0]}.")
 
-schedule.every(3).seconds.do(checkworkingbot)
+schedule.every().minute.at(":00").do(checkworkingbot)
 
 # Функція розсилки
 @locked
