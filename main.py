@@ -213,7 +213,7 @@ def checkworkingbot():
     timeworked += 1
     bot.send_message(880691612, f"Бот працює вже стільки годин: {timeworked}, підключено людей: {connected_ppl[0]}.")
 
-schedule.every().minute.at(":00").do(checkworkingbot)
+schedule.every().hour.at(":00").do(checkworkingbot)
 
 # Функція розсилки
 @locked
