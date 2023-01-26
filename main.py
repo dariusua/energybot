@@ -1,4 +1,4 @@
-#  ENERGYLOEBOT version 1.5.7 by dariusua
+#  ENERGYLOEBOT version 1.5.8 by dariusua
 
 import sqlite3
 import time
@@ -29,17 +29,22 @@ item3 = types.InlineKeyboardButton(text="🕐 Час до надсилання �
 item4 = types.InlineKeyboardButton(text="⬅ Назад", callback_data='back')
 markup_settings.add(item1, item2, item3, item4)
 
+
 def connect_db():
     connect = sqlite3.connect('database.db')
     return connect
 
+
 mutex = Lock()
+
 
 def locked(f):
     def f_locked(*args, **kwargs):
         with mutex:
             return f(*args, **kwargs)
     return f_locked
+
+
 # Початок роботи, створення бази даних
 @bot.message_handler(commands=['start'])
 @locked
@@ -60,6 +65,7 @@ def start(message: types.Message):
         bot.send_message(message.from_user.id, f'Привіт 👋 \n\n🤖 Цей бот створений задля сповіщення користувачів "Львівобленерго" про планові відключення у вашому населеному пункті. \n✏️ Бот буде відсилати повідомлення з попередженням за 30 хвилин до відключення світла. \n❗️ Бот не є офіційним! \n\n📋 Для підключення сповіщень, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
     except telebot.apihelper.ApiTelegramException:
         pass
+
 
 # Функція розсилки через команду
 @bot.message_handler(commands=['send'])
@@ -86,11 +92,11 @@ def sendforall(message: types.Message):
         except telebot.apihelper.ApiTelegramException:
             pass
 
+
 # Підрахунок скільки користувачів в боті
 @bot.message_handler(commands=['stats'])
 def stats(message: types.Message):
     global timeworked
-
     if message.from_user.id == 880691612 or message.from_user.id == 720509891:
         connect = connect_db()
         cursor = connect.cursor()
@@ -782,4 +788,5 @@ def callback_inline(call):
         except telebot.apihelper.ApiTelegramException:
             pass
 
-bot.polling()
+
+bot.polling(non_stop=True)
