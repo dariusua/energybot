@@ -80,11 +80,13 @@ def sendforall(message: types.Message):
             active_value = row[0]
             set_active = cursor.execute("SELECT active FROM database WHERE user_id = ?", (active_value,))
             try:
-                bot.send_message(row[0], text)
+                msg = bot.send_message(row[0], text)
                 if set_active != 1:
                     cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+                bot.delete_message(msg.chat.id, msg.message_id)
             except:
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
+                bot.delete_message(msg.chat.id, msg.message_id)
         connect.commit()
     else:
         try:
