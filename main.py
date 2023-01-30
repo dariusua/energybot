@@ -86,6 +86,7 @@ def sendforall(message: types.Message):
                 bot.delete_message(msg.chat.id, msg.message_id)
             except:
                 cursor.execute(f"UPDATE database SET active = 0 WHERE user_id = {active_value}")
+                time.sleep(1)
         connect.commit()
     else:
         try:
