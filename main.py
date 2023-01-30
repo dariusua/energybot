@@ -261,7 +261,7 @@ def send(group, night, maybe, time_to, whattext):
             if set_active != 1:
                 cursor.execute(f"UPDATE database SET active = 1 WHERE user_id = {active_value}")
         except:
-            cursor.execute(f"UPDATE database SET active = 1 WHERE user_id = {active_value}")
+            cursor.execute(f"UPDATE database SET active = 0 WHERE user_id = {active_value}")
             time.sleep(1)
     connect.commit()
 
