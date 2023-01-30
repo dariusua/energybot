@@ -71,6 +71,7 @@ def start(message: types.Message):
 @bot.message_handler(commands=['send'])
 @locked
 def sendforall(message: types.Message):
+    global msg
     if message.from_user.id == 880691612:
         connect = connect_db()
         cursor = connect.cursor()
