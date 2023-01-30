@@ -71,7 +71,6 @@ def start(message: types.Message):
 @bot.message_handler(commands=['send'])
 @locked
 def sendforall(message: types.Message):
-    global msg
     if message.from_user.id == 880691612:
         connect = connect_db()
         cursor = connect.cursor()
@@ -84,9 +83,9 @@ def sendforall(message: types.Message):
                 msg = bot.send_message(row[0], text)
                 if set_active != 1:
                     cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("1", active_value))
+                bot.delete_message(msg.chat.id, msg.message_id)
             except:
                 cursor.execute("UPDATE database SET active = ? WHERE user_id = ?", ("0", active_value))
-            bot.delete_message(msg.chat.id, msg.message_id)
         connect.commit()
     else:
         try:
