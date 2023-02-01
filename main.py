@@ -143,12 +143,12 @@ def message_reply(message: types.Message):
         except telebot.apihelper.ApiTelegramException:
             pass
 
-# Відключити сповіщень
+# Відключення сповіщень
     elif message.text == "🔕 Відключити сповіщення":
-        if message.from_user.last_name is None:
-            loginchat = f"{message.from_user.first_name}"
-        else:
-            loginchat = f"{message.from_user.first_name} {message.from_user.last_name}"
+        ##if message.from_user.last_name is None:
+        ##    loginchat = f"{message.from_user.first_name}"
+        ##else:
+        ##    loginchat = f"{message.from_user.first_name} {message.from_user.last_name}"
         cursor.execute("DELETE FROM 'database' WHERE 'user_id' = ?", (person_id,))
         try:
             bot.send_message(message.from_user.id, '❌ Ви відключилися від сповіщень про відключення електроенергії. Дякуємо за використання бота!😢 \n\nЩоб підключитись знову, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
@@ -792,4 +792,10 @@ def callback_inline(call):
             pass
 
 
-bot.polling(non_stop=True)
+while True:
+    try:
+        bot.polling(non_stop=True, interval=0)
+    except Exception as e:
+        bot.send_message(880691612, e)
+        time.sleep(5)
+        continue
