@@ -792,4 +792,4 @@ def callback_inline(call):
         except telebot.apihelper.ApiTelegramException:
             pass
 
-        bot.polling(non_stop=True)
+bot.polling(non_stop=True)
