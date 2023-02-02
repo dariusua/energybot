@@ -214,6 +214,7 @@ def message_reply(message: types.Message):
         except telebot.apihelper.ApiTelegramException:
             pass
 
+@locked
 def checkworkingbot():
     global timeworked
     connect = connect_db()
@@ -791,11 +792,4 @@ def callback_inline(call):
         except telebot.apihelper.ApiTelegramException:
             pass
 
-
-while True:
-    try:
-        bot.polling(non_stop=True, interval=0)
-    except Exception as e:
-        bot.send_message(880691612, e)
-        time.sleep(5)
-        continue
+        bot.polling(non_stop=True)
