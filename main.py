@@ -150,6 +150,7 @@ def message_reply(message: types.Message):
         ##else:
         ##    loginchat = f"{message.from_user.first_name} {message.from_user.last_name}"
         cursor.execute("DELETE FROM 'database' WHERE 'user_id' = ?", (person_id,))
+        connect.commit()
         try:
             bot.send_message(message.from_user.id, '❌ Ви відключилися від сповіщень про відключення електроенергії. Дякуємо за використання бота!😢 \n\nЩоб підключитись знову, натисніть на кнопку "✅ Підключити сповіщення" нижче.', reply_markup=markup)
         except telebot.apihelper.ApiTelegramException:
