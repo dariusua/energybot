@@ -1,4 +1,4 @@
-# ENERGYBOT version 1.9 by dariusua
+# ENERGYBOT version 1.9.9 by dariusua
 
 import telebot
 import sqlite3
@@ -202,14 +202,14 @@ def check_working_bot():
     global time_worked
     connect = connect_db()
     cursor = connect.cursor()
-    connected_ppl = cursor.execute("SELECT COUNT(*) FROM database").fetchone()
     cursor.execute("DELETE FROM database WHERE active = 0")
     connect.commit()
+    connected_ppl = cursor.execute("SELECT COUNT(*) FROM database").fetchone()
     time_worked += 1
     bot.send_message(880691612, f"Бот працює вже стільки годин: {time_worked}, підключено людей: {connected_ppl[0]}.")
 
 
-schedule.every().hour.at(":19").do(check_working_bot)
+schedule.every().hour.at(":15").do(check_working_bot)
 
 
 # Функція розсилки
@@ -519,9 +519,6 @@ schedule.every().saturday.at("14:50").do(send, 3, 0, 1, 10, 2)
 schedule.every().saturday.at("18:00").do(send, 3, 0, 0, 60, 1)
 schedule.every().saturday.at("18:30").do(send, 3, 0, 0, 30, 1)
 schedule.every().saturday.at("18:50").do(send, 3, 0, 0, 10, 1)
-
-
-# schedule.every(3).seconds.do(send, 3, 1, 1, 30, 1)
 
 
 # Робота розсилки(інший потік)
