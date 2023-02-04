@@ -75,12 +75,10 @@ def send_for_all(message: types.Message):
             active_value = row[0]
             set_active = cursor.execute(f"SELECT active FROM database WHERE user_id = {active_value}")
             try:
-                msg = bot.send_message(row[0], text, reply_markup=k.main_menu())
+                bot.send_message(row[0], text, reply_markup=k.main_menu())
                 if set_active != 1:
                     cursor.execute(f"UPDATE database SET active = 1 WHERE user_id = {active_value}")
-                time.sleep(5)
-                bot.delete_message(msg.chat.id, msg.message_id)
-            except sqlite3.OperationalError:
+            except telebot.apihelper.ApiTelegramException:
                 cursor.execute(f"UPDATE database SET active = 0 WHERE user_id = {active_value}")
                 time.sleep(1)
         connect.commit()
@@ -267,7 +265,7 @@ def send(group, night, maybe, time_to, what_text):
             bot.send_message(row[0], text)
             if set_active != 1:
                 cursor.execute(f"UPDATE database SET active = 1 WHERE user_id = {active_value}")
-        except sqlite3.OperationalError:
+        except telebot.apihelper.ApiTelegramException:
             cursor.execute(f"UPDATE database SET active = 0 WHERE user_id = {active_value}")
             time.sleep(1)
     connect.commit()
@@ -548,6 +546,7 @@ schedule.every().saturday.at("14:50").do(send, 3, 0, 1, 10, 2)
 schedule.every().saturday.at("18:00").do(send, 3, 0, 0, 60, 1)
 schedule.every().saturday.at("18:30").do(send, 3, 0, 0, 30, 1)
 schedule.every().saturday.at("18:50").do(send, 3, 0, 0, 10, 1)
+# schedule.every(5).seconds.do(send, 3, 1, 1, 10, 1)
 
 
 # Робота розсилки(інший потік)
