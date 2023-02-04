@@ -19,6 +19,12 @@ def connect_to_group():
     return markup
 
 
+def support():
+    markup = ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(KeyboardButton("⬅ Назад"))
+    return markup
+
+
 def settings():
     markup = InlineKeyboardMarkup(row_width=1)
     markup.add(InlineKeyboardButton("🔘 Сповіщення про можливі відключення", callback_data="maybe_notice"),

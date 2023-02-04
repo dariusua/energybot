@@ -43,6 +43,11 @@ def start(message: types.Message):
         time_to INTEGER DEFAULT(30),
         time_connect INTEGER DEFAULT(0)
     )""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS banned_from_support(
+        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        reason TEXT DEFAULT(0),
+        date TEXT
+    )""")
     connect.commit()
     if_exists = cursor.execute("SELECT EXISTS (SELECT user_id FROM database WHERE user_id = ?)", (message.chat.id,)).fetchone()
     if if_exists[0] == 0:
@@ -70,9 +75,11 @@ def send_for_all(message: types.Message):
             active_value = row[0]
             set_active = cursor.execute(f"SELECT active FROM database WHERE user_id = {active_value}")
             try:
-                bot.send_message(row[0], text, reply_markup=k.main_menu())
+                msg = bot.send_message(row[0], text, reply_markup=k.main_menu())
                 if set_active != 1:
                     cursor.execute(f"UPDATE database SET active = 1 WHERE user_id = {active_value}")
+                time.sleep(5)
+                bot.delete_message(msg.chat.id, msg.message_id)
             except sqlite3.OperationalError:
                 cursor.execute(f"UPDATE database SET active = 0 WHERE user_id = {active_value}")
                 time.sleep(1)
@@ -101,16 +108,38 @@ def stats(message: types.Message):
         result_time10 = cursor.execute("SELECT COUNT(*) FROM database WHERE time_to = 10").fetchone()
         result_time30 = cursor.execute("SELECT COUNT(*) FROM database WHERE time_to = 30").fetchone()
         result_time60 = cursor.execute("SELECT COUNT(*) FROM database WHERE time_to = 60").fetchone()
-        result_bagged_users = cursor.execute("SELECT COUNT(*) FROM database WHERE maybe != 1 OR maybe != 0 OR time_to != 10 OR time_to != 30 OR time_to != 60").fetchone()
+        result_bagged_users1 = cursor.execute("SELECT COUNT(*) FROM database WHERE maybe != 1 AND maybe != 0").fetchone()
+        result_bagged_users2 = cursor.execute("SELECT COUNT(*) FROM database WHERE night != 1 AND night != 0").fetchone()
+        result_bagged_users3 = cursor.execute("SELECT COUNT(*) FROM database WHERE time_to != 10 AND time_to != 30 AND time_to != 60").fetchone()
         result_not_active = cursor.execute("SELECT COUNT(*) FROM database WHERE active = 0").fetchone()
         result_active = cursor.execute("SELECT COUNT(*) FROM database WHERE active = 1").fetchone()
-        bot.send_message(message.chat.id, f"📊 Статистика всіх користувачів: \n\nКористувачів 1 групи: {result_g1[0]} \nКористувачів 2 групи: {result_g2[0]} \nКористувачів 3 групи: {result_g3[0]} \n\nКористувачів, які користуються нічними сповіщеннями: {result_night[0]} \nКористувачів, які користуються сповіщеннями про можливі відключення: {result_maybe[0]} \nКористувачів, які користуються нічними сповіщеннями та сповіщення про можливі відключення: {result_night_maybe[0]} \n\nКористувачів, яким сповіщення приходять за 10 хвилин до відключення: {result_time10[0]} \nКористувачів, яким сповіщення приходять за 30 хвилин до відключення: {result_time30[0]} \nКористувачів, яким сповіщення приходять за 60 хвилин до відключення: {result_time60[0]} \n\nКористувачів, в яких виникла помилка та не надсилаються сповіщення: {result_bagged_users[0]} \nАктивних користувачів: {result_active[0]} \nНеактивних користувачів: {result_not_active[0]} \n\nВсього користувачів: {result_all[0]}", reply_markup=k.main_menu())
+        bot.send_message(message.chat.id, f"📊 Статистика всіх користувачів: \n\nКористувачів 1 групи: {result_g1[0]} \nКористувачів 2 групи: {result_g2[0]} \nКористувачів 3 групи: {result_g3[0]} \n\nКористувачів, які користуються нічними сповіщеннями: {result_night[0]} \nКористувачів, які користуються сповіщеннями про можливі відключення: {result_maybe[0]} \nКористувачів, які користуються нічними сповіщеннями та сповіщення про можливі відключення: {result_night_maybe[0]} \n\nКористувачів, яким сповіщення приходять за 10 хвилин до відключення: {result_time10[0]} \nКористувачів, яким сповіщення приходять за 30 хвилин до відключення: {result_time30[0]} \nКористувачів, яким сповіщення приходять за 60 хвилин до відключення: {result_time60[0]} \n\nКористувачів, в яких виникла помилка та не надсилаються сповіщення: {result_bagged_users1[0]+result_bagged_users2[0]+result_bagged_users3[0]} \nАктивних користувачів: {result_active[0]} \nНеактивних користувачів: {result_not_active[0]} \n\nВсього користувачів: {result_all[0]}", reply_markup=k.main_menu())
         connect.commit()
     else:
         try:
             bot.send_message(message.chat.id, "Для виконання цієї команди Ви повинні бути адміном.", reply_markup=k.main_menu())
         except telebot.apihelper.ApiTelegramException:
             pass
+
+
+@bot.message_handler(commands=['support'])
+@locked
+def start_support(message: types.Message):
+    connect = connect_db()
+    cursor = connect.cursor()
+    data = cursor.execute(f"SELECT EXISTS (SELECT user_id FROM banned_from_support WHERE user_id = {message.chat.id})").fetchone()
+    if data[0] == 0:
+        msg = bot.send_message(message.chat.id, "Для відправлення повідомлення в технічну підтримку нашого боту, напишіть нижче текст повідомлення. \n\nНагадуємо, що повідомлення повинно бути написано в адекватній формі, без некоректних висловлювань і тому подібного.", reply_markup=k.support())
+        bot.register_next_step_handler(msg, send_msg_to_support)
+    else:
+        bot.send_message(message.chat.id, "Ви не можете звернутись в технічку підтримку через бан!", reply_markup=k.main_menu())
+
+def send_msg_to_support(message: types.Message):
+    if message.text == "⬅ Назад":
+        bot.send_message(message.chat.id, "МЕНЮ:", reply_markup=k.main_menu())
+    else:
+        bot.send_message(880691612, f"{message.chat.first_name} (`{message.chat.id}`) звернувся в технічну підтримку з повідомленням: \n\n{message.text}", reply_markup=k.main_menu(), parse_mode="Markdown")
+        bot.send_message(message.chat.id, "Ваше звернення успішно відправлено!", reply_markup=k.main_menu())
 
 
 # Робота кнопок
@@ -184,8 +213,8 @@ def message_reply(message: types.Message):
             if message.text[5:].isdigit():
                 global time_worked
                 time_worked_before = time_worked
-                time_worked_after = int(message.text[5:])
-                bot.send_message(message.chat.id, f"Час роботи боту оновлений з {time_worked_before} до {time_worked_after} годин!")
+                time_worked = int(message.text[5:])
+                bot.send_message(message.chat.id, f"Час роботи боту оновлений з {time_worked_before} до {time_worked} годин!")
 
     elif message.text == "/start" or message.text == "/send" or message.text == "/stats":
         pass
