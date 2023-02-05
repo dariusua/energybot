@@ -139,6 +139,19 @@ def send_msg_to_support(message: types.Message):
         bot.send_message(880691612, f"{message.chat.first_name} (`{message.chat.id}`) звернувся в технічну підтримку з повідомленням: \n\n{message.text}", reply_markup=k.main_menu(), parse_mode="Markdown")
         bot.send_message(message.chat.id, "Ваше звернення успішно відправлено!", reply_markup=k.main_menu())
 
+@bot.message_handler(commands=['send_to'])
+def send_to(message: types.Message):
+    if message.chat.id == 880691612:
+        full_cmd = message.text.split(" ", 3)
+        try:
+            if full_cmd[1] == "1":
+                support_or_no_msg = "Відповідь на ваше звернення в технічну підтримку: \n\n"
+            else:
+                support_or_no_msg = ""
+            bot.send_message(full_cmd[2], f"{support_or_no_msg}{full_cmd[3]}")
+            bot.send_message(message.chat.id, "Повідомлення успішно відправлено!")
+        except telebot.apihelper.ApiTelegramException:
+            bot.send_message(message.chat.id, f"Виникла помилка при надсиланні повідомлення користувачу з айді {full_cmd[2]}!")
 
 # Робота кнопок
 @bot.message_handler(content_types='text')
@@ -214,7 +227,7 @@ def message_reply(message: types.Message):
                 time_worked = int(message.text[5:])
                 bot.send_message(message.chat.id, f"Час роботи боту оновлений з {time_worked_before} до {time_worked} годин!")
 
-    elif message.text == "/start" or message.text == "/send" or message.text == "/stats":
+    elif message.text == "/start" or message.text.startswith("/send") or message.text == "/stats" or message.text == "/support" or message.text.startswith("/send_to"):
         pass
 
     else:
